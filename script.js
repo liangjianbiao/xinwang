@@ -765,7 +765,8 @@ function openGame(gameName) {
         '拼图': '拼图/index.html',
         '推箱子游戏': '推箱子游戏/index.html',
         '九格人格': '九格人格/index.html',
-        '星屿微光': 'https://www.kanjl.com'
+        '星屿微光': 'https://www.kanjl.com',
+        '动感小球游戏': '动感小球游戏/maze-ball.html'
     };
     
     if (gamePaths[gameName]) {

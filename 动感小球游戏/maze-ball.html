@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>重力迷宫小球-道具分享完整版</title>
+<script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="gameWrap">
+<canvas id="mazeCanvas"></canvas>
+<canvas id="posterCanvas"></canvas>
+
+<div class="game-bar hidden" id="gameBar">
+<div class="bar-item">关卡：<span id="curLevel">1</span></div>
+<div class="bar-item">剩余时间：<span id="timeLeft">60</span>s</div>
+<div class="bar-item">分数：<span id="scoreText">0</span></div>
+<div class="bar-item" id="pauseBtn">暂停</div>
+</div>
+
+<div class="ui-panel" id="mainMenu">
+<div class="title">重力迷宫小球</div>
+<button class="btn btn-primary" id="startBtn">开始游戏</button>
+<button class="btn btn-secondary" id="levelSelectBtn">选择关卡</button>
+<button class="btn btn-secondary" id="shareGameBtn">分享游戏</button>
+<div style="margin-top:20px;font-size:14px;color:#aaa;text-align:center;">晃动手机控制小球<br>收集道具获得加分、加时、穿墙等效果</div>
+</div>
+
+<div class="ui-panel hidden" id="levelPanel">
+<div class="title">选择关卡</div>
+<div class="level-grid">
+<button class="level-btn" data-lv="1">1<br>简单</button>
+<button class="level-btn" data-lv="2">2<br>中等</button>
+<button class="level-btn" data-lv="3">3<br>困难</button>
+</div>
+<button class="btn btn-secondary" id="backMenuBtn">返回</button>
+</div>
+
+<div class="ui-panel hidden" id="pausePanel">
+<div class="title">游戏暂停</div>
+<button class="btn btn-primary" id="resumeBtn">继续游戏</button>
+<button class="btn btn-secondary" id="resetBtn">重新开始本关</button>
+<button class="btn btn-secondary" id="quitBtn">返回主菜单</button>
+</div>
+
+<div class="ui-panel hidden" id="winPanel">
+<div class="title">闯关成功！</div>
+<div class="rank-box">
+<div class="rank-title">本局信息</div>
+<div style="margin-bottom:10px">用时：<span id="winTime">0</span>秒｜总分：<span id="winTotalScore">0</span></div>
+<div class="rank-sub">最快用时TOP5</div>
+<div id="timeRankList"></div>
+<div class="rank-sub">最高得分TOP5</div>
+<div id="scoreRankList"></div>
+</div>
+<button class="btn btn-primary" id="nextLvBtn">下一关</button>
+<button class="btn btn-secondary" id="replayBtn">再玩一次</button>
+<button class="btn btn-secondary" id="shareScoreBtn">分享本局战绩</button>
+<button class="btn btn-secondary" id="winQuitBtn">返回主菜单</button>
+</div>
+
+<div class="ui-panel hidden" id="failPanel">
+<div class="title" style="color:#ff4d4f">时间耗尽，闯关失败</div>
+<div style="margin-bottom:20px">本局得分：<span id="failScore">0</span></div>
+<button class="btn btn-primary" id="retryBtn">重新挑战</button>
+<button class="btn btn-secondary" id="failQuitBtn">返回主菜单</button>
+</div>
+
+<div class="ui-panel hidden" id="sharePanel">
+<div class="title">分享</div>
+<div id="shareTip"></div>
+<button class="btn btn-primary" id="sysShareBtn">一键系统分享</button>
+<button class="btn btn-secondary" id="copyLinkBtn">复制游戏链接</button>
+<button class="btn btn-secondary" id="savePosterBtn">保存分享海报</button>
+<button class="btn btn-secondary" id="closeShareBtn">关闭</button>
+</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
