@@ -2,9 +2,9 @@ const CONFIG = {
 cellSize: 40,
 ballRadius: 16,
 itemRadius: 12,
-forceScale: 12,
-deadZone: 0.08,
-smoothFactor: 0.15,
+forceScale: 28,
+deadZone: 0.1,
+smoothFactor: 0.35,
 maxTime: [60, 90, 120],
 itemDuration: {
   slow: 5,
@@ -282,12 +282,12 @@ function gameUpdate(){
   gameState.ballVx += fx * CONFIG.forceScale * 0.016;
   gameState.ballVy += fy * CONFIG.forceScale * 0.016;
 
-  let friction = 0.96;
-  if(gameState.activeBuff.slow > 0) friction = 0.9;
+  let friction = 0.985;
+  if(gameState.activeBuff.slow > 0) friction = 0.92;
   gameState.ballVx *= friction;
   gameState.ballVy *= friction;
 
-  const maxSpeed = CONFIG.cellSize * 0.4;
+  const maxSpeed = CONFIG.cellSize * 0.8;
   const speed = Math.sqrt(gameState.ballVx * gameState.ballVx + gameState.ballVy * gameState.ballVy);
   if(speed > maxSpeed){
     gameState.ballVx = (gameState.ballVx / speed) * maxSpeed;
