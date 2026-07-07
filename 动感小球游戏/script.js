@@ -2,9 +2,9 @@ const CONFIG = {
 cellSize: 40,
 ballRadius: 16,
 itemRadius: 12,
-forceScale: 28,
-deadZone: 0.1,
-smoothFactor: 0.35,
+forceScale: 45,
+deadZone: 0.05,
+smoothFactor: 0.4,
 maxTime: [60, 90, 120],
 itemDuration: {
   slow: 5,
@@ -180,12 +180,16 @@ function loadLevel(lv){
   spawnMazeItems();
 }
 
-window.addEventListener('devicemotion', (e)=>{
+window.addEventListener('deviceorientation', (e)=>{
   if(!gameState.isPlaying || gameState.isPaused) return;
-  const rawX = e.accelerationIncludingGravity.x;
-  const rawY = e.accelerationIncludingGravity.y;
-  gameState.accelX += (-rawX - gameState.accelX) * CONFIG.smoothFactor;
-  gameState.accelY += (-rawY - gameState.accelY) * CONFIG.smoothFactor;
+  const gamma = e.gamma || 0;
+  const beta = e.beta || 0;
+  let tiltX = gamma / 90;
+  let tiltY = beta / 90;
+  tiltX = Math.max(-1, Math.min(1, tiltX));
+  tiltY = Math.max(-1, Math.min(1, tiltY));
+  gameState.accelX += (tiltX - gameState.accelX) * CONFIG.smoothFactor;
+  gameState.accelY += (tiltY - gameState.accelY) * CONFIG.smoothFactor;
 });
 
 function checkWallCollision(x,y,r){
@@ -279,15 +283,15 @@ function gameUpdate(){
   const mag = Math.sqrt(fx*fx + fy*fy);
   if(mag < CONFIG.deadZone){ fx=0; fy=0; }
 
-  gameState.ballVx += fx * CONFIG.forceScale * 0.016;
-  gameState.ballVy += fy * CONFIG.forceScale * 0.016;
+  gameState.ballVx += fx * CONFIG.forceScale;
+  gameState.ballVy += fy * CONFIG.forceScale;
 
-  let friction = 0.985;
-  if(gameState.activeBuff.slow > 0) friction = 0.92;
+  let friction = 0.98;
+  if(gameState.activeBuff.slow > 0) friction = 0.9;
   gameState.ballVx *= friction;
   gameState.ballVy *= friction;
 
-  const maxSpeed = CONFIG.cellSize * 0.8;
+  const maxSpeed = CONFIG.cellSize * 0.9;
   const speed = Math.sqrt(gameState.ballVx * gameState.ballVx + gameState.ballVy * gameState.ballVy);
   if(speed > maxSpeed){
     gameState.ballVx = (gameState.ballVx / speed) * maxSpeed;
@@ -427,7 +431,18 @@ function gameFail(){
   failPanel.classList.remove('hidden');
 }
 
-function startGame(lv){
+async function startGame(lv){
+  if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+    try {
+      const permissionState = await DeviceOrientationEvent.requestPermission();
+      if (permissionState !== 'granted') {
+        alert('需要允许设备方向权限才能控制小球');
+        return;
+      }
+    } catch (error) {
+      console.error('权限请求失败:', error);
+    }
+  }
   loadLevel(lv);
   mainMenu.classList.add('hidden');
   levelPanel.classList.add('hidden');
