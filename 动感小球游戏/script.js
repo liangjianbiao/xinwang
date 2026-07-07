@@ -184,8 +184,8 @@ window.addEventListener('devicemotion', (e)=>{
   if(!gameState.isPlaying || gameState.isPaused) return;
   const rawX = e.accelerationIncludingGravity.x;
   const rawY = e.accelerationIncludingGravity.y;
-  gameState.accelX += (rawX - gameState.accelX) * CONFIG.smoothFactor;
-  gameState.accelY += (rawY - gameState.accelY) * CONFIG.smoothFactor;
+  gameState.accelX += (-rawX - gameState.accelX) * CONFIG.smoothFactor;
+  gameState.accelY += (-rawY - gameState.accelY) * CONFIG.smoothFactor;
 });
 
 function checkWallCollision(x,y,r){
@@ -287,18 +287,38 @@ function gameUpdate(){
   gameState.ballVx *= friction;
   gameState.ballVy *= friction;
 
-  let newX = gameState.ballX + gameState.ballVx;
-  if(checkWallCollision(newX, gameState.ballY, CONFIG.ballRadius)){
-    gameState.ballVx *= -0.4;
-  }else{
-    gameState.ballX = newX;
+  const maxSpeed = CONFIG.cellSize * 0.4;
+  const speed = Math.sqrt(gameState.ballVx * gameState.ballVx + gameState.ballVy * gameState.ballVy);
+  if(speed > maxSpeed){
+    gameState.ballVx = (gameState.ballVx / speed) * maxSpeed;
+    gameState.ballVy = (gameState.ballVy / speed) * maxSpeed;
   }
 
-  let newY = gameState.ballY + gameState.ballVy;
-  if(checkWallCollision(gameState.ballX, newY, CONFIG.ballRadius)){
-    gameState.ballVy *= -0.4;
-  }else{
-    gameState.ballY = newY;
+  const subStep = CONFIG.cellSize / 2;
+  const dx = gameState.ballVx;
+  const dy = gameState.ballVy;
+  const totalDist = Math.sqrt(dx * dx + dy * dy);
+  
+  if(totalDist > 0){
+    const steps = Math.ceil(totalDist / subStep);
+    const stepX = dx / steps;
+    const stepY = dy / steps;
+    
+    for(let i=0;i<steps;i++){
+      const testX = gameState.ballX + stepX;
+      const testY = gameState.ballY + stepY;
+      
+      if(checkWallCollision(testX, gameState.ballY, CONFIG.ballRadius)){
+        gameState.ballVx *= -0.4;
+        break;
+      }
+      if(checkWallCollision(gameState.ballX, testY, CONFIG.ballRadius)){
+        gameState.ballVy *= -0.4;
+        break;
+      }
+      gameState.ballX = testX;
+      gameState.ballY = testY;
+    }
   }
 
   if(checkWin()){
