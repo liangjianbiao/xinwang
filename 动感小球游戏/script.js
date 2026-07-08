@@ -449,30 +449,46 @@ function gameUpdate(){
     gameState.ballVy = (gameState.ballVy / speed) * maxSpeed;
   }
 
-  const subStep = CONFIG.cellSize / 2;
-  const dx = gameState.ballVx;
-  const dy = gameState.ballVy;
-  const totalDist = Math.sqrt(dx * dx + dy * dy);
+  const isGhostMode = gameState.activeBuff.ghost > 0;
   
-  if(totalDist > 0){
-    const steps = Math.ceil(totalDist / subStep);
-    const stepX = dx / steps;
-    const stepY = dy / steps;
+  if(isGhostMode){
+    gameState.ballX += gameState.ballVx;
+    gameState.ballY += gameState.ballVy;
     
-    for(let i=0;i<steps;i++){
-      const testX = gameState.ballX + stepX;
-      const testY = gameState.ballY + stepY;
+    if(gameState.ballX < CONFIG.ballRadius) gameState.ballX = CONFIG.ballRadius;
+    if(gameState.ballY < CONFIG.ballRadius) gameState.ballY = CONFIG.ballRadius;
+    if(gameState.ballX > gameState.maze[0].length * CONFIG.cellSize - CONFIG.ballRadius){
+      gameState.ballX = gameState.maze[0].length * CONFIG.cellSize - CONFIG.ballRadius;
+    }
+    if(gameState.ballY > gameState.maze.length * CONFIG.cellSize - CONFIG.ballRadius){
+      gameState.ballY = gameState.maze.length * CONFIG.cellSize - CONFIG.ballRadius;
+    }
+  }else{
+    const subStep = CONFIG.cellSize / 2;
+    const dx = gameState.ballVx;
+    const dy = gameState.ballVy;
+    const totalDist = Math.sqrt(dx * dx + dy * dy);
+    
+    if(totalDist > 0){
+      const steps = Math.ceil(totalDist / subStep);
+      const stepX = dx / steps;
+      const stepY = dy / steps;
       
-      if(checkWallCollision(testX, gameState.ballY, CONFIG.ballRadius)){
-        gameState.ballVx *= -0.4;
-        break;
+      for(let i=0;i<steps;i++){
+        const testX = gameState.ballX + stepX;
+        const testY = gameState.ballY + stepY;
+        
+        if(checkWallCollision(testX, gameState.ballY, CONFIG.ballRadius)){
+          gameState.ballVx *= -0.4;
+          break;
+        }
+        if(checkWallCollision(gameState.ballX, testY, CONFIG.ballRadius)){
+          gameState.ballVy *= -0.4;
+          break;
+        }
+        gameState.ballX = testX;
+        gameState.ballY = testY;
       }
-      if(checkWallCollision(gameState.ballX, testY, CONFIG.ballRadius)){
-        gameState.ballVy *= -0.4;
-        break;
-      }
-      gameState.ballX = testX;
-      gameState.ballY = testY;
     }
   }
 
