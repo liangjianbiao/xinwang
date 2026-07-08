@@ -2,9 +2,9 @@ const CONFIG = {
 cellSize: 40,
 ballRadius: 16,
 itemRadius: 12,
-forceScale: 45,
-deadZone: 0.05,
-smoothFactor: 0.4,
+forceScale: 60,
+deadZone: 0.03,
+smoothFactor: 0.5,
 maxTime: [60, 90, 120],
 itemDuration: {
   slow: 5,
@@ -345,7 +345,6 @@ window.addEventListener('deviceorientation', (e)=>{
 });
 
 function checkWallCollision(x,y,r){
-  if(gameState.activeBuff.ghost > 0) return false;
   const cellX = Math.floor(x / CONFIG.cellSize);
   const cellY = Math.floor(y / CONFIG.cellSize);
   for(let dy=-1;dy<=1;dy++){
@@ -353,7 +352,7 @@ function checkWallCollision(x,y,r){
       const cx = cellX + dx;
       const cy = cellY + dy;
       if(cy<0 || cy>=gameState.maze.length || cx<0 || cx>=gameState.maze[cy].length) return true;
-      if(gameState.maze[cy][cx] === 0){
+      if(gameState.maze[cy][cx] === 0 && gameState.activeBuff.ghost <= 0){
         const wallL = cx*CONFIG.cellSize;
         const wallT = cy*CONFIG.cellSize;
         const wallR = wallL + CONFIG.cellSize;
@@ -517,11 +516,25 @@ function render(){
   })
   ctx.beginPath();
   ctx.arc(offsetX + gameState.ballX, offsetY + gameState.ballY, CONFIG.ballRadius,0,Math.PI*2);
-  ctx.fillStyle = '#ffd400';
+  ctx.fillStyle = 'rgba(255, 212, 0, 0.75)';
   ctx.fill();
-  ctx.strokeStyle = '#fff';
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
   ctx.lineWidth=2;
   ctx.stroke();
+  
+  const gradient = ctx.createRadialGradient(
+    offsetX + gameState.ballX - CONFIG.ballRadius * 0.3,
+    offsetY + gameState.ballY - CONFIG.ballRadius * 0.3,
+    0,
+    offsetX + gameState.ballX,
+    offsetY + gameState.ballY,
+    CONFIG.ballRadius
+  );
+  gradient.addColorStop(0, 'rgba(255, 255, 255, 0.6)');
+  gradient.addColorStop(0.5, 'rgba(255, 255, 200, 0.2)');
+  gradient.addColorStop(1, 'rgba(255, 212, 0, 0)');
+  ctx.fillStyle = gradient;
+  ctx.fill();
 }
 
 function startTimer(){
