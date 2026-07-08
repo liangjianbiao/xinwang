@@ -10,6 +10,10 @@ itemDuration: {
   slow: 5,
   ghost: 3
 },
+bgm: {
+  tempo: 120,
+  volume: 0.3
+},
 itemTypes: {
   coin: {color:"#ffdd00",score:10,name:"金币"},
   timeAdd: {color:"#44aaff",addTime:20,name:"沙漏"},
@@ -64,6 +68,7 @@ const curLevelText = document.getElementById('curLevel');
 const timeLeftText = document.getElementById('timeLeft');
 const scoreText = document.getElementById('scoreText');
 const pauseBtn = document.getElementById('pauseBtn');
+const muteBtn = document.getElementById('muteBtn');
 const mainMenu = document.getElementById('mainMenu');
 const levelPanel = document.getElementById('levelPanel');
 const pausePanel = document.getElementById('pausePanel');
@@ -105,6 +110,153 @@ activeBuff: {
   ghost: 0
 },
 totalScore: 0
+};
+
+const BGM = {
+  ctx: null,
+  isPlaying: false,
+  isMuted: false,
+  masterGain: null,
+  noteInterval: null,
+  beatInterval: null,
+  scale: [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88],
+  melody: [0, 2, 4, 5, 4, 2, 0, 4, 5, 7, 7, 5],
+  chordProgression: [
+    [0, 2, 4], [2, 4, 6], [4, 5, 7], [3, 5, 7]
+  ],
+  melodyIndex: 0,
+  chordIndex: 0,
+  
+  init(){
+    if(!this.ctx){
+      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      this.masterGain = this.ctx.createGain();
+      this.masterGain.gain.value = this.isMuted ? 0 : CONFIG.bgm.volume;
+      this.masterGain.connect(this.ctx.destination);
+    }
+  },
+  
+  playNote(freq, duration, type='sine', volume=0.3){
+    if(!this.ctx) return;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = type;
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0, this.ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(volume, this.ctx.currentTime + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(this.masterGain);
+    osc.start();
+    osc.stop(this.ctx.currentTime + duration);
+  },
+  
+  playChord(chordIdx){
+    const chord = this.chordProgression[chordIdx];
+    chord.forEach((noteIdx, i) => {
+      setTimeout(() => {
+        this.playNote(this.scale[noteIdx] * 0.5, 1.5, 'triangle', 0.15);
+      }, i * 50);
+    });
+  },
+  
+  playBeat(){
+    this.playNote(100, 0.08, 'square', 0.2);
+    this.playNote(80, 0.1, 'triangle', 0.1);
+  },
+  
+  playMelody(){
+    const noteIdx = this.melody[this.melodyIndex];
+    this.playNote(this.scale[noteIdx], 0.35, 'sine', 0.25);
+    this.melodyIndex = (this.melodyIndex + 1) % this.melody.length;
+  },
+  
+  start(){
+    if(this.isPlaying) return;
+    this.init();
+    if(this.ctx.state === 'suspended'){
+      this.ctx.resume();
+    }
+    this.isPlaying = true;
+    this.melodyIndex = 0;
+    this.chordIndex = 0;
+    
+    const beatIntervalMs = (60 / CONFIG.bgm.tempo) * 1000;
+    const melodyIntervalMs = beatIntervalMs * 0.5;
+    const chordIntervalMs = beatIntervalMs * 4;
+    
+    this.playBeat();
+    this.playChord(0);
+    
+    this.beatInterval = setInterval(() => {
+      this.playBeat();
+      if(Math.random() > 0.7){
+        this.playNote(150 + Math.random() * 100, 0.1, 'sine', 0.05);
+      }
+    }, beatIntervalMs);
+    
+    this.noteInterval = setInterval(() => {
+      this.playMelody();
+      this.melodyIndex = (this.melodyIndex + 1) % this.melody.length;
+    }, melodyIntervalMs);
+    
+    setInterval(() => {
+      this.chordIndex = (this.chordIndex + 1) % this.chordProgression.length;
+      this.playChord(this.chordIndex);
+    }, chordIntervalMs);
+  },
+  
+  pause(){
+    if(!this.isPlaying) return;
+    this.isPlaying = false;
+    if(this.noteInterval) clearInterval(this.noteInterval);
+    if(this.beatInterval) clearInterval(this.beatInterval);
+    if(this.ctx && this.ctx.state === 'running'){
+      this.ctx.suspend();
+    }
+  },
+  
+  resume(){
+    if(this.isPlaying) return;
+    this.isPlaying = true;
+    if(this.ctx && this.ctx.state === 'suspended'){
+      this.ctx.resume();
+    }
+    const beatIntervalMs = (60 / CONFIG.bgm.tempo) * 1000;
+    const melodyIntervalMs = beatIntervalMs * 0.5;
+    
+    this.playBeat();
+    
+    this.beatInterval = setInterval(() => {
+      this.playBeat();
+      if(Math.random() > 0.7){
+        this.playNote(150 + Math.random() * 100, 0.1, 'sine', 0.05);
+      }
+    }, beatIntervalMs);
+    
+    this.noteInterval = setInterval(() => {
+      this.playMelody();
+      this.melodyIndex = (this.melodyIndex + 1) % this.melody.length;
+    }, melodyIntervalMs);
+  },
+  
+  stop(){
+    this.isPlaying = false;
+    if(this.noteInterval) clearInterval(this.noteInterval);
+    if(this.beatInterval) clearInterval(this.beatInterval);
+    if(this.ctx){
+      this.ctx.close();
+      this.ctx = null;
+    }
+  },
+  
+  toggleMute(){
+    this.isMuted = !this.isMuted;
+    if(this.masterGain){
+      this.masterGain.gain.value = this.isMuted ? 0 : CONFIG.bgm.volume;
+    }
+    return this.isMuted;
+  }
 };
 
 function getRankData(){
@@ -421,6 +573,7 @@ function gameWin(){
 
   gameBar.classList.add('hidden');
   winPanel.classList.remove('hidden');
+  BGM.stop();
 }
 
 function gameFail(){
@@ -429,6 +582,7 @@ function gameFail(){
   failScoreText.innerText = gameState.score;
   gameBar.classList.add('hidden');
   failPanel.classList.remove('hidden');
+  BGM.stop();
 }
 
 async function startGame(lv){
@@ -453,6 +607,7 @@ async function startGame(lv){
   gameBar.classList.remove('hidden');
   gameState.isPlaying = true;
   gameState.isPaused = false;
+  BGM.start();
   startTimer();
   gameUpdate();
 }
@@ -586,10 +741,12 @@ document.querySelectorAll('.level-btn').forEach(btn=>{
 pauseBtn.onclick = ()=>{
   gameState.isPaused = true;
   pausePanel.classList.remove('hidden');
+  BGM.pause();
 };
 document.getElementById('resumeBtn').onclick = ()=>{
   gameState.isPaused = false;
   pausePanel.classList.add('hidden');
+  BGM.resume();
   gameUpdate();
 };
 document.getElementById('resetBtn').onclick = ()=>{
@@ -602,6 +759,7 @@ document.getElementById('quitBtn').onclick = ()=>{
   pausePanel.classList.add('hidden');
   gameBar.classList.add('hidden');
   mainMenu.classList.remove('hidden');
+  BGM.stop();
 };
 document.getElementById('nextLvBtn').onclick = ()=>{
   const next = gameState.currentLv +1;
@@ -609,6 +767,7 @@ document.getElementById('nextLvBtn').onclick = ()=>{
     alert('全部关卡通关！');
     winPanel.classList.add('hidden');
     mainMenu.classList.remove('hidden');
+    BGM.stop();
   }else{
     winPanel.classList.add('hidden');
     startGame(next);
@@ -621,6 +780,7 @@ document.getElementById('replayBtn').onclick = ()=>{
 document.getElementById('winQuitBtn').onclick = ()=>{
   winPanel.classList.add('hidden');
   mainMenu.classList.remove('hidden');
+  BGM.stop();
 };
 document.getElementById('retryBtn').onclick = ()=>{
   failPanel.classList.add('hidden');
@@ -629,4 +789,9 @@ document.getElementById('retryBtn').onclick = ()=>{
 document.getElementById('failQuitBtn').onclick = ()=>{
   failPanel.classList.add('hidden');
   mainMenu.classList.remove('hidden');
+  BGM.stop();
+};
+muteBtn.onclick = ()=>{
+  const isMuted = BGM.toggleMute();
+  muteBtn.innerText = isMuted ? '🔇' : '🔊';
 };
