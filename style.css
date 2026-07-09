@@ -399,6 +399,7 @@ body {
 .news1-bg { background: linear-gradient(135deg, #667eea, #764ba2); }
 .news2-bg { background: linear-gradient(135deg, #ff9800, #ffc107); }
 .news3-bg { background: linear-gradient(135deg, #4caf50, #81c784); }
+.school-bg { background: linear-gradient(135deg, #1e88e5, #42a5f5); }
 
 .news-content {
     padding: 20px;

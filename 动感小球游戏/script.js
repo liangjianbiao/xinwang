@@ -468,7 +468,7 @@ function gameUpdate(){
     const dx = gameState.ballVx;
     const dy = gameState.ballVy;
     const totalDist = Math.sqrt(dx * dx + dy * dy);
-    
+     
     if(totalDist > 0){
       const steps = Math.ceil(totalDist / subStep);
       const stepX = dx / steps;

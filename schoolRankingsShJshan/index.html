@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>石景山区学校排名统计</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e4b1cad1dc884ec2ee26027d50258d86";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+</head>
+<body>
+    <div class="container"> 
+        <header>
+            <h1>🏫 石景山区学校排名统计</h1>
+            <p class="subtitle">2025-2026学年各学区学校信息汇总</p>
+        </header>
+
+        <div class="area-tabs">
+            <button class="tab-btn active" data-area="southeast">东南部学区</button>
+            <button class="tab-btn" data-area="central">中部学区</button>
+            <button class="tab-btn" data-area="north">北部学区</button>
+            <button class="tab-btn" data-area="west">西部学区</button>
+        </div>
+
+        <div class="content-area">
+            <div id="southeast" class="school-section active">
+                <h2>📍 东南部学区</h2>
+                <div class="section-intro">
+                    <p>东南部学区是石景山区教育资源最优质的区域，集中了多所顶尖学校。</p>
+                </div>
+                
+                <h3>中学排名</h3>
+                <div class="school-list" id="southeast-middle"></div>
+
+                <h3>小学名单</h3>
+                <div class="school-list" id="southeast-primary"></div>
+            </div>
+
+            <div id="central" class="school-section">
+                <h2>📍 中部学区</h2>
+                <div class="section-intro">
+                    <p>中部学区位于石景山区中心地带，学校分布均衡。</p>
+                </div>
+                
+                <h3>中学排名</h3>
+                <div class="school-list" id="central-middle"></div>
+
+                <h3>小学名单</h3>
+                <div class="school-list" id="central-primary"></div>
+            </div>
+
+            <div id="north" class="school-section">
+                <h2>📍 北部学区</h2>
+                <div class="section-intro">
+                    <p>北部学区包含苹果园地区等多所学校。</p>
+                </div>
+                
+                <h3>中学排名</h3>
+                <div class="school-list" id="north-middle"></div>
+
+                <h3>小学名单</h3>
+                <div class="school-list" id="north-primary"></div>
+            </div>
+
+            <div id="west" class="school-section">
+                <h2>📍 西部学区</h2>
+                <div class="section-intro">
+                    <p>西部学区包含多所历史悠久的学校。</p>
+                </div>
+                
+                <h3>中学排名</h3>
+                <div class="school-list" id="west-middle"></div>
+
+                <h3>小学名单</h3>
+                <div class="school-list" id="west-primary"></div>
+            </div>
+        </div>
+
+        <div class="statistics">
+            <div class="stat-card">
+                <h3>学校总数</h3>
+                <p class="stat-number" id="total-schools">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>中学数量</h3>
+                <p class="stat-number" id="total-middle">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>小学数量</h3>
+                <p class="stat-number" id="total-primary">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>覆盖学区</h3>
+                <p class="stat-number">4</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>数据来源：石景山区教育委员会 | 更新时间：2026年</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
