@@ -24,6 +24,24 @@ let isDragging = false;
 let dragStartIndex = null;
 let customImages = [];
 
+function init() {
+    loadBestScores();
+    initHomeScreen();
+}
+
+function initHomeScreen() {
+    const homeScreen = document.getElementById('home-screen');
+    const gameContainer = document.getElementById('game-container');
+    homeScreen.style.display = 'block';
+    gameContainer.style.display = 'none';
+    
+    renderLevelGrid();
+    updateHomeStats();
+    
+    document.getElementById('btn-start').addEventListener('click', startGame);
+    document.getElementById('file-upload').addEventListener('change', handleHomeFileUpload);
+}
+
 function initGame() {
     canvas = document.getElementById('puzzle-canvas');
     ctx = canvas.getContext('2d');
@@ -33,7 +51,6 @@ function initGame() {
     canvas.height = GRID_SIZE * PIECES_SIZE;
     
     setupEventListeners();
-    loadBestScores();
     loadLevel(currentLevel);
 }
 
@@ -53,9 +70,146 @@ function setupEventListeners() {
     document.getElementById('btn-solve').addEventListener('click', solvePuzzle);
     document.getElementById('btn-restart').addEventListener('click', restartGame);
     document.getElementById('btn-next').addEventListener('click', nextLevel);
-    document.getElementById('file-upload').addEventListener('change', handleFileUpload);
+    document.getElementById('btn-back').addEventListener('click', goHome);
+    document.getElementById('file-upload-game').addEventListener('change', handleGameFileUpload);
     
     document.addEventListener('keydown', handleKeyDown);
+}
+
+function renderLevelGrid() {
+    const levelGrid = document.getElementById('level-grid');
+    levelGrid.innerHTML = '';
+    
+    images.forEach((imageUrl, index) => {
+        const levelItem = document.createElement('div');
+        levelItem.className = 'level-item';
+        levelItem.dataset.level = index;
+        
+        if (index >= defaultImages.length) {
+            levelItem.classList.add('custom-level');
+        }
+        
+        const img = new Image();
+        img.src = imageUrl;
+        img.onload = () => {
+            levelItem.appendChild(img);
+        };
+        img.onerror = () => {
+            levelItem.innerHTML = `<span class="level-number">${index + 1}</span>`;
+        };
+        
+        const stars = getStarsForLevel(index);
+        if (stars) {
+            const starsSpan = document.createElement('span');
+            starsSpan.className = 'level-stars';
+            starsSpan.textContent = stars;
+            levelItem.appendChild(starsSpan);
+        }
+        
+        levelItem.addEventListener('click', () => {
+            document.querySelectorAll('.level-item').forEach(item => item.classList.remove('selected'));
+            levelItem.classList.add('selected');
+            currentLevel = index;
+        });
+        
+        levelGrid.appendChild(levelItem);
+    });
+    
+    if (images.length > 0) {
+        document.querySelector('.level-item').classList.add('selected');
+    }
+}
+
+function getStarsForLevel(level) {
+    const score = bestScores[level];
+    if (!score) return '';
+    if (score <= 15) return '⭐⭐⭐';
+    if (score <= 30) return '⭐⭐';
+    return '⭐';
+}
+
+function updateHomeStats() {
+    let totalStars = 0;
+    let completedLevels = 0;
+    let bestStep = null;
+    
+    Object.keys(bestScores).forEach(level => {
+        completedLevels++;
+        const score = bestScores[level];
+        if (score <= 15) totalStars += 3;
+        else if (score <= 30) totalStars += 2;
+        else totalStars += 1;
+        
+        if (bestStep === null || score < bestStep) {
+            bestStep = score;
+        }
+    });
+    
+    document.getElementById('total-stars').textContent = totalStars;
+    document.getElementById('completed-levels').textContent = completedLevels;
+    document.getElementById('best-step').textContent = bestStep ? `${bestStep}步` : '--';
+}
+
+function startGame() {
+    const homeScreen = document.getElementById('home-screen');
+    const gameContainer = document.getElementById('game-container');
+    
+    homeScreen.style.display = 'none';
+    gameContainer.style.display = 'block';
+    
+    initGame();
+}
+
+function goHome() {
+    const homeScreen = document.getElementById('home-screen');
+    const gameContainer = document.getElementById('game-container');
+    
+    stopTimer();
+    gameContainer.style.display = 'none';
+    homeScreen.style.display = 'block';
+    
+    renderLevelGrid();
+    updateHomeStats();
+}
+
+function handleHomeFileUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const imageDataUrl = event.target.result;
+        customImages.push(imageDataUrl);
+        images.push(imageDataUrl);
+        
+        currentLevel = images.length - 1;
+        renderLevelGrid();
+        
+        document.getElementById('file-upload').value = '';
+        
+        alert('图片上传成功！请点击开始游戏。');
+    };
+    reader.readAsDataURL(file);
+}
+
+function handleGameFileUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const imageDataUrl = event.target.result;
+        customImages.push(imageDataUrl);
+        images.push(imageDataUrl);
+        
+        currentLevel = images.length - 1;
+        loadLevel(currentLevel);
+        
+        document.getElementById('file-upload-game').value = '';
+        
+        alert('图片上传成功！开始新的拼图关卡。');
+    };
+    reader.readAsDataURL(file);
 }
 
 function handleMouseDown(e) {
@@ -455,26 +609,6 @@ function solvePuzzle() {
     showWinMessage();
 }
 
-function handleFileUpload(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    
-    const reader = new FileReader();
-    reader.onload = function(event) {
-        const imageDataUrl = event.target.result;
-        customImages.push(imageDataUrl);
-        images.push(imageDataUrl);
-        
-        currentLevel = images.length - 1;
-        loadLevel(currentLevel);
-        
-        document.getElementById('file-upload').value = '';
-        
-        alert('图片上传成功！现在可以开始新的拼图关卡。');
-    };
-    reader.readAsDataURL(file);
-}
-
 function startTimer() {
     if (timerInterval) {
         clearInterval(timerInterval);
@@ -504,7 +638,7 @@ function getElapsedTime() {
 
 function updateUI() {
     document.getElementById('current-level').textContent = currentLevel + 1;
-    document.querySelector('.level-info').innerHTML = `第 <span id="current-level">${currentLevel + 1}</span> / ${images.length} 关`;
+    document.getElementById('total-levels').textContent = images.length;
     document.getElementById('steps').textContent = steps;
     document.getElementById('best').textContent = bestScores[currentLevel] ? `${bestScores[currentLevel]}步` : '--';
 }
@@ -533,8 +667,8 @@ function showWinMessage() {
     document.getElementById('message-overlay').classList.add('show');
     
     if (currentLevel >= images.length - 1) {
-        document.getElementById('btn-next').textContent = '重新开始';
-        document.getElementById('btn-next').onclick = restartGame;
+        document.getElementById('btn-next').textContent = '返回首页';
+        document.getElementById('btn-next').onclick = goHome;
     } else {
         document.getElementById('btn-next').textContent = '下一关 →';
         document.getElementById('btn-next').onclick = nextLevel;
@@ -560,9 +694,8 @@ function nextLevel() {
 }
 
 function restartGame() {
-    currentLevel = 0;
     loadLevel(currentLevel);
     hideMessage();
 }
 
-window.addEventListener('load', initGame);
+window.addEventListener('load', init);

@@ -16,17 +16,60 @@
     </script>
 </head>
 <body>
-    <div class="game-container">
+    <div class="home-screen" id="home-screen">
+        <div class="home-content">
+            <div class="home-title">
+                <span class="title-icon">🧩</span>
+                <h1>拼图小游戏</h1>
+                <p>挑战你的观察力和逻辑思维</p>
+            </div>
+            
+            <div class="level-section">
+                <h2>选择关卡</h2>
+                <div class="level-grid" id="level-grid">
+                </div>
+            </div>
+            
+            <div class="home-controls">
+                <label for="file-upload" class="btn btn-primary upload-btn">
+                    📷 上传图片
+                </label>
+                <input type="file" id="file-upload" accept="image/*" hidden>
+                <button id="btn-start" class="btn btn-outline">开始游戏</button>
+            </div>
+            
+            <div class="home-stats">
+                <div class="stat-item">
+                    <span class="stat-icon">⭐</span>
+                    <span class="stat-value" id="total-stars">0</span>
+                    <span class="stat-label">获得星星</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">🎯</span>
+                    <span class="stat-value" id="completed-levels">0</span>
+                    <span class="stat-label">完成关卡</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">🏆</span>
+                    <span class="stat-value" id="best-step">--</span>
+                    <span class="stat-label">最佳步数</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="game-container" id="game-container">
         <header class="game-header">
             <div class="header-left">
+                <button id="btn-back" class="btn btn-secondary back-btn">← 返回</button>
                 <span class="game-title">🧩 拼图小游戏</span>
             </div>
             <div class="header-center">
-                <span class="level-info">第 <span id="current-level">1</span> / 3 关</span>
+                <span class="level-info">第 <span id="current-level">1</span> / <span id="total-levels">3</span> 关</span>
             </div>
             <div class="header-right">
-                <label for="file-upload" class="btn btn-outline upload-btn">上传图片</label>
-                <input type="file" id="file-upload" accept="image/*" hidden>
+                <label for="file-upload-game" class="btn btn-outline upload-btn">上传图片</label>
+                <input type="file" id="file-upload-game" accept="image/*" hidden>
                 <button id="btn-restart" class="btn btn-secondary">重新开始</button>
             </div>
         </header>
