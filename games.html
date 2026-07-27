@@ -17,6 +17,14 @@
     </script>
 </head>
 <body>
+    <audio id="bgm-player" loop>
+        <source src="https://www.dhwyfw.cn/%E8%83%8C%E6%99%AF%E9%9F%B3%E4%B9%90.mp3" type="audio/mpeg">
+    </audio>
+    
+    <button id="bgm-toggle" class="bgm-toggle-btn" onclick="toggleBGM()">
+        <i class="fas fa-music"></i>
+    </button>
+
     <!-- 导航栏 -->
     <nav class="navbar">
         <div class="nav-container">
@@ -79,16 +87,16 @@
                     </button>
                 </div>
 
-                <!-- 拼图小游戏 -->
+                <!-- 拼图游戏 -->
                 <div class="game-card" data-category="puzzle" onclick="openGame('拼图')">
                     <div class="game-icon">
                         <i class="fas fa-puzzle-piece"></i>
                     </div>
                     <div class="game-info">
-                        <h3>拼图小游戏</h3>
-                        <p>将打乱的图片重新拼合，锻炼空间想象力</p>
+                        <h3>拼图游戏</h3>
+                        <p>将打乱的图片还原，考验观察力和空间想象力</p>
                         <div class="game-stats">
-                            <span><i class="fas fa-play"></i> 已玩 2,345 次</span>
+                            <span><i class="fas fa-play"></i> 已玩 987 次</span>
                         </div>
                     </div>
                     <button class="play-btn">
@@ -102,10 +110,10 @@
                         <i class="fas fa-box"></i>
                     </div>
                     <div class="game-info">
-                        <h3>推箱子游戏</h3>
-                        <p>将箱子推到指定位置，考验策略思维</p>
+                        <h3>推箱子</h3>
+                        <p>运用智慧将所有箱子推到目标位置</p>
                         <div class="game-stats">
-                            <span><i class="fas fa-play"></i> 已玩 1,876 次</span>
+                            <span><i class="fas fa-play"></i> 已玩 756 次</span>
                         </div>
                     </div>
                     <button class="play-btn">
@@ -113,37 +121,37 @@
                     </button>
                 </div>
 
-                <!-- 九格人格测试游戏 -->
+                <!-- 九格人格测试 -->
                 <div class="game-card" data-category="relax" onclick="openGame('九格人格')">
                     <div class="game-icon">
-                        <i class="fas fa-star"></i>
+                        <i class="fas fa-users"></i>
                     </div>
                     <div class="game-info">
                         <h3>九格人格</h3>
-                        <p>通过九宫格了解你的性格特点</p>
+                        <p>探索你的性格类型，了解自己的内心世界</p>
                         <div class="game-stats">
-                            <span><i class="fas fa-play"></i> 已玩 987 次</span>
+                            <span><i class="fas fa-play"></i> 已玩 2,345 次</span>
                         </div>
                     </div>
                     <button class="play-btn">
-                        <i class="fas fa-play"></i> 开始体验
+                        <i class="fas fa-play"></i> 开始测试
                     </button>
                 </div>
 
                 <!-- 星屿微光 -->
                 <div class="game-card" data-category="relax" onclick="openGame('星屿微光')">
                     <div class="game-icon">
-                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-star"></i>
                     </div>
                     <div class="game-info">
                         <h3>星屿微光</h3>
-                        <p>放松心情的治愈系小游戏</p>
+                        <p>一款治愈系的心理放松游戏，探索内心世界</p>
                         <div class="game-stats">
-                            <span><i class="fas fa-play"></i> 已玩 1,567 次</span>
+                            <span><i class="fas fa-play"></i> 已玩 5,678 次</span>
                         </div>
                     </div>
                     <button class="play-btn">
-                        <i class="fas fa-play"></i> 开始体验
+                        <i class="fas fa-external-link-alt"></i> 外部游戏
                     </button>
                 </div>
 
@@ -153,10 +161,10 @@
                         <i class="fas fa-circle"></i>
                     </div>
                     <div class="game-info">
-                        <h3>重力迷宫小球</h3>
-                        <p>晃动手机控制小球穿越迷宫，收集道具获得加成</p>
+                        <h3>动感小球</h3>
+                        <p>控制小球在迷宫中穿梭，收集星星</p>
                         <div class="game-stats">
-                            <span><i class="fas fa-play"></i> 已玩 1,123 次</span>
+                            <span><i class="fas fa-play"></i> 已玩 890 次</span>
                         </div>
                     </div>
                     <button class="play-btn">
@@ -165,19 +173,19 @@
                 </div>
 
                 <!-- 记忆翻牌游戏 -->
-                <div class="game-card" data-category="puzzle" onclick="openMemoryGame()">
+                <div class="game-card" data-category="puzzle" onclick="openGame('记忆翻牌游戏')">
                     <div class="game-icon">
                         <i class="fas fa-memory"></i>
                     </div>
                     <div class="game-info">
                         <h3>记忆翻牌</h3>
-                        <p>翻开卡片，找出相同的配对</p>
+                        <p>翻开卡片，找出相同的配对，锻炼记忆力</p>
                         <div class="game-stats">
-                            <span><i class="fas fa-play"></i> 即将上线</span>
+                            <span><i class="fas fa-play"></i> 已玩 567 次</span>
                         </div>
                     </div>
-                    <button class="play-btn disabled">
-                        <i class="fas fa-lock"></i> 敬请期待
+                    <button class="play-btn">
+                        <i class="fas fa-play"></i> 开始游戏
                     </button>
                 </div>
             </div>
@@ -187,12 +195,11 @@
     <!-- 游戏统计 -->
     <section class="games-stats">
         <div class="container">
-            <h2>游戏数据统计</h2>
             <div class="stats-grid">
                 <div class="stat-item">
                     <div class="stat-icon"><i class="fas fa-gamepad"></i></div>
                     <div class="stat-info">
-                        <p class="stat-number">6</p>
+                        <p class="stat-number">7</p>
                         <p class="stat-label">游戏数量</p>
                     </div>
                 </div>
