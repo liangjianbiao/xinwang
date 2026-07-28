@@ -1,1176 +1,643 @@
-// 导航栏功能
-document.addEventListener('DOMContentLoaded', function() {
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu');
+const EMOJIS = [
+    '🐶', '🐱', '🐼', '🦊', '🐨', '🦁', '🐯', '🐻',
+    '🐸', '🐵', '🐔', '🐧', '🦄', '🐝', '🦋', '🐢',
+    '🌸', '🌺', '🌻', '🌹', '🌷', '🌼', '🌙', '⭐',
+    '🍎', '🍊', '🍋', '🍇', '🍓', '🍑', '🍒', '🍉'
+];
 
-    if (hamburger) {
-        hamburger.addEventListener('click', function() {
-            navMenu.classList.toggle('active');
-        });
-    }
-
-    // 初始化所有页面功能
-    initTestPage();
-    initNewsPage();
-    initTreeholePage();
-    initGamesPage();
-});
-
-// 心理测试页面功能
-function initTestPage() {
-    const categoryTabs = document.querySelectorAll('.category-tab');
-    
-    categoryTabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            const category = this.getAttribute('data-category');
-            
-            // 更新标签状态
-            categoryTabs.forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-
-            // 过滤测试项目
-            const testItems = document.querySelectorAll('.test-item');
-            testItems.forEach(item => {
-                if (category === 'all' || item.getAttribute('data-category') === category) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-        });
-    });
-}
-
-// 测试弹窗功能
-let currentTest = null;
-let currentQuestion = 0;
-let answers = [];
-
-const testQuestions = {
-    mbti: {
-        title: 'MBTI性格测试',
-        questions: [
-            { q: '你更倾向于？', options: ['独处充电', '社交获取能量'] },
-            { q: '你做决定时更依赖？', options: ['逻辑分析', '情感感受'] },
-            { q: '你更喜欢？', options: ['计划好的事情', '灵活变化'] },
-            { q: '你关注的重点是？', options: ['具体事实', '抽象概念'] },
-            { q: '你通常是？', options: ['有组织有条理', '随性而为'] },
-            { q: '你如何处理压力？', options: ['独自思考', '与人倾诉'] },
-            { q: '你学习新东西时？', options: ['注重细节', '把握整体'] },
-            { q: '你更喜欢的工作方式是？', options: ['独立完成', '团队合作'] },
-            { q: '你是？', options: ['早起的鸟', '夜猫子'] },
-            { q: '你表达自己时？', options: ['直接坦率', '委婉含蓄'] }
-        ],
-        result: 'INTJ'
-    },
-    enneagram: {
-        title: '九型人格测试',
-        questions: [
-            { q: '你最看重的是？', options: ['成就', '和谐', '自由'] },
-            { q: '你害怕的是？', options: ['失败', '冲突', '约束'] },
-            { q: '你通常是？', options: ['乐于助人', '追求完美', '自信果断'] },
-            { q: '你面对问题时？', options: ['积极解决', '寻求帮助', '冷静分析'] },
-            { q: '你更喜欢？', options: ['成为焦点', '默默奉献', '独立思考'] }
-        ],
-        result: '完美型'
-    },
-    love: {
-        title: '爱情匹配度测试',
-        questions: [
-            { q: '你理想的约会是？', options: ['浪漫晚餐', '户外探险', '宅家看电影'] },
-            { q: '你认为爱情最重要的是？', options: ['信任', '激情', '默契'] },
-            { q: '你表达爱意的方式是？', options: ['言语表达', '实际行动', '默默关心'] },
-            { q: '吵架后你会？', options: ['主动道歉', '等待对方', '冷静沟通'] },
-            { q: '你喜欢的伴侣类型是？', options: ['成熟稳重', '活泼开朗', '温柔体贴'] }
-        ],
-        result: '灵魂伴侣型'
-    },
-    career: {
-        title: '职业性格测试',
-        questions: [
-            { q: '你更喜欢的工作环境？', options: ['安静独立', '团队协作', '充满挑战'] },
-            { q: '你追求的职业目标是？', options: ['稳定安逸', '成就事业', '自由创意'] },
-            { q: '你擅长的是？', options: ['逻辑分析', '人际交往', '创意设计'] },
-            { q: '你做决策时？', options: ['数据驱动', '直觉判断', '多方咨询'] },
-            { q: '你喜欢的工作节奏？', options: ['规律稳定', '快速变化', '灵活自主'] }
-        ],
-        result: '创意型'
-    },
-    eq: {
-        title: '情商测试',
-        questions: [
-            { q: '你能识别自己的情绪吗？', options: ['总是能', '大多数时候', '偶尔'] },
-            { q: '别人难过时你会？', options: ['主动安慰', '默默陪伴', '不知所措'] },
-            { q: '你处理负面情绪的方式是？', options: ['自我调节', '与人倾诉', '转移注意力'] },
-            { q: '你能理解他人的感受吗？', options: ['很容易', '需要努力', '比较困难'] },
-            { q: '你会表达自己的情绪吗？', options: ['坦诚表达', '选择性表达', '隐藏情绪'] }
-        ],
-        result: '高情商'
-    },
-    color: {
-        title: '色彩心理测试',
-        questions: [
-            { q: '你最喜欢的颜色是？', options: ['红色', '蓝色', '绿色', '黄色'] },
-            { q: '你觉得哪种颜色最能代表你？', options: ['热情的红色', '冷静的蓝色', '自然的绿色'] },
-            { q: '你会用什么颜色装饰房间？', options: ['温暖的橙色', '清新的绿色', '宁静的蓝色'] }
-        ],
-        result: '蓝色性格'
-    },
-    dream: {
-        title: '梦境解析测试',
-        questions: [
-            { q: '你最近常做的梦是？', options: ['飞翔', '坠落', '被追赶', '迷路'] },
-            { q: '你的梦里通常是？', options: ['明亮的', '黑暗的', '模糊的'] },
-            { q: '你记得梦里的细节吗？', options: ['非常清楚', '部分记得', '完全不记得'] }
-        ],
-        result: '自由飞翔型'
-    },
-    stress: {
-        title: '压力水平测试',
-        questions: [
-            { q: '你最近睡眠质量如何？', options: ['很好', '一般', '很差'] },
-            { q: '你感到焦虑的频率是？', options: ['很少', '有时', '经常'] },
-            { q: '你能放松自己吗？', options: ['很容易', '需要努力', '很难'] },
-            { q: '你觉得压力主要来自？', options: ['工作', '家庭', '人际关系'] },
-            { q: '你有时间做喜欢的事吗？', options: ['经常', '偶尔', '几乎没有'] }
-        ],
-        result: '轻度压力'
-    }
+const DIFFICULTY = {
+    easy: { pairs: 4, rows: 2, cols: 4, name: '简单', scoreMultiplier: 1 },
+    medium: { pairs: 12, rows: 4, cols: 6, name: '中等', scoreMultiplier: 1.5 },
+    hard: { pairs: 18, rows: 6, cols: 6, name: '困难', scoreMultiplier: 2 }
 };
 
-function startTest(testId) {
-    currentTest = testId;
-    currentQuestion = 0;
-    answers = [];
-    
-    const test = testQuestions[testId];
-    document.getElementById('testTitle').textContent = test.title;
-    showQuestion();
-    
-    document.getElementById('testModal').style.display = 'flex';
-}
+let currentDifficulty = 'easy';
+let cards = [];
+let flippedCards = [];
+let matchedPairs = 0;
+let moves = 0;
+let timerInterval = null;
+let seconds = 0;
+let isLocked = false;
+let hintsRemaining = 3;
+let score = 0;
+let audioContext = null;
+let achievements = {
+    speed: false,
+    perfect: false,
+    master: false
+};
 
-function showQuestion() {
-    const test = testQuestions[currentTest];
-    const question = test.questions[currentQuestion];
-    
-    document.getElementById('questionNumber').textContent = `${currentQuestion + 1}/${test.questions.length}`;
-    document.getElementById('questionText').textContent = question.q;
-    
-    const progress = ((currentQuestion + 1) / test.questions.length) * 100;
-    document.getElementById('progressFill').style.width = `${progress}%`;
-    
-    // 清空选项
-    const optionsContainer = document.getElementById('optionsContainer');
-    optionsContainer.innerHTML = '';
-    
-    // 添加选项
-    question.options.forEach((option, index) => {
-        const button = document.createElement('button');
-        button.textContent = option;
-        button.addEventListener('click', function() {
-            selectOption(index);
-        });
-        optionsContainer.appendChild(button);
-    });
-    
-    // 更新按钮状态
-    document.querySelector('.modal-footer .btn-secondary').disabled = currentQuestion === 0;
-}
-
-function selectOption(index) {
-    // 移除所有选中状态
-    document.querySelectorAll('.options-container button').forEach(btn => btn.classList.remove('selected'));
-    
-    // 添加选中状态
-    document.querySelectorAll('.options-container button')[index].classList.add('selected');
-    
-    // 保存答案
-    answers[currentQuestion] = index;
-}
-
-function prevQuestion() {
-    if (currentQuestion > 0) {
-        currentQuestion--;
-        showQuestion();
-        
-        // 恢复之前的选择
-        if (answers[currentQuestion] !== undefined) {
-            document.querySelectorAll('.options-container button')[answers[currentQuestion]].classList.add('selected');
-        }
+function initAudio() {
+    try {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    } catch (e) {
+        console.log('Web Audio API not supported');
     }
 }
 
-function nextQuestion() {
-    // 检查是否选择了答案
-    if (answers[currentQuestion] === undefined) {
-        alert('请选择一个答案');
+function playSound(type) {
+    if (!audioContext) return;
+    
+    try {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        const sounds = {
+            flip: { type: 'sine', freq: [600, 800], duration: 0.1 },
+            match: { type: 'sine', freq: [523, 659, 784], duration: 0.3 },
+            mismatch: { type: 'sawtooth', freq: [300, 200], duration: 0.2 },
+            win: { type: 'sine', freq: [523, 659, 784, 1047], duration: 0.2 },
+            hint: { type: 'triangle', freq: [700, 900], duration: 0.15 },
+            achievement: { type: 'sine', freq: [440, 554, 659, 880], duration: 0.4 }
+        };
+        
+        const sound = sounds[type];
+        if (!sound) return;
+        
+        oscillator.type = sound.type;
+        
+        sound.freq.forEach((freq, index) => {
+            setTimeout(() => {
+                if (sound.freq.length > 1) {
+                    oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+                } else {
+                    oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+                }
+            }, index * (sound.duration / sound.freq.length * 1000));
+        });
+        
+        oscillator.frequency.setValueAtTime(sound.freq[0], audioContext.currentTime);
+        gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + sound.duration);
+        
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + sound.duration);
+    } catch (e) {
+        console.log('Sound play failed:', e);
+    }
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function loadAchievements() {
+    const saved = localStorage.getItem('memoryGameAchievements');
+    if (saved) {
+        achievements = JSON.parse(saved);
+    }
+}
+
+function saveAchievements() {
+    localStorage.setItem('memoryGameAchievements', JSON.stringify(achievements));
+}
+
+function updateAchievementsUI() {
+    document.getElementById('achievement-speed').classList.toggle('unlocked', achievements.speed);
+    document.getElementById('achievement-perfect').classList.toggle('unlocked', achievements.perfect);
+    document.getElementById('achievement-master').classList.toggle('unlocked', achievements.master);
+}
+
+function checkAchievements() {
+    const config = DIFFICULTY[currentDifficulty];
+    
+    if (!achievements.speed && seconds <= 30) {
+        achievements.speed = true;
+        playSound('achievement');
+        showToast('🎉 解锁成就：闪电手！');
+    }
+    
+    if (!achievements.perfect && moves <= config.pairs) {
+        achievements.perfect = true;
+        playSound('achievement');
+        showToast('🎉 解锁成就：完美配对！');
+    }
+    
+    const allCompleted = localStorage.getItem('memoryGameCompletedLevels');
+    let completedLevels = allCompleted ? JSON.parse(allCompleted) : {};
+    completedLevels[currentDifficulty] = true;
+    
+    const allDifficulties = Object.keys(DIFFICULTY);
+    const allCompletedFlag = allDifficulties.every(d => completedLevels[d]);
+    
+    if (!achievements.master && allCompletedFlag) {
+        achievements.master = true;
+        playSound('achievement');
+        showToast('🎉 解锁成就：记忆大师！');
+    }
+    
+    localStorage.setItem('memoryGameCompletedLevels', JSON.stringify(completedLevels));
+    saveAchievements();
+    updateAchievementsUI();
+}
+
+function getBestRecord() {
+    const saved = localStorage.getItem('memoryGameBestRecords');
+    if (!saved) return {};
+    return JSON.parse(saved);
+}
+
+function saveBestRecord(score) {
+    const records = getBestRecord();
+    if (!records[currentDifficulty] || score > records[currentDifficulty]) {
+        records[currentDifficulty] = score;
+        localStorage.setItem('memoryGameBestRecords', JSON.stringify(records));
+        return true;
+    }
+    return false;
+}
+
+function calculateScore() {
+    const config = DIFFICULTY[currentDifficulty];
+    const baseScore = matchedPairs * 100;
+    const timeBonus = Math.max(0, (120 - seconds) * 2);
+    const movesPenalty = Math.max(0, (moves - config.pairs) * 5);
+    const multiplier = config.scoreMultiplier;
+    
+    score = Math.floor((baseScore + timeBonus - movesPenalty) * multiplier);
+    return score;
+}
+
+let isInitializing = false;
+
+function initGame() {
+    if (isInitializing) {
+        console.log('[initGame] 正在初始化中，跳过');
         return;
     }
+    isInitializing = true;
     
-    if (currentQuestion < testQuestions[currentTest].questions.length - 1) {
-        currentQuestion++;
-        showQuestion();
+    try {
+        stopTimer();
         
-        // 恢复之前的选择
-        if (answers[currentQuestion] !== undefined) {
-            document.querySelectorAll('.options-container button')[answers[currentQuestion]].classList.add('selected');
+        const config = DIFFICULTY[currentDifficulty];
+        console.log('[initGame] 配置:', config);
+        
+        const selectedEmojis = shuffleArray([...EMOJIS]).slice(0, config.pairs);
+        const cardPairs = [...selectedEmojis, ...selectedEmojis];
+        cards = shuffleArray(cardPairs).map((emoji, index) => ({
+            id: index,
+            emoji: emoji,
+            isFlipped: false,
+            isMatched: false
+        }));
+        
+        console.log('[initGame] 生成卡片数:', cards.length);
+
+        matchedPairs = 0;
+        moves = 0;
+        seconds = 0;
+        score = 0;
+        flippedCards = [];
+        isLocked = false;
+        hintsRemaining = 3;
+
+        const totalMatchesEl = document.getElementById('total-matches');
+        if (totalMatchesEl) totalMatchesEl.textContent = config.pairs;
+        const hintCountEl = document.getElementById('hint-count');
+        if (hintCountEl) hintCountEl.textContent = hintsRemaining;
+        
+        updateStats();
+        updateProgress();
+        
+        renderCards();
+        startTimer();
+        hideModal();
+        updateAchievementsUI();
+        
+        console.log('[initGame] 初始化完成');
+    } catch (e) {
+        console.error('[initGame] 初始化失败:', e);
+    } finally {
+        setTimeout(() => { isInitializing = false; }, 100);
+    }
+}
+
+function renderCards() {
+    const grid = document.getElementById('cards-grid');
+    if (!grid) return;
+    
+    const config = DIFFICULTY[currentDifficulty];
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    
+    console.log('[renderCards] 视口尺寸:', vw, 'x', vh);
+    console.log('[renderCards] 配置:', config.cols, '列x', config.rows, '行');
+    console.log('[renderCards] 卡片数组长度:', cards.length);
+    
+    const gap = 6;
+    const sidePadding = 12;
+    const topOffset = 280;
+    const bottomReserve = 140;
+    const availW = Math.min(vw - sidePadding * 2, 500);
+    const availH = Math.max(vh - topOffset - bottomReserve, 180);
+    const cardW = Math.floor((availW - gap * (config.cols - 1)) / config.cols);
+    const cardH = Math.floor((availH - gap * (config.rows - 1)) / config.rows);
+    const cardSize = Math.max(28, Math.min(cardW, cardH, 100));
+    
+    const emojiSize = Math.max(14, Math.floor(cardSize * 0.55));
+    const iconSize = Math.max(12, Math.floor(cardSize * 0.45));
+    const borderRadius = Math.max(6, Math.floor(cardSize * 0.15));
+    
+    console.log('[renderCards] 计算卡片尺寸:', cardSize, 'px, emoji:', emojiSize, 'px');
+    
+    grid.innerHTML = '';
+    grid.style.display = 'grid';
+    grid.style.gridTemplateColumns = `repeat(${config.cols}, ${cardSize}px)`;
+    grid.style.gridTemplateRows = `repeat(${config.rows}, ${cardSize}px)`;
+    grid.style.gap = gap + 'px';
+    grid.style.padding = '0';
+    grid.style.justifyContent = 'center';
+    grid.style.setProperty('--emoji-size', emojiSize + 'px');
+    grid.style.setProperty('--icon-size', iconSize + 'px');
+    grid.style.setProperty('--border-radius', borderRadius + 'px');
+    grid.style.setProperty('--inner-padding', Math.max(2, Math.floor(cardSize * 0.08)) + 'px');
+    
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < cards.length; i++) {
+        const card = cards[i];
+        const el = document.createElement('div');
+        el.className = 'card';
+        el.dataset.id = card.id;
+        el.style.width = cardSize + 'px';
+        el.style.height = cardSize + 'px';
+        el.innerHTML = `
+            <div class="card-inner">
+                <div class="card-face card-back"><i class="fas fa-question-circle"></i></div>
+                <div class="card-face card-front"><span>${card.emoji}</span></div>
+            </div>
+        `;
+        el.addEventListener('click', () => flipCard(card));
+        frag.appendChild(el);
+    }
+    grid.appendChild(frag);
+    
+    console.log('[renderCards] 渲染完成, 实际DOM子元素数:', grid.children.length);
+}
+
+function flipCard(card) {
+    if (isLocked || card.isFlipped || card.isMatched) return;
+
+    if (audioContext && audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
+    
+    playSound('flip');
+    
+    card.isFlipped = true;
+    const cardElement = document.querySelector(`.card[data-id="${card.id}"]`);
+    if (cardElement) {
+        cardElement.classList.add('flipped');
+    }
+
+    flippedCards.push(card);
+
+    if (flippedCards.length === 2) {
+        moves++;
+        updateStats();
+        checkMatch();
+    }
+}
+
+function checkMatch() {
+    isLocked = true;
+    const [card1, card2] = flippedCards;
+
+    if (card1.emoji === card2.emoji) {
+        playSound('match');
+        card1.isMatched = true;
+        card2.isMatched = true;
+        matchedPairs++;
+        calculateScore();
+
+        const element1 = document.querySelector(`.card[data-id="${card1.id}"]`);
+        const element2 = document.querySelector(`.card[data-id="${card2.id}"]`);
+        if (element1) element1.classList.add('matched');
+        if (element2) element2.classList.add('matched');
+
+        flippedCards = [];
+        isLocked = false;
+        updateStats();
+        updateProgress();
+
+        if (matchedPairs === DIFFICULTY[currentDifficulty].pairs) {
+            endGame();
         }
     } else {
-        // 显示结果
-        showResult();
+        setTimeout(() => {
+            playSound('mismatch');
+            card1.isFlipped = false;
+            card2.isFlipped = false;
+
+            const element1 = document.querySelector(`.card[data-id="${card1.id}"]`);
+            const element2 = document.querySelector(`.card[data-id="${card2.id}"]`);
+            if (element1) element1.classList.remove('flipped');
+            if (element2) element2.classList.remove('flipped');
+
+            flippedCards = [];
+            isLocked = false;
+        }, 1000);
     }
 }
 
-function showResult() {
-    document.getElementById('testModal').style.display = 'none';
-    
-    const resultType = testQuestions[currentTest].result;
-    document.getElementById('resultType').textContent = resultType;
-    
-    const descriptions = {
-        'INTJ': '你是INTJ型人格，具有战略眼光和独立思考能力，善于分析和规划，是天生的领导者。',
-        '完美型': '你是完美型人格，追求卓越，注重细节，有强烈的责任感和使命感。',
-        '灵魂伴侣型': '你是灵魂伴侣型，重视情感连接，寻求深度关系，相信真爱。',
-        '创意型': '你是创意型职业性格，富有想象力，喜欢创新，适合艺术、设计等领域。',
-        '高情商': '你的情商很高，善于理解他人，能够很好地管理自己的情绪。',
-        '蓝色性格': '你是蓝色性格，冷静、理性、善于思考，追求稳定和安全感。',
-        '自由飞翔型': '你的梦境反映出你内心渴望自由和探索，具有冒险精神。',
-        '轻度压力': '你目前处于轻度压力状态，适当放松和调整即可恢复平衡。'
-    };
-    
-    const traits = {
-        'INTJ': ['战略思维', '独立思考', '目标导向', '理性分析'],
-        '完美型': ['追求完美', '责任心强', '注重细节', '自律严谨'],
-        '灵魂伴侣型': ['情感丰富', '善解人意', '忠诚专一', '浪漫感性'],
-        '创意型': ['富有创意', '想象力丰富', '不拘一格', '勇于尝试'],
-        '高情商': ['善解人意', '情绪稳定', '沟通能力强', '同理心强'],
-        '蓝色性格': ['冷静理性', '深思熟虑', '追求稳定', '善于分析'],
-        '自由飞翔型': ['热爱自由', '勇于探索', '乐观积极', '富有梦想'],
-        '轻度压力': ['状态良好', '压力适中', '需要放松', '保持平衡']
-    };
-    
-    document.getElementById('resultDescription').textContent = descriptions[resultType] || '测试完成！';
-    
-    const traitsList = document.getElementById('traitsList');
-    traitsList.innerHTML = '';
-    (traits[resultType] || []).forEach(trait => {
-        const li = document.createElement('li');
-        li.textContent = trait;
-        traitsList.appendChild(li);
-    });
-    
-    document.getElementById('resultModal').style.display = 'flex';
+function startTimer() {
+    stopTimer();
+    timerInterval = setInterval(() => {
+        seconds++;
+        updateStats();
+    }, 1000);
 }
 
-function closeModal() {
-    document.getElementById('testModal').style.display = 'none';
+function stopTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
 }
 
-function closeResultModal() {
-    document.getElementById('resultModal').style.display = 'none';
+function formatTime(sec) {
+    const minutes = Math.floor(sec / 60);
+    const seconds = sec % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
-// 资讯页面功能
-function initNewsPage() {
-    const newsCategories = document.querySelectorAll('.news-category');
+function getStars() {
+    const config = DIFFICULTY[currentDifficulty];
+    const minMoves = config.pairs;
+    const maxMoves = config.pairs * 2;
     
-    newsCategories.forEach(category => {
-        category.addEventListener('click', function() {
-            const cat = this.getAttribute('data-category');
-            
-            // 更新标签状态
-            newsCategories.forEach(c => c.classList.remove('active'));
-            this.classList.add('active');
+    if (moves <= minMoves) return '⭐⭐⭐';
+    if (moves <= maxMoves) return '⭐⭐';
+    return '⭐';
+}
 
-            // 过滤资讯
-            const newsItems = document.querySelectorAll('.news-item');
-            newsItems.forEach(item => {
-                if (cat === 'all' || item.getAttribute('data-category') === cat) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-            
-            // 同时过滤热点资讯卡片
-            const hotCards = document.querySelectorAll('.hot-news-card');
-            hotCards.forEach(card => {
-                const cardCategory = card.getAttribute('data-category');
-                if (cat === 'all' || cardCategory === cat) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-    });
+function updateStats() {
+    const config = DIFFICULTY[currentDifficulty];
     
-    // 搜索功能
-    const searchBtn = document.querySelector('.search-btn');
-    const searchInput = document.getElementById('newsSearch');
+    document.getElementById('timer').textContent = formatTime(seconds);
+    document.getElementById('moves').textContent = moves;
+    document.getElementById('matches').innerHTML = `${matchedPairs}/${config.pairs}`;
+    document.getElementById('stars').textContent = getStars();
+    document.getElementById('score').textContent = score;
+    document.getElementById('hint-count').textContent = hintsRemaining;
     
-    if (searchBtn) {
-        searchBtn.addEventListener('click', function() {
-            performSearch();
-        });
+    const hintBtn = document.getElementById('btn-hint');
+    hintBtn.disabled = hintsRemaining <= 0;
+}
+
+function updateProgress() {
+    const config = DIFFICULTY[currentDifficulty];
+    const progress = Math.round((matchedPairs / config.pairs) * 100);
+    document.getElementById('progress-fill').style.width = `${progress}%`;
+    document.getElementById('progress-text').textContent = `${progress}%`;
+}
+
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast-message';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 2000);
+}
+
+function endGame() {
+    stopTimer();
+    playSound('win');
+    calculateScore();
+    
+    checkAchievements();
+    
+    const isNewRecord = saveBestRecord(score);
+    const bestRecords = getBestRecord();
+    const bestScore = bestRecords[currentDifficulty] || score;
+    
+    document.getElementById('result-time').textContent = formatTime(seconds);
+    document.getElementById('result-moves').textContent = moves;
+    document.getElementById('result-stars').textContent = getStars();
+    document.getElementById('result-score').textContent = score;
+    document.getElementById('best-record').textContent = bestScore;
+    
+    document.getElementById('new-record-badge').style.display = isNewRecord ? 'block' : 'none';
+    
+    showModal();
+}
+
+function showModal() {
+    const modal = document.getElementById('modal-overlay');
+    modal.style.display = 'flex';
+}
+
+function hideModal() {
+    const modal = document.getElementById('modal-overlay');
+    modal.style.display = 'none';
+}
+
+function useHint() {
+    if (audioContext && audioContext.state === 'suspended') {
+        audioContext.resume();
     }
     
-    // 添加回车键搜索
-    if (searchInput) {
-        searchInput.addEventListener('keyup', function(event) {
-            if (event.key === 'Enter') {
-                performSearch();
+    if (hintsRemaining <= 0 || isLocked) {
+        if (hintsRemaining <= 0) {
+            showToast('提示次数已用完！');
+        }
+        return;
+    }
+
+    const unmatchedCards = cards.filter(c => !c.isMatched && !c.isFlipped);
+    if (unmatchedCards.length < 2) {
+        showToast('没有可提示的卡片了！');
+        return;
+    }
+
+    const pairs = {};
+    unmatchedCards.forEach(card => {
+        if (!pairs[card.emoji]) pairs[card.emoji] = [];
+        pairs[card.emoji].push(card);
+    });
+
+    let hintPair = null;
+    for (const emoji in pairs) {
+        if (pairs[emoji].length >= 2) {
+            hintPair = pairs[emoji].slice(0, 2);
+            break;
+        }
+    }
+
+    if (hintPair) {
+        hintsRemaining--;
+        playSound('hint');
+        updateStats();
+
+        hintPair.forEach(card => {
+            const element = document.querySelector(`.card[data-id="${card.id}"]`);
+            if (element) {
+                element.classList.add('hinted');
+                setTimeout(() => {
+                    element.classList.remove('hinted');
+                }, 2000);
             }
         });
+    } else {
+        showToast('没有可配对的卡片了！');
     }
-    
-    // 热点资讯卡片点击查看详情
-    const hotNewsCards = document.querySelectorAll('.hot-news-card');
-    hotNewsCards.forEach(card => {
-        card.addEventListener('click', function() {
-            const title = this.querySelector('h3').textContent;
-            showNewsDetail(title);
-        });
-    });
-    
-    // 资讯列表点击查看详情
-    const newsItems = document.querySelectorAll('.news-item');
-    newsItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            const link = this.querySelector('a');
-            if (link && link.getAttribute('href')) {
-                e.preventDefault();
-                window.open(link.getAttribute('href'), '_blank');
+}
+
+function safeRedirect(url) {
+    if (audioContext && audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
+    window.location.href = url;
+}
+
+function handleBtnRestart(e) {
+    try {
+        if (e && e.preventDefault) e.preventDefault();
+        if (e && e.stopPropagation) e.stopPropagation();
+        if (audioContext && audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
+        console.log('[重开] 开始重新初始化游戏');
+        initGame();
+    } catch (err) {
+        console.error('[重开] 出错:', err);
+    }
+}
+
+function handleBtnHint(e) {
+    try {
+        if (e && e.preventDefault) e.preventDefault();
+        if (e && e.stopPropagation) e.stopPropagation();
+        useHint();
+    } catch (err) {
+        console.error('[提示] 出错:', err);
+    }
+}
+
+function handleDifficultyChange(e) {
+    try {
+        if (e && e.preventDefault) e.preventDefault();
+        if (e && e.stopPropagation) e.stopPropagation();
+        
+        let btn = null;
+        if (e && e.currentTarget && e.currentTarget.classList && e.currentTarget.classList.contains('difficulty-btn')) {
+            btn = e.currentTarget;
+        } else if (e && e.target && e.target.closest) {
+            btn = e.target.closest('.difficulty-btn');
+        }
+        
+        if (!btn) {
+            console.log('[难度切换] 未找到按钮');
+            return;
+        }
+        
+        const level = btn.dataset.level;
+        if (!level) {
+            console.log('[难度切换] 无效难度');
+            return;
+        }
+        
+        console.log('[难度切换] 点击难度:', level, '当前难度:', currentDifficulty);
+        
+        document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentDifficulty = level;
+        
+        console.log('[难度切换] 开始初始化游戏，配置:', DIFFICULTY[level]);
+        initGame();
+        console.log('[难度切换] 初始化完成, 卡片数:', cards.length);
+    } catch (err) {
+        console.error('[难度切换] 出错:', err);
+    }
+}
+
+let lastTouchTime = 0;
+
+function attachButtonEvents() {
+    const preventDoubleClick = (handler) => {
+        return function(e) {
+            const now = Date.now();
+            if (now - lastTouchTime < 500) {
+                console.log('[事件] 防止重复触发');
                 return;
             }
-            const title = this.querySelector('h3').textContent;
-            showNewsDetail(title);
-        });
+            lastTouchTime = now;
+            handler(e);
+        };
+    };
+    
+    const handleTouch = (handler) => {
+        return function(e) {
+            e.preventDefault();
+            lastTouchTime = Date.now();
+            handler(e);
+        };
+    };
+    
+    const btnBack = document.getElementById('btn-back');
+    const btnRestart = document.getElementById('btn-restart');
+    const btnHint = document.getElementById('btn-hint');
+    const btnPlayAgain = document.getElementById('btn-play-again');
+    const btnHome = document.getElementById('btn-home');
+    
+    if (btnBack) {
+        btnBack.addEventListener('click', preventDoubleClick(() => safeRedirect('../games.html')));
+        btnBack.addEventListener('touchstart', handleTouch(() => safeRedirect('../games.html')), { passive: false });
+    }
+    
+    if (btnRestart) {
+        btnRestart.addEventListener('click', preventDoubleClick(handleBtnRestart));
+        btnRestart.addEventListener('touchstart', handleTouch(handleBtnRestart), { passive: false });
+    }
+    
+    if (btnHint) {
+        btnHint.addEventListener('click', preventDoubleClick(handleBtnHint));
+        btnHint.addEventListener('touchstart', handleTouch(handleBtnHint), { passive: false });
+    }
+    
+    if (btnPlayAgain) {
+        btnPlayAgain.addEventListener('click', preventDoubleClick(handleBtnRestart));
+        btnPlayAgain.addEventListener('touchstart', handleTouch(handleBtnRestart), { passive: false });
+    }
+    
+    if (btnHome) {
+        btnHome.addEventListener('click', preventDoubleClick(() => safeRedirect('../games.html')));
+        btnHome.addEventListener('touchstart', handleTouch(() => safeRedirect('../games.html')), { passive: false });
+    }
+    
+    document.querySelectorAll('.difficulty-btn').forEach(btn => {
+        btn.addEventListener('click', preventDoubleClick(handleDifficultyChange));
+        btn.addEventListener('touchstart', handleTouch(handleDifficultyChange), { passive: false });
     });
 }
 
-function performSearch() {
-    const searchText = document.getElementById('newsSearch').value.toLowerCase().trim();
-    
-    if (!searchText) {
-        // 如果搜索框为空，显示所有内容
-        document.querySelectorAll('.news-item').forEach(item => {
-            item.style.display = 'block';
-        });
-        document.querySelectorAll('.hot-news-card').forEach(card => {
-            card.style.display = 'block';
-        });
-        return;
-    }
-    
-    // 搜索资讯列表
-    const newsItems = document.querySelectorAll('.news-item');
-    newsItems.forEach(item => {
-        const title = item.querySelector('h3').textContent.toLowerCase();
-        const desc = item.querySelector('p').textContent.toLowerCase();
-        
-        if (title.includes(searchText) || desc.includes(searchText)) {
-            item.style.display = 'block';
-        } else {
-            item.style.display = 'none';
+let resizeTimeout;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        if (cards.length > 0) {
+            renderCards();
         }
-    });
-    
-    // 搜索热点资讯
-    const hotCards = document.querySelectorAll('.hot-news-card');
-    hotCards.forEach(card => {
-        const title = card.querySelector('h3').textContent.toLowerCase();
-        const desc = card.querySelector('p').textContent.toLowerCase();
-        
-        if (title.includes(searchText) || desc.includes(searchText)) {
-            card.style.display = 'block';
-        } else {
-            card.style.display = 'none';
-        }
-    });
-}
-
-// 资讯详情数据
-const newsDetails = {
-    '如何缓解职场压力：专家给出5个实用建议': {
-        title: '如何缓解职场压力：专家给出5个实用建议',
-        category: '心理健康',
-        views: '12,345',
-        date: '2026-06-23',
-        content: `职场压力已成为现代人普遍面临的问题，长期处于高压状态会对身心健康造成严重影响。为此，我们采访了心理学专家张明教授，他给出了以下5个实用建议：
-
-1. **时间管理**：合理规划工作时间，避免过度加班。学会说"不"，拒绝超出能力范围的任务。
-
-2. **运动放松**：每天保持30分钟的有氧运动，可以有效释放压力激素，改善情绪。
-
-3. **正念冥想**：每天花10-15分钟进行冥想练习，帮助大脑放松，提高专注力。
-
-4. **社交支持**：与家人朋友保持良好沟通，寻求情感支持，不要独自承受压力。
-
-5. **兴趣爱好**：培养工作之外的兴趣爱好，让身心得到真正的放松。
-
-张教授强调，职场压力管理是一项长期的能力，需要持续练习和自我觉察。当压力影响到日常生活时，应及时寻求专业心理咨询帮助。`
-    },
-    '正念冥想的科学益处：改变大脑结构': {
-        title: '正念冥想的科学益处：改变大脑结构',
-        category: '心理学',
-        views: '8,765',
-        date: '2026-06-22',
-        content: `越来越多的研究证明冥想对身心健康有益。最新的神经科学研究发现，长期坚持正念冥想可以改变大脑结构。
-
-研究表明，持续8周的正念冥想训练可以：
-- 增加海马体体积，改善记忆力
-- 减少杏仁核活动，降低焦虑水平
-- 增强前额叶皮层功能，提升专注力
-
-这项研究由哈佛大学医学院主导，对200名参与者进行了为期三个月的跟踪调查。结果显示，坚持冥想的参与者在情绪调节、压力应对和认知能力方面都有显著提升。
-
-专家建议，初学者可以从每天5分钟开始，逐渐增加到15-20分钟。关键在于坚持，而不是追求完美的冥想体验。`
-    },
-    '建立健康的人际关系：沟通是关键': {
-        title: '建立健康的人际关系：沟通是关键',
-        category: '情感关系',
-        views: '6,543',
-        date: '2026-06-21',
-        content: `人际关系是影响幸福感的重要因素。良好的人际关系可以提供情感支持，促进个人成长。
-
-建立健康人际关系的关键在于有效沟通：
-
-1. **积极倾听**：真正倾听对方的需求和感受，而不仅仅是等待说话的机会。
-
-2. **表达感受**：用"我"语句表达自己的感受，避免指责对方。
-
-3. **尊重边界**：尊重他人的个人空间和界限，同时也要清晰表达自己的边界。
-
-4. **非暴力沟通**：采用观察、感受、需要、请求的模式进行沟通。
-
-5. **学会道歉和原谅**：关系中难免会有冲突，学会真诚道歉和宽容原谅是维系关系的重要能力。
-
-心理咨询师建议，定期与伴侣、朋友进行深度沟通，可以有效预防关系问题的发生。`
-    },
-    '数字时代的心理健康：如何保护自己': {
-        title: '数字时代的心理健康：如何保护自己',
-        category: '生活方式',
-        views: '9,876',
-        date: '2026-06-20',
-        content: `在数字时代，我们每天都被海量信息包围。社交媒体、短视频、新闻推送等无时无刻不在影响着我们的心理状态。
-
-以下是保护数字心理健康的几个建议：
-
-1. **设定屏幕时间限制**：使用手机设置功能，限制每天使用社交媒体的时间。
-
-2. **关注积极内容**：减少关注引发焦虑的新闻和负面内容，关注积极向上的信息源。
-
-3. **数字排毒**：定期进行数字排毒，比如每周选择一天不使用社交媒体。
-
-4. **保持现实连接**：不要让线上社交取代现实中的人际关系，定期与朋友面对面交流。
-
-5. **保护隐私**：注意个人信息安全，避免过度分享个人生活。
-
-心理健康专家提醒，数字工具是为我们服务的，不要让自己成为技术的奴隶。保持适度和平衡是关键。`
-    },
-    '青少年心理健康：家长应该知道的事': {
-        title: '青少年心理健康：家长应该知道的事',
-        category: '心理健康',
-        views: '15,234',
-        date: '2026-06-19',
-        content: `青少年时期是心理发展的关键阶段，家长的正确引导对孩子的心理健康至关重要。
-
-家长需要关注的几个方面：
-
-1. **情绪变化**：注意孩子的情绪波动，及时发现异常行为。
-
-2. **沟通方式**：建立开放的沟通渠道，让孩子愿意分享自己的感受。
-
-3. **学业压力**：关注孩子的学习压力，帮助他们建立合理的期望。
-
-4. **社交关系**：了解孩子的交友情况，引导他们建立健康的同伴关系。
-
-5. **网络安全**：教育孩子正确使用网络，防范网络欺凌和不良信息。
-
-专家建议，家长应定期与孩子进行深度交流，关注他们的心理需求，而不仅仅是学业成绩。当发现孩子出现持续的情绪问题时，应及时寻求专业帮助。`
-    },
-    '心理学研究：积极心态的力量': {
-        title: '心理学研究：积极心态的力量',
-        category: '心理学',
-        views: '7,654',
-        date: '2026-06-18',
-        content: `积极心理学研究发现，拥有积极心态的人更容易获得成功和幸福感。
-
-积极心态的好处包括：
-- 增强免疫力，减少疾病
-- 提高抗压能力
-- 改善人际关系
-- 提升创造力和生产力
-
-培养积极心态的方法：
-1. **感恩练习**：每天记录3件值得感恩的事情
-2. **正向思考**：遇到困难时寻找积极的一面
-3. **自我肯定**：用积极的语言鼓励自己
-4. **帮助他人**：通过帮助他人获得成就感
-
-研究表明，通过简单的日常练习，每个人都可以培养更积极的心态，从而改善生活质量。`
-    },
-    '如何处理负面情绪：实用技巧分享': {
-        title: '如何处理负面情绪：实用技巧分享',
-        category: '心理健康',
-        views: '11,234',
-        date: '2026-06-17',
-        content: `每个人都会遇到负面情绪，关键是如何健康地处理它们。以下是一些实用技巧：
-
-1. **情绪识别**：首先要识别自己的情绪，给情绪命名。
-
-2. **情绪表达**：找信任的朋友倾诉，或者通过写日记来表达。
-
-3. **深呼吸练习**：通过深呼吸来平复情绪，激活副交感神经系统。
-
-4. **转移注意力**：做一些能让自己专注的事情，比如听音乐、画画、运动等。
-
-5. **认知重构**：挑战负面思维，用更客观的角度看待问题。
-
-6. **寻求专业帮助**：当负面情绪持续影响生活时，不要犹豫寻求心理咨询。
-
-记住，情绪没有好坏之分，重要的是如何健康地管理它们。`
-    },
-    '亲密关系中的心理需求：你了解多少': {
-        title: '亲密关系中的心理需求：你了解多少',
-        category: '情感关系',
-        views: '8,234',
-        date: '2026-06-16',
-        content: `在亲密关系中，了解彼此的心理需求是维系关系的基础。
-
-每个人都有以下基本心理需求：
-
-1. **安全感**：感到被爱、被接纳、被珍视
-2. **被理解**：希望自己的感受被伴侣理解
-3. **尊重**：希望自己的意见和边界得到尊重
-4. **陪伴**：需要高质量的相处时间
-5. **成长**：希望在关系中共同成长
-
-当这些需求得到满足时，关系会更加健康和稳定。反之，需求得不到满足可能导致关系问题。
-
-专家建议，定期与伴侣沟通彼此的需求，是保持关系健康的关键。`
-    },
-    '焦虑症的常见症状及应对方法': {
-        title: '焦虑症的常见症状及应对方法',
-        category: '心理健康',
-        views: '5,432',
-        date: '2026-06-20',
-        content: `焦虑症是一种常见的心理障碍，了解其症状和应对方法对于及时干预至关重要。
-
-**焦虑症的常见症状：**
-
-1. **持续的担忧**：过度担心日常生活中的各种事情，无法控制。
-
-2. **身体症状**：心跳加速、呼吸急促、出汗、发抖、头晕、胃部不适等。
-
-3. **注意力困难**：难以集中注意力，思维总是被焦虑占据。
-
-4. **睡眠问题**：难以入睡、易醒或做噩梦。
-
-5. **回避行为**：避免触发焦虑的场景或活动。
-
-**应对方法：**
-
-1. **寻求专业帮助**：心理咨询师可以帮助识别焦虑的根源，并提供有效的应对策略。
-
-2. **认知行为疗法**：学习识别和改变导致焦虑的思维模式。
-
-3. **放松技巧**：深呼吸、冥想、渐进式肌肉放松等。
-
-4. **规律运动**：有氧运动可以有效减轻焦虑症状。
-
-5. **健康生活方式**：保证充足睡眠、均衡饮食、减少咖啡因和酒精摄入。
-
-如果您或您身边的人出现上述症状，建议及时寻求专业心理帮助。`
-    },
-    '认知行为疗法：改变思维模式的有效工具': {
-        title: '认知行为疗法：改变思维模式的有效工具',
-        category: '心理学',
-        views: '4,321',
-        date: '2026-06-19',
-        content: `认知行为疗法（CBT）是一种经过验证的心理治疗方法，帮助人们识别和改变负面思维模式。
-
-**CBT的核心原理：**
-
-我们的情绪和行为不是由事件本身引起的，而是由我们对事件的看法和解释引起的。
-
-**CBT的主要技术：**
-
-1. **认知重构**：识别并挑战不合理的思维模式，用更客观、理性的思维替代。
-
-2. **暴露疗法**：逐渐面对恐惧的事物或场景，减少回避行为。
-
-3. **行为激活**：通过积极的行为改变来改善情绪状态。
-
-4. **正念训练**：培养对当下的觉察，减少焦虑和抑郁。
-
-**CBT的应用范围：**
-
-- 焦虑症、抑郁症
-- 社交恐惧症、强迫症
-- 创伤后应激障碍
-- 饮食障碍、成瘾问题
-
-大量研究表明，CBT是治疗多种心理障碍的有效方法，具有短期见效、疗效持久的特点。`
-    },
-    '如何处理恋爱中的矛盾与冲突': {
-        title: '如何处理恋爱中的矛盾与冲突',
-        category: '情感关系',
-        views: '3,210',
-        date: '2026-06-18',
-        content: `恋爱关系中难免会出现矛盾，学会正确处理冲突是维持健康关系的关键。
-
-**处理冲突的原则：**
-
-1. **保持冷静**：避免在情绪激动时争吵，给自己和对方一些时间冷静。
-
-2. **倾听对方**：真正倾听对方的感受和需求，不要急于反驳。
-
-3. **表达自己**：用"我"语句表达自己的感受，避免指责对方。
-
-4. **寻找共同点**：关注双方的共同目标，而不是分歧。
-
-5. **寻求妥协**：双方都做出一些让步，找到双方都能接受的解决方案。
-
-**常见冲突类型及应对：**
-
-- **沟通问题**：定期进行深度沟通，建立良好的沟通习惯。
-- **家务分工**：明确责任分工，公平分配家务。
-- **金钱观念**：坦诚讨论财务状况，制定共同的理财计划。
-- **家庭关系**：设定边界，平衡伴侣和家庭的关系。
-
-**记住：** 冲突不是坏事，它是关系成长的机会。关键在于如何建设性地处理冲突。`
-    },
-    '打造心理健康的生活习惯': {
-        title: '打造心理健康的生活习惯',
-        category: '生活方式',
-        views: '2,109',
-        date: '2026-06-17',
-        content: `良好的生活习惯对心理健康至关重要，从日常小事做起，培养积极健康的生活方式。
-
-**心理健康的生活习惯：**
-
-1. **规律作息**：保证充足的睡眠，建立规律的作息时间。
-
-2. **均衡饮食**：多吃蔬菜水果、全谷物，减少加工食品和糖的摄入。
-
-3. **适度运动**：每周进行150分钟的中等强度有氧运动。
-
-4. **保持社交**：与家人朋友保持良好的联系，定期见面交流。
-
-5. **培养兴趣**：发展工作之外的兴趣爱好，丰富生活。
-
-6. **学习放松**：每天花10-15分钟进行冥想或深呼吸练习。
-
-7. **设定边界**：学会拒绝，保护自己的时间和精力。
-
-8. **自我关怀**：定期做一些让自己快乐的事情，善待自己。
-
-**小技巧：**
-
-- 每天早上起床后做5分钟拉伸运动
-- 每天睡前写3件值得感恩的事情
-- 每周安排一次与朋友的聚会
-
-从今天开始，培养一个新的健康习惯吧！`
-    },
-    '抑郁症的早期识别与预防': {
-        title: '抑郁症的早期识别与预防',
-        category: '心理健康',
-        views: '7,890',
-        date: '2026-06-16',
-        content: `抑郁症是一种严重的心理疾病，但早期识别和干预可以显著提高康复率。
-
-**抑郁症的早期症状：**
-
-1. **情绪低落**：持续的悲伤、空虚感，对任何事情提不起兴趣。
-
-2. **精力下降**：感到疲惫不堪，即使休息后也无法恢复。
-
-3. **睡眠改变**：失眠或过度睡眠。
-
-4. **食欲改变**：食欲减退或暴饮暴食。
-
-5. **注意力不集中**：难以集中注意力，记忆力下降。
-
-6. **自责自罪**：过度自责，觉得自己毫无价值。
-
-7. **自杀念头**：出现死亡或自杀的想法。
-
-**预防措施：**
-
-1. **保持社交联系**：不要孤立自己，与他人保持良好的关系。
-
-2. **规律运动**：运动可以有效改善情绪。
-
-3. **健康生活方式**：保证充足睡眠、均衡饮食。
-
-4. **学会应对压力**：培养有效的压力管理技巧。
-
-5. **关注情绪变化**：及时发现情绪异常，寻求帮助。
-
-**重要提示：** 如果您或您身边的人出现以上症状，特别是持续超过两周，请及时寻求专业心理帮助。`
-    },
-    '积极心理学：培养乐观心态的技巧': {
-        title: '积极心理学：培养乐观心态的技巧',
-        category: '心理学',
-        views: '6,789',
-        date: '2026-06-15',
-        content: `积极心理学研究如何培养积极情绪和乐观心态，帮助人们更好地应对生活挑战。
-
-**乐观心态的好处：**
-
-- 增强心理韧性，更好地应对挫折
-- 改善身体健康，延长寿命
-- 提升人际关系质量
-- 提高工作效率和创造力
-
-**培养乐观心态的技巧：**
-
-1. **感恩日记**：每天记录3件值得感恩的事情，培养感恩之心。
-
-2. **正向思考**：遇到困难时，寻找积极的一面和成长的机会。
-
-3. **自我肯定**：用积极的语言鼓励自己，关注自己的优点和成就。
-
-4. **帮助他人**：通过帮助他人获得成就感和幸福感。
-
-5. **享受当下**：学会欣赏生活中的小美好，活在当下。
-
-6. **设定目标**：设定合理的目标，逐步实现，增强自信心。
-
-7. **保持学习**：不断学习新知识，保持好奇心和新鲜感。
-
-**练习建议：**
-
-每天早上起床后，对着镜子说一句积极的话；每天晚上睡前，回想今天发生的一件开心的事情。
-
-记住，乐观不是天生的，而是可以通过练习培养的！`
-    }
-};
-
-function showNewsDetail(title) {
-    const detail = newsDetails[title];
-    if (!detail) {
-        const newWindow = window.open('', '_blank');
-        newWindow.document.write(`
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${title}</title>
-    <style>
-        body { font-family: 'Microsoft YaHei', sans-serif; background: #f5f7fa; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .container { text-align: center; padding: 40px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); max-width: 600px; }
-        h1 { color: #333; margin-bottom: 20px; }
-        p { color: #666; font-size: 16px; line-height: 1.8; }
-        .back-btn { display: inline-block; margin-top: 30px; padding: 12px 30px; background: #e91e63; color: white; text-decoration: none; border-radius: 25px; transition: background 0.3s; }
-        .back-btn:hover { background: #c2185b; }
-        .icon { font-size: 64px; margin-bottom: 20px; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="icon">📝</div>
-        <h1>${title}</h1>
-        <p>该资讯详情正在更新中...</p>
-        <p>感谢您的关注，我们正在努力完善相关内容，敬请期待！</p>
-        <a href="${window.location.href}" class="back-btn">返回资讯列表</a>
-    </div>
-</body>
-</html>`);
-        newWindow.document.close();
-        return;
-    }
-    
-    const modal = document.createElement('div');
-    modal.className = 'news-detail-modal';
-    modal.innerHTML = `
-        <div class="modal-content news-detail-content">
-            <div class="modal-header">
-                <span class="news-tag">${detail.category}</span>
-                <span class="close-modal" onclick="closeNewsDetailModal()">&times;</span>
-            </div>
-            <div class="modal-body">
-                <h2>${detail.title}</h2>
-                <div class="news-detail-meta">
-                    <span><i class="fas fa-eye"></i> ${detail.views}</span>
-                    <span>${detail.date}</span>
-                </div>
-                <div class="news-detail-content">
-                    ${detail.content.replace(/\n/g, '<br><br>')}
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeNewsDetailModal()">关闭</button>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(modal);
-    modal.style.display = 'flex';
-}
-
-function closeNewsDetailModal() {
-    const modal = document.querySelector('.news-detail-modal');
-    if (modal) {
-        document.body.removeChild(modal);
-    }
-}
-
-// 情绪树洞页面功能
-function initTreeholePage() {
-    const moodFilters = document.querySelectorAll('.mood-filter');
-    
-    moodFilters.forEach(filter => {
-        filter.addEventListener('click', function() {
-            const mood = this.getAttribute('data-mood');
-            
-            // 更新标签状态
-            moodFilters.forEach(f => f.classList.remove('active'));
-            this.classList.add('active');
-
-            // 过滤帖子
-            const posts = document.querySelectorAll('.treehole-post');
-            posts.forEach(post => {
-                if (mood === 'all' || post.getAttribute('data-mood') === mood) {
-                    post.style.display = 'block';
-                } else {
-                    post.style.display = 'none';
-                }
-            });
-        });
-    });
-}
-
-function showWriteModal() {
-    document.getElementById('writeModal').style.display = 'flex';
-    // 重置选择状态
-    document.querySelectorAll('.mood-option').forEach(opt => opt.classList.remove('selected'));
-    document.querySelector('.write-content textarea').value = '';
-}
-
-function closeWriteModal() {
-    document.getElementById('writeModal').style.display = 'none';
-}
-
-// 心情选择功能
-document.addEventListener('DOMContentLoaded', function() {
-    const moodOptions = document.querySelectorAll('.mood-option');
-    moodOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            // 移除所有选择状态
-            moodOptions.forEach(opt => opt.classList.remove('selected'));
-            // 添加当前选择状态
-            this.classList.add('selected');
-        });
-    });
+    }, 200);
 });
 
-function submitPost() {
-    // 获取选择的心情
-    const selectedMood = document.querySelector('.mood-option.selected');
-    // 获取心事内容
-    const content = document.querySelector('.write-content textarea').value.trim();
+document.addEventListener('DOMContentLoaded', () => {
+    initAudio();
+    loadAchievements();
+    updateAchievementsUI();
+    attachButtonEvents();
     
-    // 验证输入
-    if (!selectedMood) {
-        alert('请选择你的心情');
-        return;
-    }
-    
-    if (!content) {
-        alert('请写下你的心事');
-        return;
-    }
-    
-    const mood = selectedMood.getAttribute('data-mood');
-    const moodEmojis = {
-        happy: '😊',
-        sad: '😢',
-        angry: '😤',
-        confused: '😕',
-        lonely: '🥺'
-    };
-    
-    const avatarEmojis = ['🌙', '⭐', '🌈', '🌊', '🔥', '🌸', '🍀', '❄️'];
-    const randomAvatar = avatarEmojis[Math.floor(Math.random() * avatarEmojis.length)];
-    
-    // 创建新帖子
-    const newPost = document.createElement('div');
-    newPost.className = 'treehole-post';
-    newPost.setAttribute('data-mood', mood);
-    newPost.innerHTML = `
-        <div class="post-header">
-            <div class="post-avatar">${randomAvatar}</div>
-            <div class="post-meta">
-                <span class="post-author">匿名用户</span>
-                <span class="post-time">刚刚</span>
-                <span class="post-mood-tag">${moodEmojis[mood]} ${getMoodText(mood)}</span>
-            </div>
-        </div>
-        <div class="post-content">
-            <p>${content}</p>
-        </div>
-        <div class="post-actions">
-            <button class="action-btn like-btn" onclick="toggleLike(this)">
-                <i class="fas fa-heart"></i> <span>0</span>
-            </button>
-            <button class="action-btn comment-btn" onclick="toggleComments(this)">
-                <i class="fas fa-comment"></i> <span>0</span>
-            </button>
-            <button class="action-btn share-btn">
-                <i class="fas fa-share"></i>
-            </button>
-        </div>
-        <div class="comments-section">
-            <div class="comment-input">
-                <input type="text" placeholder="写下你的安慰...">
-                <button>发送</button>
-            </div>
-        </div>
-    `;
-    
-    // 添加到页面顶部
-    const postsContainer = document.getElementById('treeholePosts');
-    postsContainer.insertBefore(newPost, postsContainer.firstChild);
-    
-    // 显示成功提示
-    alert('心事已发布！感谢你的分享，这里是安全的树洞。');
-    closeWriteModal();
-}
-
-function getMoodText(mood) {
-    const moodTexts = {
-        happy: '开心',
-        sad: '难过',
-        angry: '生气',
-        confused: '迷茫',
-        lonely: '孤独'
-    };
-    return moodTexts[mood] || '';
-}
-
-function toggleLike(btn) {
-    btn.classList.toggle('liked');
-    const count = parseInt(btn.querySelector('span').textContent);
-    btn.querySelector('span').textContent = btn.classList.contains('liked') ? count + 1 : count - 1;
-}
-
-function toggleComments(btn) {
-    const post = btn.closest('.treehole-post');
-    const commentsSection = post.querySelector('.comments-section');
-    commentsSection.classList.toggle('active');
-}
-
-// 小游戏页面功能
-function initGamesPage() {
-    const gameCategories = document.querySelectorAll('.category-tab');
-    
-    gameCategories.forEach(category => {
-        category.addEventListener('click', function() {
-            const cat = this.getAttribute('data-category');
-            
-            // 更新标签状态
-            gameCategories.forEach(c => c.classList.remove('active'));
-            this.classList.add('active');
-
-            // 过滤游戏
-            const gameCards = document.querySelectorAll('.game-card');
-            gameCards.forEach(card => {
-                if (cat === 'all' || card.getAttribute('data-category') === cat) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-    });
-}
-
-function openGame(gameName) {
-    const gamePaths = {
-        '连线小游戏': '连线小游戏/index.html',
-        '拼图': '拼图/index.html',
-        '推箱子游戏': '推箱子游戏/index.html',
-        '九格人格': '九格人格/index.html',
-        '星屿微光': 'https://www.kanjl.com',
-        '动感小球游戏': '动感小球游戏/maze-ball.html',
-        '记忆翻牌游戏': '记忆翻牌游戏/index.html'
-    };
-    
-    if (gamePaths[gameName]) {
-        window.open(gamePaths[gameName], '_blank');
-    } else {
-        alert('该游戏即将上线，敬请期待！');
-    }
-}
-
-function toggleBGM() {
-    const bgmPlayer = document.getElementById('bgm-player');
-    const bgmBtn = document.getElementById('bgm-toggle');
-    const icon = bgmBtn.querySelector('i');
-    
-    if (!bgmPlayer) return;
-    
-    if (bgmPlayer.paused) {
-        bgmPlayer.volume = 0.3;
-        bgmPlayer.play().then(() => {
-            icon.className = 'fas fa-volume-up';
-            bgmBtn.classList.add('playing');
-        }).catch(e => {
-            console.log('BGM play failed:', e);
-        });
-    } else {
-        bgmPlayer.pause();
-        icon.className = 'fas fa-music';
-        bgmBtn.classList.remove('playing');
-    }
-}
-
-// 咨询功能
-function openConsultation() {
-    const modal = document.createElement('div');
-    modal.className = 'consultation-modal';
-    modal.innerHTML = `
-        <div class="modal-content consultation-content">
-            <div class="modal-header">
-                <h3>💬 在线咨询</h3>
-                <span class="close-modal" onclick="closeConsultationModal()">&times;</span>
-            </div>
-            <div class="modal-body">
-                <p>我们提供专业的心理咨询服务，点击下方选项查看详情：</p>
-                <div class="consultation-options">
-                    <div class="option-card" onclick="showConsultDetail('phone')">
-                        <i class="fas fa-phone"></i>
-                        <div>
-                            <h4>电话咨询</h4>
-                            <p>点击查看详情</p>
-                            <span class="arrow">→</span>
-                        </div>
-                    </div>
-                    <div class="option-card" onclick="showConsultDetail('online')">
-                        <i class="fas fa-message-circle"></i>
-                        <div>
-                            <h4>在线客服</h4>
-                            <p>点击查看详情</p>
-                            <span class="arrow">→</span>
-                        </div>
-                    </div>
-                    <div class="option-card" onclick="showConsultDetail('booking')">
-                        <i class="fas fa-calendar"></i>
-                        <div>
-                            <h4>预约咨询</h4>
-                            <p>点击查看详情</p>
-                            <span class="arrow">→</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="consult-detail" id="consultDetail">
-                    <!-- 详情内容将动态插入这里 -->
-                </div>
-                <form class="consultation-form">
-                    <h4>快速留言</h4>
-                    <input type="text" placeholder="您的姓名" id="consultName">
-                    <input type="text" placeholder="联系电话" id="consultPhone">
-                    <textarea placeholder="您的问题或需求..." rows="3" id="consultMessage"></textarea>
-                    <button type="button" class="btn btn-primary" onclick="submitConsultation()">提交咨询</button>
-                </form>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(modal);
-    modal.style.display = 'flex';
-}
-
-function showConsultDetail(type) {
-    const detailDiv = document.getElementById('consultDetail');
-    
-    const details = {
-        phone: `
-            <div class="detail-header">
-                <h4>📞 电话咨询</h4>
-                <button class="close-detail" onclick="hideConsultDetail()">×</button>
-            </div>
-            <div class="detail-content">
-                <p><strong>服务热线：</strong>400-123-4567</p>
-                <p><strong>服务时间：</strong>每日 9:00-21:00</p>
-                <p><strong>服务范围：</strong>情绪困扰、压力管理、人际关系、职业困惑等</p>
-                <p><strong>咨询时长：</strong>每次约30分钟</p>
-                <p><strong>服务特色：</strong>专业心理咨询师一对一服务，隐私保护</p>
-                <button class="btn btn-primary mt-2" onclick="makeCall()">立即拨打</button>
-            </div>
-        `,
-        online: `
-            <div class="detail-header">
-                <h4>💬 在线客服</h4>
-                <button class="close-detail" onclick="hideConsultDetail()">×</button>
-            </div>
-            <div class="detail-content">
-                <p><strong>服务方式：</strong>即时在线聊天</p>
-                <p><strong>服务时间：</strong>每日 9:00-23:00</p>
-                <p><strong>响应时间：</strong>平均5分钟内回复</p>
-                <p><strong>服务范围：</strong>情感问题、心理困惑、压力疏导</p>
-                <p><strong>服务特色：</strong>随时随地，隐私安全</p>
-                <button class="btn btn-primary mt-2" onclick="startChat()">开始聊天</button>
-            </div>
-        `,
-        booking: `
-            <div class="detail-header">
-                <h4>📅 预约咨询</h4>
-                <button class="close-detail" onclick="hideConsultDetail()">×</button>
-            </div>
-            <div class="detail-content">
-                <p><strong>服务方式：</strong>一对一视频/面对面咨询</p>
-                <p><strong>预约时长：</strong>提前1-3天预约</p>
-                <p><strong>咨询时长：</strong>每次60分钟</p>
-                <p><strong>专家团队：</strong>资深心理咨询师，持证上岗</p>
-                <p><strong>服务特色：</strong>深度沟通，个性化方案</p>
-                <button class="btn btn-primary mt-2" onclick="bookConsult()">立即预约</button>
-            </div>
-        `
-    };
-    
-    detailDiv.innerHTML = details[type];
-    detailDiv.style.display = 'block';
-}
-
-function hideConsultDetail() {
-    const detailDiv = document.getElementById('consultDetail');
-    detailDiv.style.display = 'none';
-}
-
-function makeCall() {
-    alert('正在拨打咨询热线：400-123-4567\n（实际应用中会调用手机拨号功能）');
-}
-
-function startChat() {
-    alert('正在连接在线客服...\n（实际应用中会打开在线聊天窗口）');
-}
-
-function bookConsult() {
-    alert('已跳转到预约页面...\n（实际应用中会打开预约表单）');
-}
-
-function closeConsultationModal() {
-    const modal = document.querySelector('.consultation-modal');
-    if (modal) {
-        document.body.removeChild(modal);
-    }
-}
-
-function submitConsultation() {
-    const name = document.getElementById('consultName').value;
-    const phone = document.getElementById('consultPhone').value;
-    const message = document.getElementById('consultMessage').value;
-    
-    if (!name || !phone) {
-        alert('请填写姓名和联系电话');
-        return;
-    }
-    
-    alert('感谢您的咨询！我们会尽快与您联系。');
-    closeConsultationModal();
-}
+    setTimeout(() => {
+        initGame();
+    }, 300);
+});
