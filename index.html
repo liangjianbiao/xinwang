@@ -2,8 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>记忆翻牌游戏</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心灵驿站 - 陪伴你成长</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
@@ -17,145 +17,233 @@
     </script>
 </head>
 <body>
-    <div class="background-animation"></div>
-    
-    <div class="game-container">
-        <header class="game-header">
-            <button id="btn-back" class="btn btn-back">
-                <i class="fas fa-arrow-left"></i> 返回
-            </button>
-            <div class="header-title">
-                <h1>🧠 记忆翻牌</h1>
-                <p class="subtitle">锻炼记忆力，挑战最高分</p>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-heart"></i>
+                <span>心灵驿站</span>
             </div>
-            <button id="btn-restart" class="btn btn-restart">
-                <i class="fas fa-redo"></i> 重开
-            </button>
-        </header>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active"><i class="fas fa-home"></i> 首页</a></li>
+                <li><a href="test.html"><i class="fas fa-flask"></i> 心理测试</a></li>
+                <li><a href="news.html"><i class="fas fa-newspaper"></i> 资讯</a></li>
+                <li><a href="treehole.html"><i class="fas fa-tree"></i> 情绪树洞</a></li>
+                <li><a href="games.html"><i class="fas fa-gamepad"></i> 小游戏</a></li>
+                <li><a href="schoolRankingsShJshan/index.html"><i class="fas fa-school"></i> 学校排名</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
 
-        <div class="game-info-bar">
-            <div class="info-item">
-                <span class="info-icon">⏱️</span>
-                <div class="info-content">
-                    <span class="info-label">时间</span>
-                    <span class="info-value" id="timer">00:00</span>
-                </div>
+    <!-- 英雄区域 -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>探索内心世界</h1>
+            <p>在这里，找到属于你的心灵栖息地</p>
+            <div class="hero-buttons">
+                <a href="test.html" class="btn btn-primary">开始测试</a>
+                <a href="treehole.html" class="btn btn-secondary">倾诉心声</a>
             </div>
-            <div class="info-item">
-                <span class="info-icon">👣</span>
-                <div class="info-content">
-                    <span class="info-label">步数</span>
-                    <span class="info-value" id="moves">0</span>
-                </div>
+        </div>
+        <div class="hero-visual">
+            <div class="floating-elements">
+                <div class="float-item float-1"><i class="fas fa-smile"></i></div>
+                <div class="float-item float-2"><i class="fas fa-heart"></i></div>
+                <div class="float-item float-3"><i class="fas fa-star"></i></div>
+                <div class="float-item float-4"><i class="fas fa-moon"></i></div>
             </div>
-            <div class="info-item">
-                <span class="info-icon">🎯</span>
-                <div class="info-content">
-                    <span class="info-label">配对</span>
-                    <span class="info-value" id="matches">0/<span id="total-matches">8</span></span>
+        </div>
+    </section>
+
+    <!-- 功能介绍 -->
+    <section class="features">
+        <div class="container">
+            <h2>我们提供</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon test-icon"><i class="fas fa-flask"></i></div>
+                    <h3>趣味心理测试</h3>
+                    <p>探索你的性格、情感和潜能</p>
+                    <a href="test.html">开始测试 <i class="fas fa-arrow-right"></i></a>
                 </div>
-            </div>
-            <div class="info-item">
-                <span class="info-icon">⭐</span>
-                <div class="info-content">
-                    <span class="info-label">星级</span>
-                    <span class="info-value" id="stars">⭐⭐⭐</span>
+                <div class="feature-card">
+                    <div class="feature-icon news-icon"><i class="fas fa-newspaper"></i></div>
+                    <h3>心理资讯</h3>
+                    <p>获取最新的心理健康知识</p>
+                    <a href="news.html">了解更多 <i class="fas fa-arrow-right"></i></a>
                 </div>
-            </div>
-            <div class="info-item">
-                <span class="info-icon">🏆</span>
-                <div class="info-content">
-                    <span class="info-label">得分</span>
-                    <span class="info-value" id="score">0</span>
+                <div class="feature-card">
+                    <div class="feature-icon tree-icon"><i class="fas fa-tree"></i></div>
+                    <h3>情绪树洞</h3>
+                    <p>倾诉心事，温暖相伴</p>
+                    <a href="treehole.html">进入树洞 <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon game-icon"><i class="fas fa-gamepad"></i></div>
+                    <h3>益智小游戏</h3>
+                    <p>放松心情，锻炼大脑</p>
+                    <a href="games.html">开始游戏 <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon consult-icon"><i class="fas fa-comments"></i></div>
+                    <h3>在线咨询</h3>
+                    <p>专业心理咨询服务</p>
+                    <a href="#" onclick="openConsultation()">立即咨询 <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
+    </section>
 
-        <div class="progress-container">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill"></div>
-            </div>
-            <span class="progress-text" id="progress-text">0%</span>
-        </div>
-
-        <main class="game-board">
-            <div class="cards-grid" id="cards-grid">
-            </div>
-            <div class="loading-overlay" id="loading-overlay">
-                <div class="loading-spinner"></div>
-                <p>正在准备卡片...</p>
-            </div>
-        </main>
-
-        <div class="game-controls">
-            <div class="difficulty-select">
-                <span class="difficulty-label">难度：</span>
-                <button class="difficulty-btn active" data-level="easy">
-                    <span class="diff-icon">🌱</span> 简单
-                </button>
-                <button class="difficulty-btn" data-level="medium">
-                    <span class="diff-icon">🌿</span> 中等
-                </button>
-                <button class="difficulty-btn" data-level="hard">
-                    <span class="diff-icon">🌳</span> 困难
-                </button>
-            </div>
-            <button id="btn-hint" class="btn btn-hint">
-                <i class="fas fa-lightbulb"></i> 提示 (<span id="hint-count">3</span>)
-            </button>
-        </div>
-
-        <div class="achievements-bar" id="achievements-bar">
-            <div class="achievement-item" id="achievement-speed" title="闪电手：30秒内完成">
-                <span class="achievement-icon">⚡</span>
-                <span class="achievement-name">闪电手</span>
-            </div>
-            <div class="achievement-item" id="achievement-perfect" title="完美配对：用最少步数完成">
-                <span class="achievement-icon">💎</span>
-                <span class="achievement-name">完美配对</span>
-            </div>
-            <div class="achievement-item" id="achievement-master" title="记忆大师：完成所有难度">
-                <span class="achievement-icon">👑</span>
-                <span class="achievement-name">记忆大师</span>
+    <!-- 热门测试 -->
+    <section class="popular-tests">
+        <div class="container">
+            <h2>热门心理测试</h2>
+            <div class="tests-grid">
+                <div class="test-card" onclick="location.href='test.html#mbti'">
+                    <div class="test-image mbti-bg"></div>
+                    <div class="test-content">
+                        <span class="test-tag">性格测试</span>
+                        <h3>MBTI性格测试</h3>
+                        <p>探索你的人格类型</p>
+                        <div class="test-stats">
+                            <span><i class="fas fa-users"></i> 12,345人已测</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="test-card" onclick="location.href='test.html#love'">
+                    <div class="test-image love-bg"></div>
+                    <div class="test-content">
+                        <span class="test-tag">情感测试</span>
+                        <h3>爱情匹配度测试</h3>
+                        <p>测试你的恋爱风格</p>
+                        <div class="test-stats">
+                            <span><i class="fas fa-users"></i> 8,765人已测</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="test-card" onclick="location.href='test.html#career'">
+                    <div class="test-image career-bg"></div>
+                    <div class="test-content">
+                        <span class="test-tag">职业测试</span>
+                        <h3>职业性格测试</h3>
+                        <p>找到适合你的职业</p>
+                        <div class="test-stats">
+                            <span><i class="fas fa-users"></i> 6,543人已测</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div class="modal-overlay" id="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-icon" id="modal-icon">🎉</div>
-            <h2 class="modal-title" id="modal-title">恭喜完成！</h2>
-            <div class="modal-stats">
-                <div class="stat-row">
-                    <span>用时：</span>
-                    <span id="result-time">00:00</span>
+    <!-- 最新资讯 -->
+    <section class="latest-news">
+        <div class="container">
+            <h2>最新资讯</h2>
+            <div class="news-grid">
+                <div class="news-card" onclick="location.href='news.html#article1'">
+                    <div class="news-image news1-bg"></div>
+                    <div class="news-content">
+                        <span class="news-tag">心理健康</span>
+                        <h3>如何缓解职场压力</h3>
+                        <p>职场压力已成为现代人普遍面临的问题...</p>
+                        <span class="news-date">2026-06-23</span>
+                    </div>
                 </div>
-                <div class="stat-row">
-                    <span>步数：</span>
-                    <span id="result-moves">0</span>
+                <div class="news-card" onclick="location.href='news.html#article2'">
+                    <div class="news-image news2-bg"></div>
+                    <div class="news-content">
+                        <span class="news-tag">心理学</span>
+                        <h3>正念冥想的科学益处</h3>
+                        <p>越来越多的研究证明冥想对身心健康有益...</p>
+                        <span class="news-date">2026-06-22</span>
+                    </div>
                 </div>
-                <div class="stat-row">
-                    <span>星级：</span>
-                    <span id="result-stars">⭐⭐⭐</span>
+                <div class="news-card" onclick="location.href='news.html#article3'">
+                    <div class="news-image news3-bg"></div>
+                    <div class="news-content">
+                        <span class="news-tag">情感关系</span>
+                        <h3>建立健康的人际关系</h3>
+                        <p>良好的人际关系是幸福生活的基石...</p>
+                        <span class="news-date">2026-06-21</span>
+                    </div>
                 </div>
-                <div class="stat-row highlight">
-                    <span>得分：</span>
-                    <span id="result-score">0</span>
-                </div>
-                <div class="stat-row">
-                    <span>最佳记录：</span>
-                    <span id="best-record">--</span>
-                </div>
-            </div>
-            <div class="new-record-badge" id="new-record-badge" style="display: none;">
-                🏆 新纪录！
-            </div>
-            <div class="modal-buttons">
-                <button id="btn-play-again" class="btn btn-primary">再玩一次</button>
-                <button id="btn-home" class="btn btn-secondary">返回首页</button>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- 情绪树洞预览 -->
+    <section class="treehole-preview">
+        <div class="container">
+            <h2>最近心事</h2>
+            <div class="treehole-cards">
+                <div class="treehole-card">
+                    <div class="treehole-avatar">🌙</div>
+                    <div class="treehole-content">
+                        <p>"最近工作压力好大，感觉喘不过气来..."</p>
+                        <div class="treehole-meta">
+                            <span>匿名用户</span>
+                            <span>2小时前</span>
+                            <span><i class="fas fa-heart"></i> 12</span>
+                            <span><i class="fas fa-comment"></i> 3</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="treehole-card">
+                    <div class="treehole-avatar">⭐</div>
+                    <div class="treehole-content">
+                        <p>"今天和家人吵架了，现在很后悔..."</p>
+                        <div class="treehole-meta">
+                            <span>匿名用户</span>
+                            <span>5小时前</span>
+                            <span><i class="fas fa-heart"></i> 28</span>
+                            <span><i class="fas fa-comment"></i> 8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="treehole.html" class="view-more">查看更多心事 <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>心灵驿站</h3>
+                    <p>陪伴你探索内心世界的温暖港湾</p>
+                </div>
+                <div class="footer-section">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="test.html">心理测试</a></li>
+                        <li><a href="news.html">资讯</a></li>
+                        <li><a href="treehole.html">情绪树洞</a></li>
+                        <li><a href="games.html">小游戏</a></li>
+                        <li><a href="schoolRankingsShJshan/index.html">学校排名</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>关注我们</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-weixin"></i></a>
+                        <a href="#"><i class="fab fa-weibo"></i></a>
+                        <a href="#"><i class="fab fa-qq"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 心灵驿站. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
 
     <script src="script.js"></script>
 </body>

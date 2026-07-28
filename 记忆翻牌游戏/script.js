@@ -6,7 +6,7 @@ const EMOJIS = [
 ];
 
 const DIFFICULTY = {
-    easy: { pairs: 8, rows: 4, cols: 4, name: '简单', scoreMultiplier: 1 },
+    easy: { pairs: 4, rows: 2, cols: 4, name: '简单', scoreMultiplier: 1 },
     medium: { pairs: 12, rows: 4, cols: 6, name: '中等', scoreMultiplier: 1.5 },
     hard: { pairs: 18, rows: 6, cols: 6, name: '困难', scoreMultiplier: 2 }
 };
@@ -165,64 +165,121 @@ function calculateScore() {
     return score;
 }
 
+let isInitializing = false;
+
 function initGame() {
-    const config = DIFFICULTY[currentDifficulty];
-    const selectedEmojis = shuffleArray([...EMOJIS]).slice(0, config.pairs);
-    const cardPairs = [...selectedEmojis, ...selectedEmojis];
-    cards = shuffleArray(cardPairs).map((emoji, index) => ({
-        id: index,
-        emoji: emoji,
-        isFlipped: false,
-        isMatched: false
-    }));
-
-    matchedPairs = 0;
-    moves = 0;
-    seconds = 0;
-    score = 0;
-    flippedCards = [];
-    isLocked = false;
-    hintsRemaining = 3;
-
-    document.getElementById('total-matches').textContent = config.pairs;
-    updateStats();
-    updateProgress();
-    renderCards();
-    startTimer();
-    hideModal();
-    updateAchievementsUI();
+    if (isInitializing) {
+        console.log('[initGame] 正在初始化中，跳过');
+        return;
+    }
+    isInitializing = true;
     
-    setTimeout(() => {
-        document.getElementById('loading-overlay').style.display = 'none';
-    }, 300);
+    try {
+        stopTimer();
+        
+        const config = DIFFICULTY[currentDifficulty];
+        console.log('[initGame] 配置:', config);
+        
+        const selectedEmojis = shuffleArray([...EMOJIS]).slice(0, config.pairs);
+        const cardPairs = [...selectedEmojis, ...selectedEmojis];
+        cards = shuffleArray(cardPairs).map((emoji, index) => ({
+            id: index,
+            emoji: emoji,
+            isFlipped: false,
+            isMatched: false
+        }));
+        
+        console.log('[initGame] 生成卡片数:', cards.length);
+
+        matchedPairs = 0;
+        moves = 0;
+        seconds = 0;
+        score = 0;
+        flippedCards = [];
+        isLocked = false;
+        hintsRemaining = 3;
+
+        const totalMatchesEl = document.getElementById('total-matches');
+        if (totalMatchesEl) totalMatchesEl.textContent = config.pairs;
+        const hintCountEl = document.getElementById('hint-count');
+        if (hintCountEl) hintCountEl.textContent = hintsRemaining;
+        
+        updateStats();
+        updateProgress();
+        
+        renderCards();
+        startTimer();
+        hideModal();
+        updateAchievementsUI();
+        
+        console.log('[initGame] 初始化完成');
+    } catch (e) {
+        console.error('[initGame] 初始化失败:', e);
+    } finally {
+        setTimeout(() => { isInitializing = false; }, 100);
+    }
 }
 
 function renderCards() {
     const grid = document.getElementById('cards-grid');
-    const config = DIFFICULTY[currentDifficulty];
+    if (!grid) return;
     
-    grid.style.gridTemplateColumns = `repeat(${config.cols}, 1fr)`;
+    const config = DIFFICULTY[currentDifficulty];
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    
+    console.log('[renderCards] 视口尺寸:', vw, 'x', vh);
+    console.log('[renderCards] 配置:', config.cols, '列x', config.rows, '行');
+    console.log('[renderCards] 卡片数组长度:', cards.length);
+    
+    const gap = 6;
+    const sidePadding = 12;
+    const topOffset = 280;
+    const bottomReserve = 140;
+    const availW = Math.min(vw - sidePadding * 2, 500);
+    const availH = Math.max(vh - topOffset - bottomReserve, 180);
+    const cardW = Math.floor((availW - gap * (config.cols - 1)) / config.cols);
+    const cardH = Math.floor((availH - gap * (config.rows - 1)) / config.rows);
+    const cardSize = Math.max(28, Math.min(cardW, cardH, 100));
+    
+    const emojiSize = Math.max(14, Math.floor(cardSize * 0.55));
+    const iconSize = Math.max(12, Math.floor(cardSize * 0.45));
+    const borderRadius = Math.max(6, Math.floor(cardSize * 0.15));
+    
+    console.log('[renderCards] 计算卡片尺寸:', cardSize, 'px, emoji:', emojiSize, 'px');
+    
     grid.innerHTML = '';
-
-    cards.forEach(card => {
-        const cardElement = document.createElement('div');
-        cardElement.className = `card ${card.isFlipped ? 'flipped' : ''} ${card.isMatched ? 'matched' : ''}`;
-        cardElement.dataset.id = card.id;
-        
-        cardElement.innerHTML = `
+    grid.style.display = 'grid';
+    grid.style.gridTemplateColumns = `repeat(${config.cols}, ${cardSize}px)`;
+    grid.style.gridTemplateRows = `repeat(${config.rows}, ${cardSize}px)`;
+    grid.style.gap = gap + 'px';
+    grid.style.padding = '0';
+    grid.style.justifyContent = 'center';
+    grid.style.setProperty('--emoji-size', emojiSize + 'px');
+    grid.style.setProperty('--icon-size', iconSize + 'px');
+    grid.style.setProperty('--border-radius', borderRadius + 'px');
+    grid.style.setProperty('--inner-padding', Math.max(2, Math.floor(cardSize * 0.08)) + 'px');
+    
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < cards.length; i++) {
+        const card = cards[i];
+        const el = document.createElement('div');
+        el.className = 'card';
+        el.dataset.id = card.id;
+        el.style.width = cardSize + 'px';
+        el.style.height = cardSize + 'px';
+        el.innerHTML = `
             <div class="card-inner">
-                <div class="card-face card-back">
-                    <i class="fas fa-question-circle"></i>
-                </div>
-                <div class="card-face card-front">
-                    <span>${card.emoji}</span>
-                </div>
+                <div class="card-face card-back"><i class="fas fa-question-circle"></i></div>
+                <div class="card-face card-front"><span>${card.emoji}</span></div>
             </div>
         `;
-
-        cardElement.addEventListener('click', () => flipCard(card));
-        grid.appendChild(cardElement);
-    });
+        el.addEventListener('click', () => flipCard(card));
+        frag.appendChild(el);
+    }
+    grid.appendChild(frag);
+    
+    console.log('[renderCards] 渲染完成, 实际DOM子元素数:', grid.children.length);
 }
 
 function flipCard(card) {
@@ -386,10 +443,22 @@ function hideModal() {
 }
 
 function useHint() {
-    if (hintsRemaining <= 0 || isLocked) return;
+    if (audioContext && audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
+    
+    if (hintsRemaining <= 0 || isLocked) {
+        if (hintsRemaining <= 0) {
+            showToast('提示次数已用完！');
+        }
+        return;
+    }
 
     const unmatchedCards = cards.filter(c => !c.isMatched && !c.isFlipped);
-    if (unmatchedCards.length < 2) return;
+    if (unmatchedCards.length < 2) {
+        showToast('没有可提示的卡片了！');
+        return;
+    }
 
     const pairs = {};
     unmatchedCards.forEach(card => {
@@ -419,39 +488,156 @@ function useHint() {
                 }, 2000);
             }
         });
+    } else {
+        showToast('没有可配对的卡片了！');
     }
 }
 
-document.getElementById('btn-back').addEventListener('click', () => {
-    window.location.href = '../games.html';
-});
+function safeRedirect(url) {
+    if (audioContext && audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
+    window.location.href = url;
+}
 
-document.getElementById('btn-restart').addEventListener('click', initGame);
+function handleBtnRestart(e) {
+    try {
+        if (e && e.preventDefault) e.preventDefault();
+        if (e && e.stopPropagation) e.stopPropagation();
+        if (audioContext && audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
+        console.log('[重开] 开始重新初始化游戏');
+        initGame();
+    } catch (err) {
+        console.error('[重开] 出错:', err);
+    }
+}
 
-document.getElementById('btn-hint').addEventListener('click', useHint);
+function handleBtnHint(e) {
+    try {
+        if (e && e.preventDefault) e.preventDefault();
+        if (e && e.stopPropagation) e.stopPropagation();
+        useHint();
+    } catch (err) {
+        console.error('[提示] 出错:', err);
+    }
+}
 
-document.getElementById('btn-play-again').addEventListener('click', initGame);
-
-document.getElementById('btn-home').addEventListener('click', () => {
-    window.location.href = '../games.html';
-});
-
-document.querySelectorAll('.difficulty-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+function handleDifficultyChange(e) {
+    try {
+        if (e && e.preventDefault) e.preventDefault();
+        if (e && e.stopPropagation) e.stopPropagation();
+        
+        let btn = null;
+        if (e && e.currentTarget && e.currentTarget.classList && e.currentTarget.classList.contains('difficulty-btn')) {
+            btn = e.currentTarget;
+        } else if (e && e.target && e.target.closest) {
+            btn = e.target.closest('.difficulty-btn');
+        }
+        
+        if (!btn) {
+            console.log('[难度切换] 未找到按钮');
+            return;
+        }
+        
+        const level = btn.dataset.level;
+        if (!level) {
+            console.log('[难度切换] 无效难度');
+            return;
+        }
+        
+        console.log('[难度切换] 点击难度:', level, '当前难度:', currentDifficulty);
+        
         document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        currentDifficulty = btn.dataset.level;
+        currentDifficulty = level;
+        
+        console.log('[难度切换] 开始初始化游戏，配置:', DIFFICULTY[level]);
         initGame();
+        console.log('[难度切换] 初始化完成, 卡片数:', cards.length);
+    } catch (err) {
+        console.error('[难度切换] 出错:', err);
+    }
+}
+
+let lastTouchTime = 0;
+
+function attachButtonEvents() {
+    const preventDoubleClick = (handler) => {
+        return function(e) {
+            const now = Date.now();
+            if (now - lastTouchTime < 500) {
+                console.log('[事件] 防止重复触发');
+                return;
+            }
+            lastTouchTime = now;
+            handler(e);
+        };
+    };
+    
+    const handleTouch = (handler) => {
+        return function(e) {
+            e.preventDefault();
+            lastTouchTime = Date.now();
+            handler(e);
+        };
+    };
+    
+    const btnBack = document.getElementById('btn-back');
+    const btnRestart = document.getElementById('btn-restart');
+    const btnHint = document.getElementById('btn-hint');
+    const btnPlayAgain = document.getElementById('btn-play-again');
+    const btnHome = document.getElementById('btn-home');
+    
+    if (btnBack) {
+        btnBack.addEventListener('click', preventDoubleClick(() => safeRedirect('../games.html')));
+        btnBack.addEventListener('touchstart', handleTouch(() => safeRedirect('../games.html')), { passive: false });
+    }
+    
+    if (btnRestart) {
+        btnRestart.addEventListener('click', preventDoubleClick(handleBtnRestart));
+        btnRestart.addEventListener('touchstart', handleTouch(handleBtnRestart), { passive: false });
+    }
+    
+    if (btnHint) {
+        btnHint.addEventListener('click', preventDoubleClick(handleBtnHint));
+        btnHint.addEventListener('touchstart', handleTouch(handleBtnHint), { passive: false });
+    }
+    
+    if (btnPlayAgain) {
+        btnPlayAgain.addEventListener('click', preventDoubleClick(handleBtnRestart));
+        btnPlayAgain.addEventListener('touchstart', handleTouch(handleBtnRestart), { passive: false });
+    }
+    
+    if (btnHome) {
+        btnHome.addEventListener('click', preventDoubleClick(() => safeRedirect('../games.html')));
+        btnHome.addEventListener('touchstart', handleTouch(() => safeRedirect('../games.html')), { passive: false });
+    }
+    
+    document.querySelectorAll('.difficulty-btn').forEach(btn => {
+        btn.addEventListener('click', preventDoubleClick(handleDifficultyChange));
+        btn.addEventListener('touchstart', handleTouch(handleDifficultyChange), { passive: false });
     });
+}
+
+let resizeTimeout;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        if (cards.length > 0) {
+            renderCards();
+        }
+    }, 200);
 });
 
 document.addEventListener('DOMContentLoaded', () => {
     initAudio();
     loadAchievements();
     updateAchievementsUI();
+    attachButtonEvents();
     
     setTimeout(() => {
-        document.getElementById('loading-overlay').style.display = 'none';
         initGame();
-    }, 500);
+    }, 300);
 });
