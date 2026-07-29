@@ -998,7 +998,8 @@ function openGame(gameName) {
         '九格人格': '九格人格/index.html',
         '星屿微光': 'https://www.kanjl.com',
         '动感小球游戏': '动感小球游戏/maze-ball.html',
-        '记忆翻牌游戏': '记忆翻牌游戏/index.html'
+        '记忆翻牌游戏': '记忆翻牌游戏/index.html',
+        '魔塔游戏': '魔塔游戏/index.html'
     };
     
     if (gamePaths[gameName]) {
