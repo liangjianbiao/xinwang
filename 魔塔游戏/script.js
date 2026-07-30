@@ -32,13 +32,13 @@ const floors = [
         map: [
             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
             [1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
-            [1,0,13,0,0,20,0,1,0,20,0,0,13,0,0,1],
+            [1,0,13,0,10,20,0,1,0,20,0,0,13,0,0,1],
             [1,0,0,0,0,0,0,2,0,0,0,0,0,0,0,1],
-            [1,0,20,0,0,17,0,1,0,0,10,0,0,20,0,1],
-            [1,0,0,0,10,0,0,1,1,0,0,0,0,0,0,1],
-            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            [1,0,20,0,0,17,0,1,0,0,11,0,0,20,0,1],
+            [1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
+            [1,1,1,1,1,1,1,1,3,1,1,1,1,1,1,1],
             [1,0,0,0,0,20,0,0,0,20,0,0,0,0,0,1],
-            [1,0,17,0,0,0,0,10,0,0,0,0,17,0,0,1],
+            [1,0,17,0,0,0,0,0,0,0,0,0,17,0,0,1],
             [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
             [1,0,20,0,5,0,0,0,0,0,0,0,0,20,0,1],
             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
@@ -341,6 +341,8 @@ function movePlayer(dx, dy) {
     if (tile === TILE.WALL) return;
 
     if (tile >= TILE.MONSTER_SLIME && tile <= TILE.MONSTER_DRAGON) {
+        const def = monsterDefs[tile];
+        showInfo(`⚔️ ${def.name}(攻${def.atk}/防${def.def}/血${def.hp}) - 即将战斗！`);
         attackMonster(nx, ny, tile);
         return;
     }
@@ -385,9 +387,25 @@ function movePlayer(dx, dy) {
         useStairs('down');
     }
 
+    checkNearbyMonsters();
     updateStats();
     draw();
     checkGameState();
+}
+
+function checkNearbyMonsters() {
+    const dirs = [[0,-1],[0,1],[-1,0],[1,0]];
+    for (const [dx, dy] of dirs) {
+        const nx = player.x + dx;
+        const ny = player.y + dy;
+        if (nx < 0 || nx >= MAP_W || ny < 0 || ny >= MAP_H) continue;
+        const tile = gameMap[ny][nx];
+        if (tile >= TILE.MONSTER_SLIME && tile <= TILE.MONSTER_DRAGON) {
+            const def = monsterDefs[tile];
+            showInfo(`👁️ 附近有${def.name}(攻${def.atk}/防${def.def}/血${def.hp})`);
+            return;
+        }
+    }
 }
 
 function handleItemPickup(tile, x, y) {
@@ -448,7 +466,7 @@ function attackMonster(mx, my, tileType) {
     player.gold += def.gold;
 
     gameMap[my][mx] = TILE.FLOOR;
-    showInfo(`击败了${def.name}！获得${def.gold}金币，受到${totalDamage}伤害`);
+    showInfo(`⚔️ 击败${def.name}(攻${def.atk}/防${def.def}/血${def.hp})！获得${def.gold}金币，受到${totalDamage}伤害`);
 
     updateStats();
     draw();
