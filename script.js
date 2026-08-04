@@ -992,14 +992,14 @@ function initGamesPage() {
 
 function openGame(gameName) {
     const gamePaths = {
-        '连线小游戏': '连线小游戏/index.html',
-        '拼图': '拼图/index.html',
-        '推箱子游戏': '推箱子游戏/index.html',
-        '九格人格': '九格人格/index.html',
+        '连线小游戏': '连线小游戏/line-connect.html',
+        '拼图': '拼图/jigsaw-puzzle.html',
+        '推箱子游戏': '推箱子游戏/push-box.html',
+        '九格人格': '九格人格/enneagram-test.html',
         '星屿微光': 'https://www.kanjl.com',
         '动感小球游戏': '动感小球游戏/maze-ball.html',
-        '记忆翻牌游戏': '记忆翻牌游戏/index.html',
-        '魔塔游戏': '魔塔游戏/index.html'
+        '记忆翻牌游戏': '记忆翻牌游戏/memory-cards.html',
+        '魔塔游戏': '魔塔游戏/magic-tower.html'
     };
     
     if (gamePaths[gameName]) {
