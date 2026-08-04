@@ -89,14 +89,24 @@ function renderLevelGrid() {
             levelItem.classList.add('custom-level');
         }
         
+        const placeholder = document.createElement('span');
+        placeholder.className = 'level-placeholder';
+        placeholder.textContent = `${index + 1}`;
+        levelItem.appendChild(placeholder);
+        
         const img = new Image();
-        img.src = imageUrl;
+        img.className = 'level-image';
+        img.crossOrigin = 'anonymous';
         img.onload = () => {
-            levelItem.appendChild(img);
+            img.classList.add('loaded');
+            if (placeholder.parentNode) {
+                placeholder.style.opacity = '0';
+            }
         };
         img.onerror = () => {
-            levelItem.innerHTML = `<span class="level-number">${index + 1}</span>`;
+            img.style.display = 'none';
         };
+        levelItem.appendChild(img);
         
         const stars = getStarsForLevel(index);
         if (stars) {
@@ -113,6 +123,10 @@ function renderLevelGrid() {
         });
         
         levelGrid.appendChild(levelItem);
+        
+        setTimeout(() => {
+            img.src = imageUrl;
+        }, index * 100);
     });
     
     if (images.length > 0) {

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>推箱子游戏 - 100关</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?5cdc3263b8b8f94e1d69ded1cf092419";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+</head>
+<body>
+    <div class="game-container">
+        <header class="game-header">
+            <div class="header-left">
+                <span class="game-title">📦 推箱子游戏</span>
+            </div>
+            <div class="header-center">
+                <span class="level-info">第 <span id="current-level">1</span> / 100 关</span>
+            </div>
+            <div class="header-right">
+                <button id="btn-restart" class="btn btn-secondary">重新开始</button>
+            </div>
+        </header>
+
+        <main class="game-main">
+            <div class="game-board">
+                <canvas id="game-canvas"></canvas>
+            </div>
+            
+            <div class="game-info">
+                <div class="info-item">
+                    <span class="info-icon">👣</span>
+                    <span class="info-label">步数</span>
+                    <span class="info-value" id="steps">0</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">📦</span>
+                    <span class="info-label">箱子</span>
+                    <span class="info-value" id="boxes">0/0</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">⭐</span>
+                    <span class="info-label">最佳</span>
+                    <span class="info-value" id="best">--</span>
+                </div>
+            </div>
+        </main>
+
+        <div class="game-controls">
+            <div class="direction-pad">
+                <button id="btn-up" class="dir-btn">↑</button>
+                <div class="horizontal-btns">
+                    <button id="btn-left" class="dir-btn">←</button>
+                    <button id="btn-down" class="dir-btn">↓</button>
+                    <button id="btn-right" class="dir-btn">→</button>
+                </div>
+            </div>
+            <div class="action-btns">
+                <button id="btn-undo" class="btn btn-outline">撤销</button>
+                <button id="btn-reset" class="btn btn-outline">重置</button>
+                <button id="btn-hint" class="btn btn-primary">提示</button>
+            </div>
+        </div>
+
+        <div class="message-overlay" id="message-overlay">
+            <div class="message-content">
+                <div class="message-icon" id="message-icon">🎉</div>
+                <div class="message-title" id="message-title">恭喜过关！</div>
+                <div class="message-text" id="message-text">太棒了！用了 X 步完成！</div>
+                <div class="message-stars" id="message-stars">⭐⭐⭐</div>
+                <button id="btn-next" class="btn btn-primary">下一关 →</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

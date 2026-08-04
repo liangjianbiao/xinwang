@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>北京市各区学校排名统计</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e4b1cad1dc884ec2ee26027d50258d86";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+</head>
+<body>
+    <div class="container"> 
+        <header>
+            <h1>🏫 北京市各区学校排名统计</h1>
+            <p class="subtitle">2025-2026学年各区学校信息汇总</p>
+        </header>
+
+        <div class="area-tabs" id="area-tabs"></div>
+
+        <div class="content-area" id="content-area"></div>
+
+        <div class="statistics">
+            <div class="stat-card">
+                <h3>学校总数</h3>
+                <p class="stat-number" id="total-schools">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>中学数量</h3>
+                <p class="stat-number" id="total-middle">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>小学数量</h3>
+                <p class="stat-number" id="total-primary">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>覆盖区域</h3>
+                <p class="stat-number" id="total-districts">0</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>数据来源：北京市教育委员会 | 更新时间：2026年</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

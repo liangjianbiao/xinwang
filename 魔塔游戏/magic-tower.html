@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>魔塔 - 勇者斗恶龙</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e4b1cad1dc884ec2ee26027d50258d86";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+</head>
+<body>
+    <div class="game-container">
+        <header class="game-header">
+            <button id="btn-back" class="header-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> 返回
+            </button>
+            <h1>🏰 魔塔</h1>
+            <div class="header-actions">
+                <button id="btn-restart" class="header-btn" onclick="restartGame()">
+                    <i class="fas fa-redo"></i> 重开
+                </button>
+            </div>
+        </header>
+
+        <div class="game-main">
+            <div class="sidebar">
+                <div class="stats-panel">
+                    <h3>⚔️ 勇者状态</h3>
+                    <div class="stat-row">
+                        <span class="stat-label">❤️ 生命</span>
+                        <span class="stat-value" id="stat-hp">1000</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">⚔️ 攻击</span>
+                        <span class="stat-value" id="stat-atk">10</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">🛡️ 防御</span>
+                        <span class="stat-value" id="stat-def">10</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">💰 金币</span>
+                        <span class="stat-value" id="stat-gold">0</span>
+                    </div>
+                </div>
+
+                <div class="keys-panel">
+                    <h3>🗝️ 钥匙</h3>
+                    <div class="key-row">
+                        <span class="key-item key-red"><i class="fas fa-key"></i> <span id="key-red">0</span></span>
+                        <span class="key-item key-yellow"><i class="fas fa-key"></i> <span id="key-yellow">0</span></span>
+                        <span class="key-item key-blue"><i class="fas fa-key"></i> <span id="key-blue">0</span></span>
+                    </div>
+                </div>
+
+                <div class="floor-panel">
+                    <h3>🏢 当前楼层</h3>
+                    <div class="floor-display" id="floor-display">第 1 层</div>
+                    <div class="floor-buttons" id="floor-buttons"></div>
+                </div>
+
+                <div class="info-panel" id="info-panel">
+                    <h3>💡 提示</h3>
+                    <p id="info-text">使用方向键或WASD移动。走到怪物旁自动战斗，走到门前自动用钥匙。</p>
+                </div>
+            </div>
+
+            <div class="game-area">
+                <canvas id="game-canvas" width="640" height="480"></canvas>
+                <div class="controls-hint">
+                    <span><i class="fas fa-keyboard"></i> 方向键/WASD 移动</span>
+                    <span><i class="fas fa-mobile-alt"></i> 点击地图移动</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mobile-controls" id="mobile-controls">
+            <button class="ctrl-btn up" data-dir="up"><i class="fas fa-arrow-up"></i></button>
+            <div class="ctrl-row">
+                <button class="ctrl-btn left" data-dir="left"><i class="fas fa-arrow-left"></i></button>
+                <button class="ctrl-btn center" data-dir="center"><i class="fas fa-clock"></i></button>
+                <button class="ctrl-btn right" data-dir="right"><i class="fas fa-arrow-right"></i></button>
+            </div>
+            <button class="ctrl-btn down" data-dir="down"><i class="fas fa-arrow-down"></i></button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-content" id="modal-content">
+            <div class="modal-icon" id="modal-icon">💀</div>
+            <h2 id="modal-title">游戏结束</h2>
+            <p id="modal-message"></p>
+            <button class="modal-btn" onclick="restartGame()">重新开始</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
