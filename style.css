@@ -786,6 +786,10 @@ footer {
 .color-icon { background: linear-gradient(135deg, #9c27b0, #e040fb); }
 .dream-icon { background: linear-gradient(135deg, #607d8b, #90a4ae); }
 .stress-icon { background: linear-gradient(135deg, #f44336, #ff5252); }
+.rizhu-icon { background: linear-gradient(135deg, #ff6b35, #f7931e, #ffd700); }
+.persona16-icon { background: linear-gradient(135deg, #5b86e5, #36d1dc); }
+.ocean-icon { background: linear-gradient(135deg, #00c6ff, #0072ff, #004e92); }
+.tarot-icon { background: linear-gradient(135deg, #654ea3, #eaafc8, #834d9b); }
 
 .test-info h3 {
     font-size: 1.2rem;

@@ -135,19 +135,67 @@ const testQuestions = {
             { q: '你有时间做喜欢的事吗？', options: ['经常', '偶尔', '几乎没有'] }
         ],
         result: '轻度压力'
+    },
+    rizhu: {
+        title: '60日柱抽象人设测试',
+        questions: [
+            { q: '面对新的环境，你通常会？', options: ['主动探索', '谨慎观察', '等待被引导'] },
+            { q: '你的思维方式更偏向？', options: ['逻辑分析', '直觉感受', '感性联想'] },
+            { q: '在团队中你更愿意扮演？', options: ['领导者', '协调者', '执行者'] },
+            { q: '面对压力时，你倾向于？', options: ['迎难而上', '冷静思考', '寻求支持'] },
+            { q: '你的情绪表达通常是？', options: ['直接外露', '含蓄内敛', '随机应变'] },
+            { q: '做决定时你更依赖？', options: ['理性判断', '内心感受', '他人建议'] },
+            { q: '你最看重的是？', options: ['事业成就', '人际关系', '自我实现'] },
+            { q: '面对变化你的态度是？', options: ['拥抱变化', '谨慎适应', '倾向稳定'] },
+            { q: '你的社交风格是？', options: ['热情外向', '温和友善', '独立内向'] },
+            { q: '遇到挑战时你会？', options: ['积极迎战', '从容应对', '寻找捷径'] }
+        ],
+        result: '庚金日主'
+    },
+    persona16: {
+        title: '16型人格测试',
+        questions: [
+            { q: '在聚会中你更倾向于？', options: ['主动与多人交谈', '与少数熟人深入交流'] },
+            { q: '忙碌一周后，你更想？', options: ['约朋友外出放松', '独自在家休息充电'] },
+            { q: '你更关注信息中的？', options: ['具体的事实和细节', '整体的趋势和可能性'] },
+            { q: '学习新技能时你更喜欢？', options: ['按步骤循序渐进', '自己摸索理解全貌'] },
+            { q: '做决定时你更看重？', options: ['客观逻辑和公平', '个人价值观和他人感受'] },
+            { q: '面对朋友倾诉烦恼时你会？', options: ['帮TA分析问题找方案', '先共情安慰再慢慢聊'] },
+            { q: '你的生活方式更接近？', options: ['提前计划按部就班', '灵活随性见机行事'] },
+            { q: '面对截止日期你通常？', options: ['尽早完成避免拖延', '临近时更有灵感动力'] }
+        ],
+        result: 'INTJ'
+    },
+    ocean: {
+        title: '大洋人格测试',
+        questions: [
+            { q: '面对新事物和新想法，你的态度是？', options: ['非常好奇，乐于尝试', '有兴趣但会观望', '比较谨慎', '喜欢熟悉的事物'] },
+            { q: '你觉得做计划和遵守规则？', options: ['非常重要，严格执行', '比较重要，基本遵守', '看情况而定', '不太喜欢被约束'] },
+            { q: '在社交场合你通常？', options: ['非常活跃，主动交流', '比较轻松，愿意互动', '话不多，但随和', '喜欢独处或小范围'] },
+            { q: '遇到他人需要帮助时你会？', options: ['主动伸出援手', '愿意帮忙', '看情况', '先保护好自己'] },
+            { q: '面对压力和挫折时？', options: ['经常感到焦虑不安', '有时候会情绪低落', '比较平静', '非常稳定，很少波动'] },
+            { q: '你对艺术、音乐、文学的感受？', options: ['非常敏感，富有想象力', '有一定的欣赏能力', '一般般', '不太感兴趣'] },
+            { q: '做事情时你倾向于？', options: ['有条不紊，精益求精', '比较认真负责', '过得去就行', '随心所欲'] },
+            { q: '参加聚会或活动时？', options: ['精力充沛，非常享受', '比较开心，投入其中', '有点疲惫，还能应付', '觉得消耗精力'] },
+            { q: '和别人意见不同时？', options: ['尽量理解和妥协', '愿意沟通和让步', '坚持自己的观点', '直接表达不妥协'] },
+            { q: '你对自己的情绪变化？', options: ['很敏感，波动较大', '有波动，但能调节', '比较稳定', '几乎不受影响'] }
+        ],
+        result: '高开放性'
+    },
+    tarot: {
+        title: '塔罗牌抽牌占卜',
+        questions: [
+            { q: '请为「过去」选择一张牌的数字：', options: ['1 - 魔术师', '2 - 女祭司', '3 - 皇后', '4 - 皇帝', '5 - 教皇', '6 - 恋人', '7 - 战车'] },
+            { q: '请为「现在」选择一张牌的数字：', options: ['8 - 力量', '9 - 隐士', '10 - 命运之轮', '11 - 正义', '12 - 倒吊人', '13 - 死神', '14 - 节制'] },
+            { q: '请为「未来」选择一张牌的数字：', options: ['15 - 恶魔', '16 - 高塔', '17 - 星星', '18 - 月亮', '19 - 太阳', '20 - 审判', '21 - 世界'] }
+        ],
+        result: '三张牌阵'
     }
 };
 
 function startTest(testId) {
-    currentTest = testId;
-    currentQuestion = 0;
-    answers = [];
-    
-    const test = testQuestions[testId];
-    document.getElementById('testTitle').textContent = test.title;
-    showQuestion();
-    
-    document.getElementById('testModal').style.display = 'flex';
+    localStorage.removeItem('test_draft_' + testId);
+    window.location.href = 'test-taking.html?test=' + testId;
 }
 
 function showQuestion() {
@@ -225,42 +273,382 @@ function nextQuestion() {
 function showResult() {
     document.getElementById('testModal').style.display = 'none';
     
-    const resultType = testQuestions[currentTest].result;
+    let resultType, description, traitsList;
+    
+    if (currentTest === 'rizhu') {
+        // 60日柱抽象人设测试 - 根据答案生成动态结果
+        const personalityType = analyzeRiZhuPersonality();
+        resultType = personalityType.type;
+        description = personalityType.description;
+        traitsList = personalityType.traits;
+    } else if (currentTest === 'persona16') {
+        // 16型人格测试 - 根据四维答案动态计算
+        const persona = analyze16Personalities();
+        resultType = persona.type;
+        description = persona.description;
+        traitsList = persona.traits;
+    } else if (currentTest === 'ocean') {
+        // 大洋人格（大五人格）测试 - 五维度分析
+        const ocean = analyzeOceanPersonality();
+        resultType = ocean.type;
+        description = ocean.description;
+        traitsList = ocean.traits;
+    } else if (currentTest === 'tarot') {
+        // 塔罗牌占卜 - 三张牌解读
+        const tarot = analyzeTarotReading();
+        resultType = tarot.type;
+        description = tarot.description;
+        traitsList = tarot.traits;
+    } else {
+        resultType = testQuestions[currentTest].result;
+        const descriptions = {
+            'INTJ': '你是INTJ型人格，具有战略眼光和独立思考能力，善于分析和规划，是天生的领导者。',
+            '完美型': '你是完美型人格，追求卓越，注重细节，有强烈的责任感和使命感。',
+            '灵魂伴侣型': '你是灵魂伴侣型，重视情感连接，寻求深度关系，相信真爱。',
+            '创意型': '你是创意型职业性格，富有想象力，喜欢创新，适合艺术、设计等领域。',
+            '高情商': '你的情商很高，善于理解他人，能够很好地管理自己的情绪。',
+            '蓝色性格': '你是蓝色性格，冷静、理性、善于思考，追求稳定和安全感。',
+            '自由飞翔型': '你的梦境反映出你内心渴望自由和探索，具有冒险精神。',
+            '轻度压力': '你目前处于轻度压力状态，适当放松和调整即可恢复平衡。'
+        };
+        
+        const traits = {
+            'INTJ': ['战略思维', '独立思考', '目标导向', '理性分析'],
+            '完美型': ['追求完美', '责任心强', '注重细节', '自律严谨'],
+            '灵魂伴侣型': ['情感丰富', '善解人意', '忠诚专一', '浪漫感性'],
+            '创意型': ['富有创意', '想象力丰富', '不拘一格', '勇于尝试'],
+            '高情商': ['善解人意', '情绪稳定', '沟通能力强', '同理心强'],
+            '蓝色性格': ['冷静理性', '深思熟虑', '追求稳定', '善于分析'],
+            '自由飞翔型': ['热爱自由', '勇于探索', '乐观积极', '富有梦想'],
+            '轻度压力': ['状态良好', '压力适中', '需要放松', '保持平衡']
+        };
+        
+        description = descriptions[resultType] || '测试完成！';
+        traitsList = traits[resultType] || [];
+    }
+    
     document.getElementById('resultType').textContent = resultType;
+    document.getElementById('resultDescription').textContent = description;
     
-    const descriptions = {
-        'INTJ': '你是INTJ型人格，具有战略眼光和独立思考能力，善于分析和规划，是天生的领导者。',
-        '完美型': '你是完美型人格，追求卓越，注重细节，有强烈的责任感和使命感。',
-        '灵魂伴侣型': '你是灵魂伴侣型，重视情感连接，寻求深度关系，相信真爱。',
-        '创意型': '你是创意型职业性格，富有想象力，喜欢创新，适合艺术、设计等领域。',
-        '高情商': '你的情商很高，善于理解他人，能够很好地管理自己的情绪。',
-        '蓝色性格': '你是蓝色性格，冷静、理性、善于思考，追求稳定和安全感。',
-        '自由飞翔型': '你的梦境反映出你内心渴望自由和探索，具有冒险精神。',
-        '轻度压力': '你目前处于轻度压力状态，适当放松和调整即可恢复平衡。'
-    };
-    
-    const traits = {
-        'INTJ': ['战略思维', '独立思考', '目标导向', '理性分析'],
-        '完美型': ['追求完美', '责任心强', '注重细节', '自律严谨'],
-        '灵魂伴侣型': ['情感丰富', '善解人意', '忠诚专一', '浪漫感性'],
-        '创意型': ['富有创意', '想象力丰富', '不拘一格', '勇于尝试'],
-        '高情商': ['善解人意', '情绪稳定', '沟通能力强', '同理心强'],
-        '蓝色性格': ['冷静理性', '深思熟虑', '追求稳定', '善于分析'],
-        '自由飞翔型': ['热爱自由', '勇于探索', '乐观积极', '富有梦想'],
-        '轻度压力': ['状态良好', '压力适中', '需要放松', '保持平衡']
-    };
-    
-    document.getElementById('resultDescription').textContent = descriptions[resultType] || '测试完成！';
-    
-    const traitsList = document.getElementById('traitsList');
-    traitsList.innerHTML = '';
-    (traits[resultType] || []).forEach(trait => {
+    const traitsListEl = document.getElementById('traitsList');
+    traitsListEl.innerHTML = '';
+    traitsList.forEach(trait => {
         const li = document.createElement('li');
         li.textContent = trait;
-        traitsList.appendChild(li);
+        traitsListEl.appendChild(li);
     });
     
     document.getElementById('resultModal').style.display = 'flex';
+}
+
+// 大洋人格（大五人格OCEAN）分析函数
+function analyzeOceanPersonality() {
+    // 五维度: O开放性(问题0,5), C尽责性(问题1,6), E外向性(问题2,7), A宜人性(问题3,8), N神经质(问题4,9)
+    // 选项0=高分, 选项3=低分 (除了神经质反向计算)
+    var O = 0, C = 0, E = 0, A = 0, N = 0;
+    function optionToScore(opt) { return 3 - opt; } // 选项0->3分, 1->2, 2->1, 3->0
+
+    O += optionToScore(answers[0]);
+    O += optionToScore(answers[5]);
+    C += optionToScore(answers[1]);
+    C += optionToScore(answers[6]);
+    E += optionToScore(answers[2]);
+    E += optionToScore(answers[7]);
+    A += optionToScore(answers[3]);
+    A += optionToScore(answers[8]);
+    N += (answers[4]);     // 神经质: 选项0->0, 选项1->1...(反向)
+    N += (answers[9]);
+
+    var scores = [
+        { name: '开放性', key: 'O', value: O, desc: '富有想象力、好奇心强、追求新体验' },
+        { name: '尽责性', key: 'C', value: C, desc: '有条理、可靠、自律、追求成就' },
+        { name: '外向性', key: 'E', value: E, desc: '社交活跃、精力充沛、乐观开朗' },
+        { name: '宜人性', key: 'A', value: A, desc: '友善、合作、信任他人、乐于助人' },
+        { name: '神经质', key: 'N', value: N, desc: '情绪稳定度低、容易焦虑、敏感' }
+    ];
+
+    scores.sort(function(a, b) { return b.value - a.value; });
+    var top = scores[0];
+    var level = top.value >= 5 ? '高' : (top.value >= 3 ? '中' : '低');
+
+    var typeLabels = {
+        'O': { label: '探索者', desc: '你是"探索者"——充满好奇心和想象力的灵魂。你对艺术、美和新颖的想法有着天然的敏感度，内心世界丰富而多彩。你不满足于现状，总是在寻找新的体验和可能性，是团队中的创意源泉和开拓者。' },
+        'C': { label: '成就者', desc: '你是"成就者"——严谨自律的实干家。你做事有条不紊，目标清晰，一旦下定决心就会坚持到底。你对自己和他人都有较高的要求，是值得信赖的伙伴和团队的中坚力量。' },
+        'E': { label: '社交者', desc: '你是"社交者"——活力四射的人群之星。你在社交中如鱼得水，享受与人交流的乐趣，总是能给身边的人带来积极的能量。你乐观开朗，敢于表达自己，是天生的组织者和氛围营造者。' },
+        'A': { label: '协调者', desc: '你是"协调者"——温暖包容的人际粘合剂。你善于倾听和理解他人，乐于帮助和付出，总能在冲突中找到平衡点。你真诚而友善，是朋友眼中最可靠的倾诉对象和团队的和谐使者。' },
+        'N': { label: '敏感者', desc: '你是"敏感者"——细腻深邃的情绪感知者。你对自己和他人的情绪有着超乎常人的洞察力，内心世界丰富而深刻。你的敏感让你能感知到别人忽略的细节，是充满同理心和艺术天赋的灵魂。' }
+    };
+
+    var info = typeLabels[top.key];
+    var traitMap = {
+        'O': ['富有创意', '求知欲强', '思维开放', '艺术敏感', '乐于尝试'],
+        'C': ['自律严谨', '目标坚定', '有条有理', '责任心强', '追求卓越'],
+        'E': ['热情外向', '善于社交', '精力充沛', '乐观积极', '表达力强'],
+        'A': ['友善包容', '乐于助人', '善解人意', '信任他人', '合作精神'],
+        'N': ['情感细腻', '直觉敏锐', '艺术天赋', '共情力强', '深度思考']
+    };
+
+    // 生成五维度得分概要
+    var dimInfo = scores.map(function(s) {
+        var lv = s.value >= 5 ? '高' : (s.value >= 3 ? '中' : '低');
+        return s.name + ':' + lv;
+    }).join(' · ');
+
+    return {
+        type: level + top.name + '型 · ' + info.label,
+        description: info.desc + ' 【维度画像】' + dimInfo + '。',
+        traits: traitMap[top.key]
+    };
+}
+
+// 塔罗牌占卜分析函数
+function analyzeTarotReading() {
+    // 22张大阿卡纳牌数据
+    var majorArcana = {
+        0: { name: '愚者', nameEn: 'The Fool', meaning: '冒险、新的开始、纯真、无限可能', advice: '勇敢迈出第一步，保持天真和好奇心' },
+        1: { name: '魔术师', nameEn: 'The Magician', meaning: '创造力、意志力、技能、行动', advice: '运用你的天赋和资源，将想法付诸行动' },
+        2: { name: '女祭司', nameEn: 'The High Priestess', meaning: '直觉、潜意识、智慧、神秘', advice: '倾听内心的声音，相信你的直觉' },
+        3: { name: '皇后', nameEn: 'The Empress', meaning: '丰饶、母性、创造力、滋养', advice: '照顾好自己和他人，让爱与美生长' },
+        4: { name: '皇帝', nameEn: 'The Emperor', meaning: '权威、稳定、结构、领导力', advice: '建立秩序和规则，用理性和坚定前进' },
+        5: { name: '教皇', nameEn: 'The Hierophant', meaning: '传统、信仰、教导、指引', advice: '寻找智慧的指引，尊重传统但不盲从' },
+        6: { name: '恋人', nameEn: 'The Lovers', meaning: '爱、关系、选择、和谐', advice: '跟随内心做真实的选择，在关系中成长' },
+        7: { name: '战车', nameEn: 'The Chariot', meaning: '意志、胜利、掌控、前进', advice: '坚定目标，用意志力掌控局面' },
+        8: { name: '力量', nameEn: 'Strength', meaning: '勇气、耐心、柔软的力量、内在力量', advice: '以柔克刚，用温柔和耐心面对挑战' },
+        9: { name: '隐士', nameEn: 'The Hermit', meaning: '内省、独处、智慧、指引', advice: '给自己独处的时间，在静心中找到答案' },
+        10: { name: '命运之轮', nameEn: 'Wheel of Fortune', meaning: '变化、循环、命运、转折点', advice: '顺应变化，把握机会，相信生命的节奏' },
+        11: { name: '正义', nameEn: 'Justice', meaning: '公正、真相、平衡、因果', advice: '用理性和公平做决定，为自己的选择负责' },
+        12: { name: '倒吊人', nameEn: 'The Hanged Man', meaning: '暂停、换个角度、牺牲、放下', advice: '放慢脚步，换个视角看待问题' },
+        13: { name: '死神', nameEn: 'Death', meaning: '结束、转变、重生、蜕变', advice: '放下不再适合你的，迎接新的开始' },
+        14: { name: '节制', nameEn: 'Temperance', meaning: '平衡、调和、耐心、适度', advice: '寻找平衡，循序渐进，保持内心和谐' },
+        15: { name: '恶魔', nameEn: 'The Devil', meaning: '束缚、欲望、诱惑、阴影', advice: '觉察束缚你的模式，释放限制性信念' },
+        16: { name: '高塔', nameEn: 'The Tower', meaning: '突变、崩塌、觉醒、解放', advice: '接受突如其来的变化，破后而立' },
+        17: { name: '星星', nameEn: 'The Star', meaning: '希望、灵感、治愈、指引', advice: '保持希望，相信光明就在前方' },
+        18: { name: '月亮', nameEn: 'The Moon', meaning: '幻觉、潜意识、恐惧、直觉', advice: '面对内心的恐惧，看清真相而非幻象' },
+        19: { name: '太阳', nameEn: 'The Sun', meaning: '喜悦、活力、成功、光明', advice: '享受当下的快乐，展现真实的自己' },
+        20: { name: '审判', nameEn: 'Judgement', meaning: '觉醒、重生、召唤、宽恕', advice: '回应内心的召唤，放下过去重新出发' },
+        21: { name: '世界', nameEn: 'The World', meaning: '完成、圆满、整合、成就', advice: '庆祝你的成就，你已完成一个重要的循环' }
+    };
+
+    // 答案索引对应问题1选项索引: 0->1牌, 1->2牌...6->7牌 (过去)
+    // 问题2答案: 0->8牌, 1->9牌...6->14牌 (现在)
+    // 问题3答案: 0->15牌, 1->16牌...6->21牌 (未来)
+    var pastIdx = answers[0] + 1;      // 1~7
+    var presentIdx = answers[1] + 8;   // 8~14
+    var futureIdx = answers[2] + 15;   // 15~21
+
+    var past = majorArcana[pastIdx];
+    var present = majorArcana[presentIdx];
+    var future = majorArcana[futureIdx];
+
+    var description =
+        '【过去】「' + past.name + '」 — ' + past.meaning + '。\n' +
+        '过去的你经历了「' + past.name + '」所代表的课题：' + past.advice + '。这些经历塑造了现在的你。\n\n' +
+        '【现在】「' + present.name + '」 — ' + present.meaning + '。\n' +
+        '此刻你正处于「' + present.name + '」的能量中：' + present.advice + '。请正视当下的局面。\n\n' +
+        '【未来】「' + future.name + '」 — ' + future.meaning + '。\n' +
+        '未来的方向由「' + future.name + '」指引：' + future.advice + '。带着这份觉察前行吧。';
+
+    return {
+        type: '过去' + past.name + ' · 现在' + present.name + ' · 未来' + future.name,
+        description: description,
+        traits: [past.name + ': ' + past.meaning, present.name + ': ' + present.meaning, future.name + ': ' + future.meaning]
+    };
+}
+
+// 16型人格分析函数
+function analyze16Personalities() {
+    // 四个维度：E/I, S/N, T/F, J/P
+    // 问题1-2: E/I, 问题3-4: S/N, 问题5-6: T/F, 问题7-8: J/P
+    // 选项0 = 第一个字母, 选项1 = 第二个字母
+    var eiScore = 0, snScore = 0, tfScore = 0, jpScore = 0;
+
+    if (answers[0] === 0) eiScore++; else eiScore--;
+    if (answers[1] === 0) eiScore++; else eiScore--;
+    if (answers[2] === 0) snScore++; else snScore--;
+    if (answers[3] === 0) snScore++; else snScore--;
+    if (answers[4] === 0) tfScore++; else tfScore--;
+    if (answers[5] === 0) tfScore++; else tfScore--;
+    if (answers[6] === 0) jpScore++; else jpScore--;
+    if (answers[7] === 0) jpScore++; else jpScore--;
+
+    var type = '';
+    type += eiScore >= 0 ? 'E' : 'I';
+    type += snScore >= 0 ? 'S' : 'N';
+    type += tfScore >= 0 ? 'T' : 'F';
+    type += jpScore >= 0 ? 'J' : 'P';
+
+    var personaData = {
+        'INTJ': {
+            type: 'INTJ 建筑师',
+            description: '你是INTJ型人格——"建筑师"。你拥有深邃的战略眼光和独立思考能力，善于将抽象的愿景转化为可执行的计划。你追求效率和完美，对自己和他人都有极高的标准。内心世界丰富而独立，是天生的战略家。',
+            traits: ['战略思维', '独立自主', '目标坚定', '理性决策', '追求卓越']
+        },
+        'INTP': {
+            type: 'INTP 逻辑学家',
+            description: '你是INTP型人格——"逻辑学家"。你对知识有着近乎痴迷的渴求，喜欢探究事物的底层原理。思维敏捷而灵活，擅长发现别人忽略的逻辑漏洞。你享受独立思考的过程，追求思想的深度和精确性。',
+            traits: ['逻辑严密', '好奇心强', '独立思考', '客观分析', '创新思维']
+        },
+        'ENTJ': {
+            type: 'ENTJ 指挥官',
+            description: '你是ENTJ型人格——"指挥官"。天生的领导者，拥有强大的意志力和组织能力。你善于发现机会并迅速行动，能够将混乱转化为秩序。你的目标清晰、执行力强，天生适合带领团队冲锋陷阵。',
+            traits: ['领导力强', '果断高效', '战略视野', '组织能力', '目标导向']
+        },
+        'ENTP': {
+            type: 'ENTP 辩论家',
+            description: '你是ENTP型人格——"辩论家"。聪明而富有创造力的思考者，喜欢挑战传统观念和既定规则。你思维跳跃，善于从多角度分析问题，享受智力交锋的乐趣。对新想法充满热情，是天生的创新者。',
+            traits: ['思维敏捷', '善于辩论', '创新精神', '适应力强', '充满好奇']
+        },
+        'INFJ': {
+            type: 'INFJ 提倡者',
+            description: '你是INFJ型人格——"提倡者"。安静而神秘，拥有深刻的洞察力和同理心。你能够感知他人的情感和需求，对人性有着独特的理解。内心有坚定的理想和价值观，默默地为改变世界而努力。',
+            traits: ['洞察力强', '理想主义', '同理心深', '坚定信念', '静默奉献']
+        },
+        'INFP': {
+            type: 'INFP 调停者',
+            description: '你是INFP型人格——"调停者"。温柔而理想主义的诗意灵魂，对美和真理有着执着的追求。你拥有丰富的内心世界和创造力，对他人充满关爱和包容。始终忠于自己的价值观，渴望让世界变得更美好。',
+            traits: ['理想主义', '富有创意', '善解人意', '忠于内心', '温柔包容']
+        },
+        'ENFJ': {
+            type: 'ENFJ 主人公',
+            description: '你是ENFJ型人格——"主人公"。富有感染力的天生的领袖和引导者，善于激发他人的潜能。你拥有强烈的使命感，关心他人的成长和幸福。善于沟通和协调，能够让团队凝聚在一起朝共同目标前进。',
+            traits: ['感染力强', '善于引导', '关怀他人', '沟通高手', '使命感强']
+        },
+        'ENFP': {
+            type: 'ENFP 竞选者',
+            description: '你是ENFP型人格——"竞选者"。热情洋溢的自由灵魂，对生活充满无限好奇和热爱。你富有创造力和想象力，善于发现事物之间的联系。你的热情和乐观能够感染身边的每一个人，是人群中的阳光。',
+            traits: ['热情洋溢', '创意丰富', '善于社交', '乐观开朗', '自由随性']
+        },
+        'ISTJ': {
+            type: 'ISTJ 物流师',
+            description: '你是ISTJ型人格——"物流师"。稳重而可靠的实干家，做事一丝不苟，重视事实和秩序。你拥有强烈的责任感和使命感，是值得信赖的伙伴。尊重传统和规则，用实际行动证明自己的价值。',
+            traits: ['稳重可靠', '责任心强', '注重细节', '尊重秩序', '脚踏实地']
+        },
+        'ISFJ': {
+            type: 'ISFJ 守护者',
+            description: '你是ISFJ型人格——"守护者"。温暖而体贴的守护者，默默关心身边每一个人。你拥有出色的记忆力和观察力，能够注意到别人忽略的细节。忠诚而有耐心，是家人和朋友最可靠的依靠。',
+            traits: ['温暖体贴', '忠诚可靠', '注重细节', '耐心细致', '默默奉献']
+        },
+        'ESTJ': {
+            type: 'ESTJ 总经理',
+            description: '你是ESTJ型人格——"总经理"。务实而高效的组织者，善于管理人员和资源。你重视秩序和传统，做事有条理有计划。天生的管理者，能够将复杂的事务安排得井井有条，确保目标按时达成。',
+            traits: ['高效务实', '组织力强', '果断坚定', '重视秩序', '管理天赋']
+        },
+        'ESFJ': {
+            type: 'ESFJ 执政官',
+            description: '你是ESFJ型人格——"执政官"。热心的社交达人，善于营造和谐的氛围。你极其关注他人的需求，乐于提供帮助和支持。重视传统和社会规范，是群体中的粘合剂，让每个人都感到被重视和关爱。',
+            traits: ['热心助人', '善于社交', '注重和谐', '责任心强', '体贴入微']
+        },
+        'ISTP': {
+            type: 'ISTP 鉴赏家',
+            description: '你是ISTP型人格——"鉴赏家"。冷静而灵活的实践者，善于动手解决实际问题。你对工具和机械有天然的亲和力，喜欢拆解和探索事物的运作方式。思维敏捷，在紧急情况下能保持冷静并迅速应对。',
+            traits: ['冷静理性', '动手能力强', '灵活应变', '善于分析', '独立自主']
+        },
+        'ISFP': {
+            type: 'ISFP 探险家',
+            description: '你是ISFP型人格——"探险家"。安静而敏感的艺术家，对美和和谐有着天然的感知力。你活在当下，享受生活中的每一刻。不喜欢冲突和压力，追求自由和真实，用自己的方式表达内心的丰富世界。',
+            traits: ['艺术气质', '敏感细腻', '追求自由', '活在当下', '温和随性']
+        },
+        'ESTP': {
+            type: 'ESTP 企业家',
+            description: '你是ESTP型人格——"企业家"。精力充沛的行动派，喜欢冒险和挑战。你思维敏捷，善于在现实中快速做出判断。不喜欢空谈理论，更愿意通过行动来解决问题。天生的谈判高手和风险承担者。',
+            traits: ['行动力强', '善于应变', '冒险精神', '思维敏捷', '务实灵活']
+        },
+        'ESFP': {
+            type: 'ESFP 表演者',
+            description: '你是ESFP型人格——"表演者"。热情而迷人的活力源泉，善于活跃气氛和感染他人。你享受聚光灯下的感觉，热爱社交和娱乐。对美和时尚有敏锐的感知，追求快乐和刺激，让身边的人也感到生活的美好。',
+            traits: ['热情迷人', '善于表演', '活力四射', '审美敏锐', '享受当下']
+        }
+    };
+
+    return personaData[type] || personaData['INTJ'];
+}
+
+// 60日柱抽象人设分析函数
+function analyzeRiZhuPersonality() {
+    // 计算各维度得分
+    let metalScore = 0, waterScore = 0, woodScore = 0, fireScore = 0, earthScore = 0;
+    let yangScore = 0, yinScore = 0;
+    
+    // 问题1: 面对新环境
+    if (answers[0] === 0) { metalScore += 2; yangScore += 1; } // 主动探索
+    else if (answers[0] === 1) { waterScore += 2; yinScore += 1; } // 谨慎观察
+    else { earthScore += 1; } // 等待被引导
+    
+    // 问题2: 思维方式
+    if (answers[1] === 0) { metalScore += 2; } // 逻辑分析
+    else if (answers[1] === 1) { woodScore += 2; } // 直觉感受
+    else { fireScore += 1; } // 感性联想
+    
+    // 问题3: 团队角色
+    if (answers[2] === 0) { fireScore += 2; yangScore += 2; } // 领导者
+    else if (answers[2] === 1) { waterScore += 1; earthScore += 1; } // 协调者
+    else { metalScore += 1; } // 执行者
+    
+    // 问题4: 面对压力
+    if (answers[3] === 0) { metalScore += 2; yangScore += 1; } // 迎难而上
+    else if (answers[3] === 1) { waterScore += 2; yinScore += 1; } // 冷静思考
+    else { earthScore += 1; } // 寻求支持
+    
+    // 问题5: 情绪表达
+    if (answers[4] === 0) { fireScore += 2; yangScore += 1; } // 直接外露
+    else if (answers[4] === 1) { waterScore += 2; yinScore += 1; } // 含蓄内敛
+    else { woodScore += 1; } // 随机应变
+    
+    // 问题6: 做决定
+    if (answers[5] === 0) { metalScore += 2; } // 理性判断
+    else if (answers[5] === 1) { fireScore += 1; woodScore += 1; } // 内心感受
+    else { earthScore += 1; waterScore += 1; } // 他人建议
+    
+    // 问题7: 最看重
+    if (answers[6] === 0) { metalScore += 1; fireScore += 1; } // 事业成就
+    else if (answers[6] === 1) { waterScore += 1; woodScore += 1; } // 人际关系
+    else { earthScore += 1; } // 自我实现
+    
+    // 问题8: 面对变化
+    if (answers[7] === 0) { woodScore += 2; yangScore += 1; } // 拥抱变化
+    else if (answers[7] === 1) { fireScore += 1; } // 谨慎适应
+    else { earthScore += 2; yinScore += 1; } // 倾向稳定
+    
+    // 问题9: 社交风格
+    if (answers[8] === 0) { fireScore += 2; yangScore += 1; } // 热情外向
+    else if (answers[8] === 1) { earthScore += 1; woodScore += 1; } // 温和友善
+    else { waterScore += 2; yinScore += 1; } // 独立内向
+    
+    // 问题10: 遇到挑战
+    if (answers[9] === 0) { metalScore += 2; yangScore += 1; } // 积极迎战
+    else if (answers[9] === 1) { waterScore += 2; } // 从容应对
+    else { woodScore += 1; fireScore += 1; } // 寻找捷径
+    
+    // 找出五行最高分
+    const elements = [
+        { name: '金', score: metalScore },
+        { name: '水', score: waterScore },
+        { name: '木', score: woodScore },
+        { name: '火', score: fireScore },
+        { name: '土', score: earthScore }
+    ];
+    elements.sort((a, b) => b.score - a.score);
+    const dominantElement = elements[0].name;
+    
+    // 确定阴阳属性
+    const isYang = yangScore >= yinScore;
+    
+    // 映射到日柱
+    const rizhuMap = {
+        '金_阳': { type: '庚金日主', stem: '庚金', description: '你如庚金般刚毅果断，有着强烈的意志力和执行力。庚金是刀剑之金，代表勇敢、果决和领导力。你做事干脆利落，不惧挑战，在困难面前反而更加坚强。你的抽象人格像是一座坚固的金属堡垒，外表冷硬，内心却有炙热的情感。', traits: ['刚毅果断', '领导力强', '不畏挑战', '意志坚定', '行事果决'] },
+        '金_阴': { type: '辛金日主', stem: '辛金', description: '你如辛金般精致敏锐，有着细腻的感受力和追求完美的倾向。辛金是珠玉之金，代表精致、优雅和艺术气质。你对细节有着超乎常人的敏感度，追求品质和美感。你的抽象人格像是一件精心雕琢的艺术品，外表温婉，内心有着对完美的执着。', traits: ['精致敏锐', '追求完美', '艺术气质', '注重细节', '优雅得体'] },
+        '水_阳': { type: '壬水日主', stem: '壬水', description: '你如壬水般聪明灵动，有着广阔的思维和适应能力。壬水是江河之水，代表智慧、变通和胸怀。你善于思考和规划，能够灵活应对各种情况。你的抽象人格像是奔涌的江河，充满活力和智慧，能包容万物。', traits: ['聪明灵动', '善于规划', '灵活应变', '胸怀宽广', '智慧过人'] },
+        '水_阴': { type: '癸水日主', stem: '癸水', description: '你如癸水般细腻深沉，有着敏锐的直觉和深厚的情感。癸水是雨露之水，代表温柔、包容和感知力。你能够感知他人的情绪，具有极强的共情能力。你的抽象人格像是深邃的湖泊，表面平静，内心蕴含无尽的智慧和情感。', traits: ['细腻深沉', '直觉敏锐', '共情力强', '包容温柔', '感知丰富'] },
+        '木_阳': { type: '甲木日主', stem: '甲木', description: '你如甲木般正直挺拔，有着坚定的信念和远大的志向。甲木是栋梁之木，代表正直、进取和领导力。你有着清晰的价值观，做事有原则，能够承担责任。你的抽象人格像是参天大树，根深叶茂，能够庇护他人。', traits: ['正直挺拔', '信念坚定', '进取向上', '有原则性', '能担重任'] },
+        '木_阴': { type: '乙木日主', stem: '乙木', description: '你如乙木般柔韧灵活，有着温和的性格和艺术的天赋。乙木是花草藤萝，代表柔韧、适应和美感。你能够在各种环境中生长，具有艺术气质和审美能力。你的抽象人格像是优美的藤蔓，柔韧而富有生命力，能够攀附任何支撑。', traits: ['柔韧灵活', '温和友善', '艺术天赋', '适应力强', '富有美感'] },
+        '火_阳': { type: '丙火日主', stem: '丙火', description: '你如丙火般热情开朗，有着充沛的能量和感染力。丙火是太阳之火，代表热情、光明和领导力。你能够温暖他人，具有强大的感染力和号召力。你的抽象人格像是灿烂的太阳，光芒四射，能够照亮周围的世界。', traits: ['热情开朗', '能量充沛', '感染力强', '光明磊落', '富有号召力'] },
+        '火_阴': { type: '丁火日主', stem: '丁火', description: '你如丁火般温柔细腻，有着丰富的情感和艺术的灵感。丁火是灯烛之火，代表温柔、灵感和文化气质。你善于表达情感，具有丰富的想象力和创造力。你的抽象人格像是温暖的烛光，虽不耀眼，却能温暖人心，具有独特的魅力。', traits: ['温柔细腻', '情感丰富', '富有灵感', '文化气质', '温暖人心'] },
+        '土_阳': { type: '戊土日主', stem: '戊土', description: '你如戊土般稳重踏实，有着可靠的品质和坚定的信念。戊土是高山厚土，代表稳重、诚实和包容力。你做事脚踏实地，值得信赖，能够承担重任。你的抽象人格像是巍峨的山岳，稳固可靠，能够承受任何压力。', traits: ['稳重踏实', '诚实可靠', '包容力强', '脚踏实地', '值得信赖'] },
+        '土_阴': { type: '己土日主', stem: '己土', description: '你如己土般包容含蓄，有着细腻的情感和服务的精神。己土是田园之土，代表包容、含蓄和奉献。你善于照顾他人，具有服务精神和耐心。你的抽象人格像是肥沃的土壤，能够孕育万物，默默付出而不求回报。', traits: ['包容含蓄', '善解人意', '服务精神', '耐心细致', '默默奉献'] }
+    };
+    
+    const key = `${dominantElement}_${isYang ? '阳' : '阴'}`;
+    return rizhuMap[key] || rizhuMap['金_阳'];
 }
 
 function closeModal() {

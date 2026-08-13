@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>16型人格测试 - 模拟测试</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background: #f5f7fa; padding: 20px; }
+        .test-panel {
+            max-width: 1000px; margin: 80px auto 20px;
+            background: #fff; border-radius: 16px;
+            padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .test-panel h1 { text-align: center; color: #2c3e50; margin-bottom: 10px; }
+        .test-panel .subtitle { text-align: center; color: #888; margin-bottom: 30px; }
+        .type-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 12px; margin-bottom: 30px;
+        }
+        .type-btn {
+            padding: 14px 8px; border: none; border-radius: 10px;
+            font-size: 15px; font-weight: 600; color: #fff;
+            cursor: pointer; transition: all 0.25s;
+            background: linear-gradient(135deg, #5b86e5, #36d1dc);
+        }
+        .type-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(91,134,229,0.4); }
+        .type-btn.tested { opacity: 0.5; pointer-events: none; }
+        .run-all-btn {
+            display: block; width: 100%; padding: 14px;
+            border: none; border-radius: 10px; font-size: 16px;
+            font-weight: 600; color: #fff; cursor: pointer;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            margin-bottom: 20px;
+        }
+        .results-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .results-table th, .results-table td {
+            padding: 10px 12px; text-align: left;
+            border-bottom: 1px solid #eee; font-size: 14px;
+        }
+        .results-table th { background: #f0f2f5; color: #2c3e50; }
+        .results-table .type-cell { font-weight: 700; color: #5b86e5; white-space: nowrap; }
+        .results-table .desc-cell { color: #555; line-height: 1.5; }
+        .results-table .traits-cell { color: #888; }
+        .results-table tr.pass { background: #f0fff4; }
+        .results-table tr.fail { background: #fff0f0; }
+        .status-badge {
+            display: inline-block; padding: 2px 8px; border-radius: 4px;
+            font-size: 12px; font-weight: 600;
+        }
+        .status-badge.ok { background: #d4edda; color: #155724; }
+        .status-badge.bad { background: #f8d7da; color: #721c24; }
+        .summary { text-align: center; font-size: 16px; margin: 20px 0; }
+        .summary .ok-count { color: #28a745; font-weight: 700; }
+        .summary .fail-count { color: #dc3545; font-weight: 700; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo"><i class="fas fa-heart"></i><span>心灵驿站</span></div>
+            <ul class="nav-menu">
+                <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                <li><a href="test.html" class="active"><i class="fas fa-flask"></i> 心理测试</a></li>
+                <li><a href="music.html"><i class="fas fa-music"></i> 音乐殿堂</a></li>
+                <li><a href="games.html"><i class="fas fa-gamepad"></i> 小游戏</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="test-panel">
+        <h1>16型人格测试 - 模拟验证</h1>
+        <p class="subtitle">点击按钮模拟对应答题组合，验证 analyze16Personalities() 是否返回正确的人格类型</p>
+
+        <button class="run-all-btn" onclick="runAllTests()">一键测试全部16种类型</button>
+
+        <div class="type-grid" id="typeGrid"></div>
+
+        <div class="summary" id="summary"></div>
+
+        <table class="results-table" id="resultsTable" style="display:none;">
+            <thead>
+                <tr>
+                    <th>状态</th>
+                    <th>期望类型</th>
+                    <th>实际返回</th>
+                    <th>描述</th>
+                    <th>性格特点</th>
+                </tr>
+            </thead>
+            <tbody id="resultsBody"></tbody>
+        </table>
+    </div>
+
+    <!-- 复用 test.html 的结果弹窗结构 -->
+    <div class="result-modal" id="resultModal" style="display:none;">
+        <div class="modal-content result-content">
+            <div class="result-header">
+                <h3>测试完成！</h3>
+                <div class="result-type" id="resultType">你的类型</div>
+            </div>
+            <div class="result-body">
+                <div class="result-description" id="resultDescription"></div>
+                <div class="result-traits">
+                    <h4>性格特点</h4>
+                    <ul id="traitsList"></ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="document.getElementById('resultModal').style.display='none'">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // 16种类型的模拟答案
+        // E/I: 问题0-1, option0=E option1=I
+        // S/N: 问题2-3, option0=S option1=N
+        // T/F: 问题4-5, option0=T option1=F
+        // J/P: 问题6-7, option0=J option1=P
+        var mockData = [
+            { type: 'INTJ', answers: [1,1, 1,1, 0,0, 0,0] },
+            { type: 'INTP', answers: [1,1, 1,1, 0,0, 1,1] },
+            { type: 'ENTJ', answers: [0,0, 1,1, 0,0, 0,0] },
+            { type: 'ENTP', answers: [0,0, 1,1, 0,0, 1,1] },
+            { type: 'INFJ', answers: [1,1, 1,1, 1,1, 0,0] },
+            { type: 'INFP', answers: [1,1, 1,1, 1,1, 1,1] },
+            { type: 'ENFJ', answers: [0,0, 1,1, 1,1, 0,0] },
+            { type: 'ENFP', answers: [0,0, 1,1, 1,1, 1,1] },
+            { type: 'ISTJ', answers: [1,1, 0,0, 0,0, 0,0] },
+            { type: 'ISFJ', answers: [1,1, 0,0, 1,1, 0,0] },
+            { type: 'ESTJ', answers: [0,0, 0,0, 0,0, 0,0] },
+            { type: 'ESFJ', answers: [0,0, 0,0, 1,1, 0,0] },
+            { type: 'ISTP', answers: [1,1, 0,0, 0,0, 1,1] },
+            { type: 'ISFP', answers: [1,1, 0,0, 1,1, 1,1] },
+            { type: 'ESTP', answers: [0,0, 0,0, 0,0, 1,1] },
+            { type: 'ESFP', answers: [0,0, 0,0, 1,1, 1,1] }
+        ];
+
+        // 生成按钮
+        var grid = document.getElementById('typeGrid');
+        mockData.forEach(function(item, idx) {
+            var btn = document.createElement('button');
+            btn.className = 'type-btn';
+            btn.textContent = item.type;
+            btn.onclick = function() { testSingle(idx); };
+            grid.appendChild(btn);
+        });
+
+        // 测试单个类型并弹出结果
+        function testSingle(idx) {
+            var item = mockData[idx];
+            answers = item.answers.slice();
+            currentTest = 'persona16';
+            var persona = analyze16Personalities();
+
+            document.getElementById('resultType').textContent = persona.type;
+            document.getElementById('resultDescription').textContent = persona.description;
+
+            var ul = document.getElementById('traitsList');
+            ul.innerHTML = '';
+            persona.traits.forEach(function(t) {
+                var li = document.createElement('li');
+                li.textContent = t;
+                ul.appendChild(li);
+            });
+
+            document.getElementById('resultModal').style.display = 'flex';
+        }
+
+        // 一键测试全部
+        function runAllTests() {
+            var tbody = document.getElementById('resultsBody');
+            tbody.innerHTML = '';
+            var passCount = 0;
+
+            mockData.forEach(function(item) {
+                answers = item.answers.slice();
+                currentTest = 'persona16';
+                var persona = analyze16Personalities();
+
+                // 检查返回的type是否以期望的4字母开头
+                var expected = item.type;
+                var actualPrefix = persona.type.substring(0, 4);
+                var isPass = actualPrefix === expected;
+
+                if (isPass) passCount++;
+
+                var tr = document.createElement('tr');
+                tr.className = isPass ? 'pass' : 'fail';
+                tr.innerHTML =
+                    '<td><span class="status-badge ' + (isPass ? 'ok' : 'bad') + '">' +
+                    (isPass ? '通过' : '失败') + '</span></td>' +
+                    '<td class="type-cell">' + expected + '</td>' +
+                    '<td class="type-cell">' + persona.type + '</td>' +
+                    '<td class="desc-cell">' + persona.description.substring(0, 50) + '...</td>' +
+                    '<td class="traits-cell">' + persona.traits.join('、') + '</td>';
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('resultsTable').style.display = 'table';
+            document.getElementById('summary').innerHTML =
+                '共 ' + mockData.length + ' 项测试，' +
+                '<span class="ok-count">' + passCount + ' 项通过</span>，' +
+                '<span class="fail-count">' + (mockData.length - passCount) + ' 项失败</span>';
+
+            // 标记所有按钮为已测试
+            document.querySelectorAll('.type-btn').forEach(function(btn) {
+                btn.classList.add('tested');
+            });
+        }
+    </script>
+</body>
+</html>

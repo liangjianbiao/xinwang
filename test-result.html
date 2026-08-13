@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试结果 - 心灵驿站</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .page-header-bar {
+            width: 100%;
+            max-width: 560px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .back-link {
+            color: #fff; text-decoration: none; font-weight: 600;
+            display: flex; align-items: center; gap: 6px; font-size: 14px;
+        }
+        .back-link:hover { text-decoration: underline; }
+        .page-title { color: #fff; font-weight: 700; font-size: 16px; }
+
+        .result-wrapper {
+            width: 100%;
+            max-width: 560px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        #resultCard {
+            background: #fff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .result-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 32px 60px;
+            text-align: center;
+            color: #fff;
+            position: relative;
+        }
+        .result-badge {
+            display: inline-block;
+            width: 72px; height: 72px;
+            background: rgba(255,255,255,0.25);
+            border-radius: 50%;
+            line-height: 72px;
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+        .result-label { font-size: 14px; opacity: 0.9; margin-bottom: 8px; }
+        .result-type-name {
+            font-size: 26px; font-weight: 800;
+            margin-bottom: 4px;
+            word-break: break-all;
+        }
+        .result-date { font-size: 12px; opacity: 0.75; }
+
+        .result-body {
+            padding: 0 32px 32px;
+            margin-top: -40px;
+        }
+
+        .result-card-section {
+            background: #f8f9ff;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+            text-align: center;
+        }
+        .result-card-section h4 {
+            font-size: 14px;
+            color: #667eea;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .result-desc {
+            font-size: 15px;
+            line-height: 1.9;
+            color: #333;
+            white-space: pre-wrap;
+            text-align: center;
+        }
+
+        .traits-section { margin-bottom: 16px; text-align: center; }
+        .traits-section h4 {
+            font-size: 14px;
+            color: #667eea;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .traits-grid {
+            display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+        }
+        .trait-tag {
+            background: linear-gradient(135deg, #e8ecff, #f0e6ff);
+            color: #5b3dd2;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .share-section {
+            text-align: center;
+            padding-top: 16px;
+            border-top: 1px dashed #e0e0e0;
+        }
+        .share-section p { color: #999; font-size: 12px; margin-bottom: 8px; }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 8px;
+            justify-items: center;
+        }
+        .action-btn {
+            padding: 14px 8px;
+            border: none;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s;
+            color: #fff;
+        }
+        .action-btn i { font-size: 20px; }
+        .action-btn.redo { background: linear-gradient(135deg, #ff758c, #ff7eb3); }
+        .action-btn.save { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .action-btn.home { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .action-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+
+        .toast {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.85);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .toast.show { opacity: 1; }
+
+        @media (max-width: 600px) {
+            .result-banner { padding: 32px 24px 50px; }
+            .result-type-name { font-size: 22px; }
+            .result-body { padding: 0 20px 24px; }
+            .result-card-section { padding: 16px; }
+            .action-buttons { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+            .action-btn { padding: 12px 4px; font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header-bar">
+        <a class="back-link" onclick="history.back()" style="cursor:pointer;"><i class="fas fa-arrow-left"></i> 返回</a>
+        <div class="page-title">测试结果</div>
+        <div style="width:50px;"></div>
+    </div>
+
+    <div class="result-wrapper">
+        <div id="resultCard">
+            <div class="result-banner">
+                <div class="result-badge"><i class="fas fa-certificate"></i></div>
+                <div class="result-label" id="rLabel">你的测试结果</div>
+                <div class="result-type-name" id="rType">加载中...</div>
+                <div class="result-date" id="rDate"></div>
+            </div>
+            <div class="result-body">
+                <div class="result-card-section">
+                    <h4>结果解读</h4>
+                    <div class="result-desc" id="rDesc"></div>
+                </div>
+
+                <div class="traits-section" id="traitsSection" style="display:none;">
+                    <h4>性格特点</h4>
+                    <div class="traits-grid" id="rTraits"></div>
+                </div>
+
+                <div class="share-section">
+                    <p>长按图片可保存到相册，分享给朋友吧</p>
+                    <div class="action-buttons">
+                        <button class="action-btn redo" onclick="redoTest()"><i class="fas fa-redo"></i>重新测试</button>
+                        <button class="action-btn save" onclick="downloadImage()"><i class="fas fa-download"></i>保存图片</button>
+                        <button class="action-btn home" onclick="goHome()"><i class="fas fa-home"></i>返回首页</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        function showToast(msg) {
+            var t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(function() { t.classList.remove('show'); }, 2000);
+        }
+
+        function loadResult() {
+            var raw = localStorage.getItem('test_result');
+            if (!raw) {
+                // 没有结果，跳回
+                document.getElementById('rType').textContent = '暂无测试结果';
+                document.getElementById('rDesc').textContent = '请先完成测试';
+                document.getElementById('traitsSection').style.display = 'none';
+                setTimeout(function() { window.location.href = 'test.html'; }, 2000);
+                return;
+            }
+            var data = JSON.parse(raw);
+            document.getElementById('rLabel').textContent = data.testTitle || '你的测试结果';
+            document.getElementById('rType').textContent = data.type;
+            document.getElementById('rDate').textContent = data.timestamp ? ('测试时间：' + data.timestamp) : '';
+            document.getElementById('rDesc').textContent = data.description;
+
+            if (data.traits && data.traits.length > 0) {
+                var grid = document.getElementById('rTraits');
+                grid.innerHTML = '';
+                data.traits.forEach(function(t) {
+                    var span = document.createElement('span');
+                    span.className = 'trait-tag';
+                    span.textContent = t;
+                    grid.appendChild(span);
+                });
+                document.getElementById('traitsSection').style.display = 'block';
+            }
+        }
+
+        function downloadImage() {
+            var card = document.getElementById('resultCard');
+            showToast('正在生成图片...');
+
+            html2canvas(card, {
+                backgroundColor: null,
+                scale: 2,
+                useCORS: true,
+                logging: false
+            }).then(function(canvas) {
+                var link = document.createElement('a');
+                var typeText = document.getElementById('rType').textContent.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '_');
+                link.download = '测试结果_' + typeText + '_' + Date.now() + '.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                showToast('✓ 图片已保存');
+            }).catch(function(err) {
+                console.error(err);
+                showToast('生成失败，请重试');
+            });
+        }
+
+        function redoTest() {
+            var params = new URLSearchParams(window.location.search);
+            var testId = params.get('test') || 'mbti';
+            localStorage.removeItem('test_draft_' + testId);
+            window.location.href = 'test-taking.html?test=' + testId;
+        }
+
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        loadResult();
+    </script>
+</body>
+</html>

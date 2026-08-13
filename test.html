@@ -27,7 +27,6 @@
             <ul class="nav-menu">
                 <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
                 <li><a href="test.html" class="active"><i class="fas fa-flask"></i> 心理测试</a></li>
-                <li><a href="news.html"><i class="fas fa-newspaper"></i> 资讯</a></li>
                 <li><a href="music.html"><i class="fas fa-music"></i> 音乐殿堂</a></li>
                 <li><a href="games.html"><i class="fas fa-gamepad"></i> 小游戏</a></li>
                 <li><a href="schoolRankingsShJshan/school-rankings.html"><i class="fas fa-school"></i> 学校排名</a></li>
@@ -170,53 +169,65 @@
                     </div>
                     <button class="start-test-btn" onclick="startTest('stress')">开始测试</button>
                 </div>
+
+                <!-- 60日柱抽象人设测试 -->
+                <div class="test-item" id="rizhu" data-category="personality">
+                    <div class="test-icon rizhu-icon"><i class="fas fa-yin-yang"></i></div>
+                    <div class="test-info">
+                        <h3>60日柱抽象人设测试</h3>
+                        <p>根据六十甲子日柱命理，探索你的抽象人格特质与内在能量。</p>
+                        <div class="test-meta">
+                            <span><i class="fas fa-users"></i> 3,688人已测</span>
+                            <span><i class="fas fa-clock"></i> 10分钟</span>
+                        </div>
+                    </div>
+                    <button class="start-test-btn" onclick="startTest('rizhu')">开始测试</button>
+                </div>
+
+                <!-- 16型人格测试 -->
+                <div class="test-item" id="persona16" data-category="personality">
+                    <div class="test-icon persona16-icon"><i class="fas fa-id-card"></i></div>
+                    <div class="test-info">
+                        <h3>16型人格测试</h3>
+                        <p>基于MBTI四维模型，精准测定你的16型人格类型，解读你的认知方式与行为偏好。</p>
+                        <div class="test-meta">
+                            <span><i class="fas fa-users"></i> 15,820人已测</span>
+                            <span><i class="fas fa-clock"></i> 8分钟</span>
+                        </div>
+                    </div>
+                    <button class="start-test-btn" onclick="startTest('persona16')">开始测试</button>
+                </div>
+
+                <!-- 大洋人格测试 -->
+                <div class="test-item" id="ocean" data-category="personality">
+                    <div class="test-icon ocean-icon"><i class="fas fa-water"></i></div>
+                    <div class="test-info">
+                        <h3>大洋人格测试</h3>
+                        <p>基于大五人格（OCEAN）模型，评估开放性、尽责性、外向性、宜人性、神经质五大维度。</p>
+                        <div class="test-meta">
+                            <span><i class="fas fa-users"></i> 9,260人已测</span>
+                            <span><i class="fas fa-clock"></i> 12分钟</span>
+                        </div>
+                    </div>
+                    <button class="start-test-btn" onclick="startTest('ocean')">开始测试</button>
+                </div>
+
+                <!-- 塔罗牌测试 -->
+                <div class="test-item" id="tarot" data-category="fun">
+                    <div class="test-icon tarot-icon"><i class="fas fa-moon"></i></div>
+                    <div class="test-info">
+                        <h3>塔罗牌抽牌占卜</h3>
+                        <p>抽取三张塔罗牌，从过去、现在、未来三个维度解读你的心灵轨迹与指引。</p>
+                        <div class="test-meta">
+                            <span><i class="fas fa-users"></i> 12,450人已测</span>
+                            <span><i class="fas fa-clock"></i> 5分钟</span>
+                        </div>
+                    </div>
+                    <button class="start-test-btn" onclick="startTest('tarot')">开始测试</button>
+                </div>
             </div>
         </div>
     </section>
-
-    <!-- 测试进行中弹窗 -->
-    <div class="test-modal" id="testModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="testTitle">测试进行中</h3>
-                <span class="close-modal" onclick="closeModal()">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-                <div class="question-container">
-                    <div class="question-number" id="questionNumber">1/10</div>
-                    <div class="question-text" id="questionText">这是一个测试问题？</div>
-                    <div class="options-container" id="optionsContainer"></div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="prevQuestion()">上一题</button>
-                <button class="btn btn-primary" onclick="nextQuestion()">下一题</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 测试结果弹窗 -->
-    <div class="result-modal" id="resultModal">
-        <div class="modal-content result-content">
-            <div class="result-header">
-                <h3>测试完成！</h3>
-                <div class="result-type" id="resultType">你的类型</div>
-            </div>
-            <div class="result-body">
-                <div class="result-description" id="resultDescription"></div>
-                <div class="result-traits">
-                    <h4>性格特点</h4>
-                    <ul id="traitsList"></ul>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" onclick="closeResultModal()">关闭</button>
-            </div>
-        </div>
-    </div>
 
     <!-- 页脚 -->
     <footer>
@@ -231,7 +242,6 @@
                     <ul>
                         <li><a href="index.html">首页</a></li>
                         <li><a href="test.html">心理测试</a></li>
-                        <li><a href="news.html">资讯</a></li>
                         <li><a href="music.html">音乐殿堂</a></li>
                         <li><a href="games.html">小游戏</a></li>
                         <li><a href="schoolRankingsShJshan/school-rankings.html">学校排名</a></li>

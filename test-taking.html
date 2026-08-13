@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心理测试 - 心灵驿站</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .page-header-bar {
+            background: rgba(255,255,255,0.95);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .back-btn {
+            display: flex; align-items: center; gap: 8px;
+            color: #667eea; text-decoration: none; font-weight: 600;
+            font-size: 15px; cursor: pointer; border: none; background: none;
+        }
+        .back-btn:hover { color: #764ba2; }
+        .test-title {
+            font-size: 18px; font-weight: 700; color: #333;
+        }
+        .save-draft {
+            color: #888; font-size: 13px; cursor: pointer; background: none;
+            border: none; text-decoration: none;
+        }
+        .save-draft:hover { color: #667eea; }
+
+        .main-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .question-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px 36px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .progress-section {
+            margin-bottom: 32px;
+        }
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+        .progress-info span:last-child { color: #999; }
+        .progress-bar-wrap {
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.4s ease;
+        }
+
+        .question-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        .question-hint {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .options-list { display: flex; flex-direction: column; gap: 12px; }
+        .option-btn {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e8e8e8;
+            border-radius: 14px;
+            background: #fafafa;
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .option-btn:hover {
+            border-color: #667eea;
+            background: #f5f7ff;
+            transform: translateX(4px);
+        }
+        .option-btn.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+        }
+        .option-btn.selected:hover { transform: translateX(0); }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 36px;
+        }
+        .nav-btn {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .nav-btn.prev {
+            background: #f0f0f0;
+            color: #666;
+        }
+        .nav-btn.prev:hover:not(:disabled) { background: #e5e5e5; }
+        .nav-btn.prev:disabled { opacity: 0.4; cursor: not-allowed; }
+        .nav-btn.next {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+        }
+        .nav-btn.next:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102,126,234,0.4); }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .start-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        .start-card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 48px 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+        }
+        .start-icon {
+            width: 80px; height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 32px; color: #fff;
+        }
+        .start-card h2 { font-size: 24px; color: #2c3e50; margin-bottom: 12px; }
+        .start-card p { color: #888; line-height: 1.8; margin-bottom: 8px; }
+        .start-meta { color: #aaa; font-size: 14px; margin: 20px 0; }
+        .start-btn-main {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 0.25s;
+        }
+        .start-btn-main:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(102,126,234,0.4); }
+
+        @media (max-width: 600px) {
+            .question-card { padding: 28px 20px; border-radius: 16px; }
+            .question-text { font-size: 19px; }
+            .option-btn { padding: 14px 16px; font-size: 15px; }
+            .nav-btn { padding: 12px 16px; font-size: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="start-overlay" id="startOverlay">
+        <div class="start-card">
+            <div class="start-icon"><i class="fas fa-flask"></i></div>
+            <h2 id="startTitle">心理测试</h2>
+            <p id="startDesc">请根据你的真实感受作答</p>
+            <div class="start-meta" id="startMeta">共 X 题 · 约 Y 分钟</div>
+            <button class="start-btn-main" onclick="beginTest()">开 始 测 试</button>
+        </div>
+    </div>
+
+    <div class="page-header-bar">
+        <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> 返回</button>
+        <div class="test-title" id="topTitle">心理测试</div>
+        <span class="save-draft" id="saveDraft">继续上次</span>
+    </div>
+
+    <div class="main-container">
+        <div class="question-card" id="questionCard" style="display:none;">
+            <div class="progress-section">
+                <div class="progress-info">
+                    <span id="qNumber">1/10</span>
+                    <span id="progressPercent">10%</span>
+                </div>
+                <div class="progress-bar-wrap">
+                    <div class="progress-fill-bar" id="progressBar" style="width:10%"></div>
+                </div>
+            </div>
+            <div class="question-text" id="qText">问题</div>
+            <div class="question-hint">请选择最符合你的选项</div>
+            <div class="options-list" id="optionsList"></div>
+            <div class="nav-buttons">
+                <button class="nav-btn prev" id="prevBtn" onclick="goPrev()" disabled>上一题</button>
+                <button class="nav-btn next" id="nextBtn" onclick="goNext()">下一题</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="test-data.js"></script>
+    <script>
+        var testId = '';
+        var currentQ = 0;
+        var answers = [];
+        var testData = null;
+
+        // 从URL获取参数
+        var params = new URLSearchParams(window.location.search);
+        testId = params.get('test') || 'mbti';
+
+        // 获取测试数据
+        testData = TEST_QUESTIONS[testId];
+        if (!testData) {
+            alert('测试不存在');
+            window.location.href = 'test.html';
+        }
+
+        // 检查是否有未完成的草稿
+        var savedDraft = localStorage.getItem('test_draft_' + testId);
+        var hasDraft = false;
+        if (savedDraft) {
+            try {
+                var draft = JSON.parse(savedDraft);
+                if (draft && draft.answers && draft.answers.length > 0 && draft.currentQ < testData.questions.length) {
+                    hasDraft = true;
+                    answers = draft.answers;
+                    currentQ = draft.currentQ;
+                }
+            } catch(e) {}
+        }
+        document.getElementById('saveDraft').style.display = hasDraft ? 'inline' : 'none';
+
+        // 设置开始页面信息
+        document.getElementById('startTitle').textContent = testData.title;
+        var descMap = {
+            'mbti': '探索你的人格类型，了解自己的性格特点',
+            'enneagram': '探索你的核心动机和成长路径',
+            'love': '了解你的恋爱风格和爱情观',
+            'career': '发现你的职业优势和发展方向',
+            'eq': '评估你的情绪智力水平',
+            'color': '通过颜色偏好揭示性格特点',
+            'dream': '探索梦境象征与潜意识信息',
+            'stress': '评估当前压力水平',
+            'rizhu': '根据六十甲子日柱探索抽象人格',
+            'persona16': '基于MBTI四维模型测定人格类型',
+            'ocean': '评估开放性、尽责性等五大维度',
+            'tarot': '抽取三张塔罗牌解读心灵轨迹'
+        };
+        document.getElementById('startDesc').textContent = descMap[testId] || '请根据你的真实感受作答';
+        var timeEst = Math.ceil(testData.questions.length / 2);
+        document.getElementById('startMeta').textContent = '共 ' + testData.questions.length + ' 题 · 约 ' + timeEst + ' 分钟';
+
+        if (hasDraft) {
+            document.getElementById('saveDraft').textContent = '继续上次 · 第' + (currentQ + 1) + '题';
+        }
+
+        function beginTest() {
+            if (!hasDraft) {
+                answers = [];
+                currentQ = 0;
+            }
+            document.getElementById('startOverlay').style.display = 'none';
+            document.getElementById('questionCard').style.display = 'block';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            var q = testData.questions[currentQ];
+            var total = testData.questions.length;
+            var percent = Math.round(((currentQ + 1) / total) * 100);
+
+            document.getElementById('qNumber').textContent = (currentQ + 1) + '/' + total;
+            document.getElementById('progressPercent').textContent = percent + '%';
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('qText').textContent = q.q;
+            document.getElementById('topTitle').textContent = testData.title;
+
+            var list = document.getElementById('optionsList');
+            list.innerHTML = '';
+            q.options.forEach(function(opt, i) {
+                var btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = String.fromCharCode(65 + i) + '. ' + opt;
+                btn.onclick = function() { selectAns(i); };
+                if (answers[currentQ] === i) btn.classList.add('selected');
+                list.appendChild(btn);
+            });
+
+            document.getElementById('prevBtn').disabled = currentQ === 0;
+            var nextBtn = document.getElementById('nextBtn');
+            if (currentQ === total - 1) {
+                nextBtn.textContent = '查看结果';
+            } else {
+                nextBtn.textContent = '下一题';
+            }
+        }
+
+        function selectAns(idx) {
+            answers[currentQ] = idx;
+            var btns = document.querySelectorAll('.option-btn');
+            btns.forEach(function(b) { b.classList.remove('selected'); });
+            btns[idx].classList.add('selected');
+            // 自动保存
+            saveDraft();
+        }
+
+        function goPrev() {
+            if (currentQ > 0) { currentQ--; showQuestion(); }
+        }
+
+        function goNext() {
+            if (answers[currentQ] === undefined) {
+                alert('请选择一个答案');
+                return;
+            }
+            if (currentQ < testData.questions.length - 1) {
+                currentQ++;
+                showQuestion();
+            } else {
+                // 完成测试，保存结果并跳转
+                submitTest();
+            }
+        }
+
+        function saveDraft() {
+            localStorage.setItem('test_draft_' + testId, JSON.stringify({
+                answers: answers,
+                currentQ: currentQ
+            }));
+        }
+
+        function submitTest() {
+            localStorage.removeItem('test_draft_' + testId);
+            var result = analyzeTest(testId, answers);
+            var resultData = {
+                testId: testId,
+                testTitle: testData.title,
+                type: result.type,
+                description: result.description,
+                traits: result.traits,
+                timestamp: new Date().toLocaleString()
+            };
+            localStorage.setItem('test_result', JSON.stringify(resultData));
+            // 跳转到结果页
+            window.location.href = 'test-result.html?test=' + testId;
+        }
+
+        function goBack() {
+            if (confirm('确定要退出吗？已填写的答案会保存为草稿。')) {
+                saveDraft();
+                window.location.href = 'test.html';
+            }
+        }
+    </script>
+</body>
+</html>
