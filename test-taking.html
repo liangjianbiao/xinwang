@@ -147,6 +147,17 @@
         .nav-btn.next:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102,126,234,0.4); }
         .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
+        .card-footer-hint {
+            text-align: center;
+            margin-top: 24px;
+            color: #bbb;
+            font-size: 13px;
+        }
+        .card-footer-hint.done {
+            color: #667eea;
+            font-weight: 600;
+        }
+
         .start-overlay {
             position: fixed;
             inset: 0;
@@ -230,10 +241,7 @@
             <div class="question-text" id="qText">问题</div>
             <div class="question-hint">请选择最符合你的选项</div>
             <div class="options-list" id="optionsList"></div>
-            <div class="nav-buttons">
-                <button class="nav-btn prev" id="prevBtn" onclick="goPrev()" disabled>上一题</button>
-                <button class="nav-btn next" id="nextBtn" onclick="goNext()">下一题</button>
-            </div>
+            <div class="card-footer-hint" id="footerHint">选择一个选项后自动进入下一题</div>
         </div>
     </div>
 
@@ -326,13 +334,13 @@
                 list.appendChild(btn);
             });
 
-            document.getElementById('prevBtn').disabled = currentQ === 0;
-            var nextBtn = document.getElementById('nextBtn');
+            var hint = document.getElementById('footerHint');
             if (currentQ === total - 1) {
-                nextBtn.textContent = '查看结果';
+                hint.textContent = '选择完成后查看结果';
             } else {
-                nextBtn.textContent = '下一题';
+                hint.textContent = '选择一个选项后自动进入下一题';
             }
+            hint.classList.remove('done');
         }
 
         function selectAns(idx) {
@@ -340,25 +348,24 @@
             var btns = document.querySelectorAll('.option-btn');
             btns.forEach(function(b) { b.classList.remove('selected'); });
             btns[idx].classList.add('selected');
-            // 自动保存
             saveDraft();
-        }
 
-        function goPrev() {
-            if (currentQ > 0) { currentQ--; showQuestion(); }
-        }
+            var hint = document.getElementById('footerHint');
+            var total = testData.questions.length;
 
-        function goNext() {
-            if (answers[currentQ] === undefined) {
-                alert('请选择一个答案');
-                return;
-            }
-            if (currentQ < testData.questions.length - 1) {
-                currentQ++;
-                showQuestion();
+            if (currentQ === total - 1) {
+                hint.textContent = '正在生成结果...';
+                hint.classList.add('done');
+                setTimeout(function() {
+                    submitTest();
+                }, 600);
             } else {
-                // 完成测试，保存结果并跳转
-                submitTest();
+                hint.textContent = '✓ 已选择，即将进入下一题...';
+                hint.classList.add('done');
+                setTimeout(function() {
+                    currentQ++;
+                    showQuestion();
+                }, 500);
             }
         }
 

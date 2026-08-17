@@ -726,9 +726,9 @@
         // 对路径进行编码：保留斜杠分隔符，只编码文件名中的特殊字符
         function ossEncodePath(path) {
             return path.split('/').map(function(seg) { return encodeURI(seg); }).join('/');
-        }
+        } 
 
-        function playMusic(id) {
+        function playMusic(id) {   
             const music = musicDatabase.find(m => m.id === id);
             if (!music) return;
 
@@ -737,7 +737,7 @@
 
             const player = document.getElementById('audioPlayer');
             const audio = document.getElementById('audioElement');
-            player.classList.add('active');
+            player.classList.add('active'); 
 
             document.getElementById('playerTitle').textContent = music.title;
             document.getElementById('playerMood').textContent = music.moodName;
