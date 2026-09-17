@@ -13,7 +13,7 @@
             background: #fff; border-radius: 16px;
             padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
-        .test-panel h1 { text-align: center; color: #2c3e50; margin-bottom: 10px; }
+        .test-panel h1 { text-align: center; color: var(--ink); margin-bottom: 10px; }
         .test-panel .subtitle { text-align: center; color: #888; margin-bottom: 30px; }
         .type-grid {
             display: grid; grid-template-columns: repeat(4, 1fr);
@@ -23,15 +23,15 @@
             padding: 14px 8px; border: none; border-radius: 10px;
             font-size: 15px; font-weight: 600; color: #fff;
             cursor: pointer; transition: all 0.25s;
-            background: linear-gradient(135deg, #5b86e5, #36d1dc);
+            background: var(--grad-brand);
         }
-        .type-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(91,134,229,0.4); }
+        .type-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(91,91,214,0.4); }
         .type-btn.tested { opacity: 0.5; pointer-events: none; }
         .run-all-btn {
             display: block; width: 100%; padding: 14px;
             border: none; border-radius: 10px; font-size: 16px;
             font-weight: 600; color: #fff; cursor: pointer;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: var(--grad-brand);
             margin-bottom: 20px;
         }
         .results-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
@@ -39,8 +39,8 @@
             padding: 10px 12px; text-align: left;
             border-bottom: 1px solid #eee; font-size: 14px;
         }
-        .results-table th { background: #f0f2f5; color: #2c3e50; }
-        .results-table .type-cell { font-weight: 700; color: #5b86e5; white-space: nowrap; }
+        .results-table th { background: #f0f2f5; color: var(--ink); }
+        .results-table .type-cell { font-weight: 700; color: var(--primary); white-space: nowrap; }
         .results-table .desc-cell { color: #555; line-height: 1.5; }
         .results-table .traits-cell { color: #888; }
         .results-table tr.pass { background: #f0fff4; }

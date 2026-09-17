@@ -10,8 +10,8 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'PingFang SC', 'HarmonyOS Sans SC', 'MiSans', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+            background: var(--grad-hero);
             min-height: 100vh;
             padding: 20px;
             display: flex;
@@ -44,14 +44,14 @@
         }
 
         #resultCard {
-            background: #fff;
-            border-radius: 24px;
+            background: var(--paper);
+            border-radius: var(--radius-lg);
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow-pop);
         }
 
         .result-banner {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--grad-hero);
             padding: 40px 32px 60px;
             text-align: center;
             color: #fff;
@@ -80,19 +80,18 @@
         }
 
         .result-card-section {
-            background: #f8f9ff;
-            border-radius: 16px;
+            background: var(--primary-soft);
+            border-radius: var(--radius-md);
             padding: 20px;
             margin-bottom: 20px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid var(--primary);
             text-align: center;
         }
         .result-card-section h4 {
             font-size: 14px;
-            color: #667eea;
+            color: var(--primary-deep);
             margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-weight: 700;
         }
         .result-desc {
             font-size: 15px;
@@ -105,19 +104,18 @@
         .traits-section { margin-bottom: 16px; text-align: center; }
         .traits-section h4 {
             font-size: 14px;
-            color: #667eea;
+            color: var(--primary-deep);
             margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-weight: 700;
         }
         .traits-grid {
             display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
         }
         .trait-tag {
-            background: linear-gradient(135deg, #e8ecff, #f0e6ff);
-            color: #5b3dd2;
+            background: var(--primary-soft);
+            color: var(--primary-deep);
             padding: 8px 14px;
-            border-radius: 20px;
+            border-radius: var(--radius-pill);
             font-size: 13px;
             font-weight: 600;
         }
@@ -151,9 +149,9 @@
             color: #fff;
         }
         .action-btn i { font-size: 20px; }
-        .action-btn.redo { background: linear-gradient(135deg, #ff758c, #ff7eb3); }
-        .action-btn.save { background: linear-gradient(135deg, #667eea, #764ba2); }
-        .action-btn.home { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .action-btn.redo { background: var(--grad-berry); }
+        .action-btn.save { background: var(--grad-brand); }
+        .action-btn.home { background: var(--grad-calm); }
         .action-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
 
         .toast {

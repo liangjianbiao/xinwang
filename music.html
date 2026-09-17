@@ -9,14 +9,16 @@
     <style>
         /* 音乐页面专用样式 */
         .music-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 80px 0 60px;
+            background: var(--grad-hero);
+            padding: 120px 20px 60px;
+            margin-top: 70px;
             text-align: center;
             color: white;
         }
 
         .music-header h1 {
-            font-size: 2.8rem;
+            font-size: 3rem;
+            font-weight: 800;
             margin-bottom: 15px;
         }
 
@@ -29,7 +31,7 @@
             background: #f8f9fa;
             padding: 25px 0;
             position: sticky;
-            top: 60px;
+            top: 70px;
             z-index: 100;
             border-bottom: 1px solid #eee;
         }
@@ -47,23 +49,24 @@
         .mood-filter {
             padding: 10px 20px;
             border: none;
-            border-radius: 25px;
+            border-radius: var(--radius-pill);
             background: white;
-            color: #555;
+            color: var(--text);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
             font-size: 0.95rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 8px rgba(43, 48, 68, 0.08);
         }
 
         .mood-filter:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(43, 48, 68, 0.14);
         }
 
         .mood-filter.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--grad-brand);
             color: white;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.30), 0 6px 16px rgba(91, 91, 214, 0.35);
         }
 
         .mood-count-badge {
@@ -74,8 +77,8 @@
             padding: 0 6px;
             margin-left: 6px;
             border-radius: 11px;
-            background: rgba(102, 126, 234, 0.15);
-            color: #667eea;
+            background: var(--primary-soft);
+            color: var(--primary-deep);
             font-size: 0.75rem;
             font-weight: 700;
             text-align: center;
@@ -90,10 +93,10 @@
             max-width: 1200px;
             margin: 0 auto 20px;
             padding: 12px 20px;
-            background: linear-gradient(135deg, #f0f4ff 0%, #f8f0ff 100%);
+            background: var(--primary-soft);
             border-radius: 10px;
-            border-left: 4px solid #667eea;
-            color: #555;
+            border-left: 4px solid var(--primary);
+            color: var(--text);
             font-size: 0.95rem;
             font-weight: 500;
         }
@@ -113,22 +116,22 @@
         }
 
         .music-card {
-            background: white;
-            border-radius: 16px;
+            background: var(--paper);
+            border-radius: var(--radius-lg);
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
+            box-shadow: var(--shadow-card);
+            transition: all 0.25s ease;
         }
 
         .music-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            box-shadow: var(--shadow-card-hover);
         }
 
         .music-cover {
             position: relative;
             height: 180px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--grad-brand);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -171,7 +174,7 @@
         .music-title {
             font-size: 1.1rem;
             font-weight: 600;
-            color: #333;
+            color: var(--ink);
             margin-bottom: 8px;
             white-space: nowrap;
             overflow: hidden;
@@ -182,7 +185,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            color: #888;
+            color: var(--text-muted);
             font-size: 0.85rem;
             margin-bottom: 12px;
         }
@@ -190,10 +193,10 @@
         .music-mood-tag {
             display: inline-block;
             padding: 4px 10px;
-            background: #f0f0f0;
+            background: var(--mist);
             border-radius: 12px;
             font-size: 0.8rem;
-            color: #666;
+            color: var(--text-muted);
         }
 
         .music-actions {
@@ -216,7 +219,7 @@
         }
 
         .music-btn.play {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--grad-brand);
             color: white;
         }
 
@@ -230,7 +233,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: linear-gradient(135deg, #232062 0%, #1B1947 100%);
             padding: 15px 30px;
             display: none;
             align-items: center;
@@ -254,7 +257,7 @@
             width: 50px;
             height: 50px;
             border-radius: 8px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--grad-brand);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -303,7 +306,7 @@
         .player-btn.play-btn {
             width: 55px;
             height: 55px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--grad-brand);
         }
 
         .player-progress {
@@ -324,7 +327,7 @@
 
         .progress-bar .progress {
             height: 100%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: var(--grad-brand);
             border-radius: 2px;
             width: 0%;
             transition: width 0.1s linear;
@@ -377,7 +380,7 @@
         .empty-state {
             text-align: center;
             padding: 60px 20px;
-            color: #888;
+            color: var(--text-muted);
         }
 
         .empty-state i {
@@ -406,11 +409,11 @@
         .stat-number {
             font-size: 2rem;
             font-weight: 700;
-            color: #667eea;
+            color: var(--primary);
         }
 
         .stat-label {
-            color: #888;
+            color: var(--text-muted);
             font-size: 0.9rem;
         }
 
@@ -720,13 +723,10 @@
         }
 
         // 播放音乐
-        // OSS 外网域名
-        var OSS_BASE = 'https://liangjianbiao.oss-cn-beijing.aliyuncs.com';
-
-        // 对路径进行编码：保留斜杠分隔符，只编码文件名中的特殊字符
-        function ossEncodePath(path) {
+        // 本地音乐文件路径编码：保留斜杠分隔符，只编码中文目录名和文件名中的特殊字符
+        function encodeMusicPath(path) {
             return path.split('/').map(function(seg) { return encodeURI(seg); }).join('/');
-        } 
+        }
 
         function playMusic(id) {   
             const music = musicDatabase.find(m => m.id === id);
@@ -742,9 +742,9 @@
             document.getElementById('playerTitle').textContent = music.title;
             document.getElementById('playerMood').textContent = music.moodName;
 
-            // 设置音频文件路径并播放（使用 OSS 外网地址）
+            // 设置音频文件路径并播放（使用本地“音乐”文件夹）
             if (music.file) {
-                audio.src = OSS_BASE + '/' + ossEncodePath(music.file);
+                audio.src = encodeMusicPath(music.file);
                 audio.play().then(() => {
                     isPlaying = true;
                     updatePlayButton();
