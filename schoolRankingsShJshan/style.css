@@ -1,3 +1,32 @@
+:root {
+    --ink: #2B3044;
+    --text: #4A5068;
+    --text-muted: #8A90A6;
+    --mist: #F4F5FB;
+    --paper: #FFFFFF;
+    --line: #E6E8F2;
+    --primary: #5B5BD6;
+    --primary-deep: #4640B8;
+    --primary-soft: #EEEDFC;
+    --dawn: #FF9F43;
+    --dawn-deep: #F08C1F;
+    --calm: #26A97C;
+    --berry: #E85A8A;
+    --grad-brand: linear-gradient(135deg, #5B5BD6 0%, #8B7CF0 100%);
+    --grad-hero: linear-gradient(150deg, #3E38A0 0%, #5B5BD6 48%, #8B7CF0 100%);
+    --grad-dawn: linear-gradient(135deg, #FF9F43 0%, #FFC24D 100%);
+    --grad-calm: linear-gradient(135deg, #26A97C 0%, #5FD3A8 100%);
+    --grad-sky: linear-gradient(135deg, #2E9BD6 0%, #56C4F0 100%);
+    --grad-berry: linear-gradient(135deg, #E85A8A 0%, #F783AC 100%);
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --radius-pill: 999px;
+    --shadow-card: 0 2px 6px rgba(43, 48, 68, 0.05), 0 10px 28px rgba(43, 48, 68, 0.07);
+    --shadow-card-hover: 0 6px 14px rgba(43, 48, 68, 0.07), 0 18px 44px rgba(70, 64, 184, 0.16);
+    --shadow-pop: 0 24px 64px rgba(30, 27, 75, 0.28);
+    --dur: 0.25s;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,9 +34,10 @@
 }
 
 body {
-    font-family: 'Microsoft YaHei', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'PingFang SC', 'HarmonyOS Sans SC', 'MiSans', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+    background: var(--grad-hero);
     min-height: 100vh;
+    margin-top: 70px;
     padding: 20px;
 }
 
@@ -21,7 +51,7 @@ body {
 }
 
 header {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: var(--grad-hero);
     color: white;
     padding: 40px 20px;
     text-align: center;
@@ -46,7 +76,7 @@ header h1 {
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
-    scrollbar-color: #f5576c #f8f9fa;
+    scrollbar-color: var(--primary) #f8f9fa;
 }
 
 .area-tabs::-webkit-scrollbar {
@@ -58,7 +88,7 @@ header h1 {
 }
 
 .area-tabs::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: var(--grad-brand);
     border-radius: 3px;
 }
 
@@ -83,7 +113,7 @@ header h1 {
 }
 
 .tab-btn.active {
-    color: #f5576c;
+    color: var(--primary-deep);
     background: white;
 }
 
@@ -94,7 +124,7 @@ header h1 {
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: var(--grad-brand);
 }
 
 .content-area {
@@ -122,15 +152,15 @@ header h1 {
 }
 
 .school-section h2 {
-    color: #2c3e50;
+    color: var(--ink);
     font-size: 2em;
     margin-bottom: 15px;
     padding-bottom: 10px;
-    border-bottom: 3px solid #f5576c;
+    border-bottom: 3px solid var(--primary);
 }
 
 .section-intro {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--grad-brand);
     color: white;
     padding: 20px;
     border-radius: 10px;
@@ -147,7 +177,7 @@ header h1 {
     font-size: 1.5em;
     margin: 30px 0 20px;
     padding-left: 15px;
-    border-left: 4px solid #f5576c;
+    border-left: 4px solid var(--primary);
 }
 
 .school-list {
@@ -168,7 +198,7 @@ header h1 {
 .school-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    border-color: #f5576c;
+    border-color: var(--primary);
 }
 
 .school-header {
@@ -183,11 +213,11 @@ header h1 {
 .school-name {
     font-size: 1.15em;
     font-weight: 600;
-    color: #2c3e50;
+    color: var(--ink);
 }
 
 .school-rank {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: var(--grad-berry);
     color: white;
     padding: 5px 15px;
     border-radius: 20px;
@@ -303,14 +333,14 @@ header h1 {
 .stat-number {
     font-size: 2.5em;
     font-weight: 700;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--grad-brand);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 footer {
-    background: #2c3e50;
+    background: var(--ink);
     color: white;
     text-align: center;
     padding: 20px;

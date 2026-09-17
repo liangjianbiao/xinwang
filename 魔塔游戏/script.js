@@ -1,3 +1,49 @@
+﻿// ========== 设计令牌（暮夜灯火） ==========
+const C = {
+    bgDeep:   '#1B1947',
+    bgMid:    '#232062',
+    bgLite:   '#2C2A7A',
+    wallDark: '#232062',
+    wallMid:  '#3E38A0',
+    wallLine: '#6A64B0',
+    wallLite: '#4843A8',
+    floorDark:'#322D85',
+    floorLite:'#3E38A0',
+    floorBorder:'#6A64B0',
+    hero:     '#E85A8A',
+    heroLite: '#F783AC',
+    heroDeep: '#C0356A',
+    berry:    '#E85A8A',
+    berryLite:'#F783AC',
+    berryDeep:'#C0356A',
+    brand:    '#5B5BD6',
+    brandLite:'#8B7CF0',
+    brandDeep:'#4640B8',
+    calm:     '#26A97C',
+    calmLite: '#5FD3A8',
+    calmDeep: '#1E8663',
+    dawn:     '#FF9F43',
+    gold:     '#FFD76E',
+    goldLite: '#FFE89A',
+    goldDeep: '#C8952D',
+    redKey:   '#C0356A',
+    redKeyLite:'#F783AC',
+    blueKey:  '#4640B8',
+    blueKeyLite:'#8B7CF0',
+    yellowKey:'#C8952D',
+    yellowKeyLite:'#FFE89A',
+    doorRed:  '#C0356A',
+    doorYellow:'#C8952D',
+    doorBlue: '#4640B8',
+    potFill:  '#E85A8A',
+    sword:    '#FFD76E',
+    shield:   '#8B7CF0',
+    whiteText:'#EDECF8',
+    grayText: '#A9A5F5',
+    darkText: '#3E38A0',
+    darkFill: '#232062'
+};
+
 const TILE = {
     FLOOR: 0, WALL: 1, RED_DOOR: 2, YELLOW_DOOR: 3, BLUE_DOOR: 4,
     STAIRS_UP: 5, STAIRS_DOWN: 6,
@@ -540,7 +586,7 @@ function updateStats() {
 function draw() {
     if (!ctx) return;
 
-    ctx.fillStyle = '#1a1a2e';
+    ctx.fillStyle = C.bgDeep;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     if (!gameMap) return;
@@ -568,66 +614,66 @@ function drawTile(x, y, tile, ox, oy, size) {
 
     switch(tile) {
         case TILE.WALL:
-            ctx.fillStyle = '#4a5568';
+            ctx.fillStyle = C.wallMid;
             ctx.fillRect(px, py, size, size);
-            ctx.fillStyle = '#2d3748';
+            ctx.fillStyle = C.wallDark;
             ctx.fillRect(px + 2, py + 2, size - 4, size - 4);
-            ctx.strokeStyle = '#718096';
+            ctx.strokeStyle = C.wallLine;
             ctx.lineWidth = 1;
             ctx.strokeRect(px + 0.5, py + 0.5, size - 1, size - 1);
             break;
 
         case TILE.FLOOR:
-            ctx.fillStyle = '#2d3748';
+            ctx.fillStyle = C.wallDark;
             ctx.fillRect(px, py, size, size);
-            ctx.fillStyle = '#374151';
+            ctx.fillStyle = C.wallLite;
             ctx.fillRect(px + 1, py + 1, size - 2, size - 2);
             break;
 
         case TILE.RED_DOOR:
-            ctx.fillStyle = '#2d3748';
+            ctx.fillStyle = C.wallDark;
             ctx.fillRect(px, py, size, size);
-            ctx.fillStyle = '#c53030';
+            ctx.fillStyle = C.heroDeep;
             ctx.fillRect(px + 4, py + 2, size - 8, size - 4);
-            ctx.fillStyle = '#e53e3e';
+            ctx.fillStyle = C.hero;
             ctx.fillRect(px + 6, py + 4, size - 12, size - 8);
-            ctx.fillStyle = '#fbbf24';
+            ctx.fillStyle = C.gold;
             ctx.fillRect(px + size/2 - 2, py + size/2 - 2, 4, 4);
             break;
 
         case TILE.YELLOW_DOOR:
-            ctx.fillStyle = '#2d3748';
+            ctx.fillStyle = C.wallDark;
             ctx.fillRect(px, py, size, size);
-            ctx.fillStyle = '#d69e2e';
+            ctx.fillStyle = C.goldDeep;
             ctx.fillRect(px + 4, py + 2, size - 8, size - 4);
-            ctx.fillStyle = '#ecc94b';
+            ctx.fillStyle = C.goldLite;
             ctx.fillRect(px + 6, py + 4, size - 12, size - 8);
-            ctx.fillStyle = '#744210';
+            ctx.fillStyle = C.darkFill;
             ctx.fillRect(px + size/2 - 2, py + size/2 - 2, 4, 4);
             break;
 
         case TILE.BLUE_DOOR:
-            ctx.fillStyle = '#2d3748';
+            ctx.fillStyle = C.wallDark;
             ctx.fillRect(px, py, size, size);
-            ctx.fillStyle = '#2b6cb0';
+            ctx.fillStyle = C.brandDeep;
             ctx.fillRect(px + 4, py + 2, size - 8, size - 4);
-            ctx.fillStyle = '#4299e1';
+            ctx.fillStyle = C.brand;
             ctx.fillRect(px + 6, py + 4, size - 12, size - 8);
-            ctx.fillStyle = '#f7fafc';
+            ctx.fillStyle = C.whiteText;
             ctx.fillRect(px + size/2 - 2, py + size/2 - 2, 4, 4);
             break;
 
         case TILE.STAIRS_UP:
-            ctx.fillStyle = '#2d3748';
+            ctx.fillStyle = C.wallDark;
             ctx.fillRect(px, py, size, size);
-            ctx.fillStyle = '#718096';
+            ctx.fillStyle = C.wallLine;
             ctx.beginPath();
             ctx.moveTo(px + size/2, py + 4);
             ctx.lineTo(px + size - 4, py + size/2);
             ctx.lineTo(px + 4, py + size/2);
             ctx.closePath();
             ctx.fill();
-            ctx.fillStyle = '#a0aec0';
+            ctx.fillStyle = C.grayText;
             ctx.beginPath();
             ctx.moveTo(px + 4, py + size/2);
             ctx.lineTo(px + size - 4, py + size/2);
@@ -637,16 +683,16 @@ function drawTile(x, y, tile, ox, oy, size) {
             break;
 
         case TILE.STAIRS_DOWN:
-            ctx.fillStyle = '#2d3748';
+            ctx.fillStyle = C.wallDark;
             ctx.fillRect(px, py, size, size);
-            ctx.fillStyle = '#4a5568';
+            ctx.fillStyle = C.wallMid;
             ctx.beginPath();
             ctx.moveTo(px + 4, py + size/2);
             ctx.lineTo(px + size - 4, py + size/2);
             ctx.lineTo(px + size/2, py + size - 4);
             ctx.closePath();
             ctx.fill();
-            ctx.fillStyle = '#2d3748';
+            ctx.fillStyle = C.wallDark;
             ctx.beginPath();
             ctx.moveTo(px + size/2, py + size - 4);
             ctx.lineTo(px + size - 4, py + size/2);
@@ -691,11 +737,11 @@ function drawKey(px, py, size, type) {
     const cy = py + size/2;
     let color, lightColor;
 
-    if (type === TILE.RED_KEY) { color = '#c53030'; lightColor = '#fc8181'; }
-    else if (type === TILE.YELLOW_KEY) { color = '#d69e2e'; lightColor = '#f6e05e'; }
-    else { color = '#2b6cb0'; lightColor = '#63b3ed'; }
+    if (type === TILE.RED_KEY) { color = C.heroDeep; lightColor = '#fc8181'; }
+    else if (type === TILE.YELLOW_KEY) { color = C.goldDeep; lightColor = C.goldLite; }
+    else { color = C.brandDeep; lightColor = C.brandLite; }
 
-    ctx.fillStyle = '#2d3748';
+    ctx.fillStyle = C.wallDark;
     ctx.fillRect(px, py, size, size);
 
     ctx.fillStyle = color;
@@ -718,30 +764,30 @@ function drawPotion(px, py, size, type) {
     const cx = px + size/2;
     const cy = py + size/2;
 
-    ctx.fillStyle = '#2d3748';
+    ctx.fillStyle = C.wallDark;
     ctx.fillRect(px, py, size, size);
 
     if (type === TILE.BIG_POTION) {
-        ctx.fillStyle = '#f56565';
+        ctx.fillStyle = C.heroLite;
         ctx.beginPath();
         ctx.arc(cx, cy + size*0.1, size*0.25, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = '#feb2b2';
+        ctx.fillStyle = C.heroLite;
         ctx.beginPath();
         ctx.arc(cx, cy + size*0.05, size*0.12, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = '#c53030';
+        ctx.fillStyle = C.heroDeep;
         ctx.fillRect(cx - size*0.08, cy - size*0.2, size*0.16, size*0.1);
     } else {
-        ctx.fillStyle = '#48bb78';
+        ctx.fillStyle = C.calm;
         ctx.beginPath();
         ctx.arc(cx, cy + size*0.1, size*0.2, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = '#9ae6b4';
+        ctx.fillStyle = C.calmLite;
         ctx.beginPath();
         ctx.arc(cx, cy + size*0.05, size*0.1, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = '#276749';
+        ctx.fillStyle = C.calmDeep;
         ctx.fillRect(cx - size*0.06, cy - size*0.15, size*0.12, size*0.08);
     }
 }
@@ -750,20 +796,20 @@ function drawSword(px, py, size) {
     const cx = px + size/2;
     const cy = py + size/2;
 
-    ctx.fillStyle = '#2d3748';
+    ctx.fillStyle = C.wallDark;
     ctx.fillRect(px, py, size, size);
 
     ctx.save();
     ctx.translate(cx, cy);
     ctx.rotate(-Math.PI / 4);
 
-    ctx.fillStyle = '#a0aec0';
+    ctx.fillStyle = C.grayText;
     ctx.fillRect(-size*0.03, -size*0.3, size*0.06, size*0.5);
 
-    ctx.fillStyle = '#e2e8f0';
+    ctx.fillStyle = C.whiteText;
     ctx.fillRect(-size*0.02, -size*0.28, size*0.04, size*0.1);
 
-    ctx.fillStyle = '#975a16';
+    ctx.fillStyle = C.goldDeep;
     ctx.fillRect(-size*0.12, size*0.18, size*0.24, size*0.06);
 
     ctx.restore();
@@ -773,10 +819,10 @@ function drawShield(px, py, size) {
     const cx = px + size/2;
     const cy = py + size/2;
 
-    ctx.fillStyle = '#2d3748';
+    ctx.fillStyle = C.wallDark;
     ctx.fillRect(px, py, size, size);
 
-    ctx.fillStyle = '#4299e1';
+    ctx.fillStyle = C.brand;
     ctx.beginPath();
     ctx.moveTo(cx, cy - size*0.3);
     ctx.lineTo(cx + size*0.25, cy - size*0.15);
@@ -787,7 +833,7 @@ function drawShield(px, py, size) {
     ctx.closePath();
     ctx.fill();
 
-    ctx.fillStyle = '#63b3ed';
+    ctx.fillStyle = C.brandLite;
     ctx.beginPath();
     ctx.moveTo(cx, cy - size*0.2);
     ctx.lineTo(cx + size*0.15, cy - size*0.1);
@@ -798,7 +844,7 @@ function drawShield(px, py, size) {
     ctx.closePath();
     ctx.fill();
 
-    ctx.fillStyle = '#f7fafc';
+    ctx.fillStyle = C.whiteText;
     ctx.font = `${size*0.2}px Arial`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -809,20 +855,20 @@ function drawGold(px, py, size) {
     const cx = px + size/2;
     const cy = py + size/2;
 
-    ctx.fillStyle = '#2d3748';
+    ctx.fillStyle = C.wallDark;
     ctx.fillRect(px, py, size, size);
 
-    ctx.fillStyle = '#d69e2e';
+    ctx.fillStyle = C.goldDeep;
     ctx.beginPath();
     ctx.arc(cx, cy, size*0.22, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = '#f6e05e';
+    ctx.fillStyle = C.goldLite;
     ctx.beginPath();
     ctx.arc(cx, cy - size*0.02, size*0.16, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = '#744210';
+    ctx.fillStyle = C.darkFill;
     ctx.font = `bold ${size*0.22}px Arial`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -834,19 +880,19 @@ function drawMonster(px, py, size, type) {
     const cx = px + size/2;
     const cy = py + size/2;
 
-    ctx.fillStyle = '#2d3748';
+    ctx.fillStyle = C.wallDark;
     ctx.fillRect(px, py, size, size);
 
     let bodyColor, eyeColor;
     switch(type) {
-        case TILE.MONSTER_SLIME: bodyColor = '#48bb78'; eyeColor = '#fff'; break;
-        case TILE.MONSTER_BAT: bodyColor = '#6b46c1'; eyeColor = '#f56565'; break;
-        case TILE.MONSTER_SKELETON: bodyColor = '#e2e8f0'; eyeColor = '#1a202c'; break;
-        case TILE.MONSTER_ZOMBIE: bodyColor = '#68d391'; eyeColor = '#c53030'; break;
-        case TILE.MONSTER_GHOST: bodyColor = '#cbd5e0'; eyeColor = '#4a5568'; break;
-        case TILE.MONSTER_ORC: bodyColor = '#dd6b20'; eyeColor = '#fefcbf'; break;
-        case TILE.MONSTER_DEMON: bodyColor = '#9b2c2c'; eyeColor = '#f6e05e'; break;
-        case TILE.MONSTER_DRAGON: bodyColor = '#2c5282'; eyeColor = '#f56565'; break;
+        case TILE.MONSTER_SLIME: bodyColor = C.calm; eyeColor = '#fff'; break;
+        case TILE.MONSTER_BAT: bodyColor = C.brand; eyeColor = C.heroLite; break;
+        case TILE.MONSTER_SKELETON: bodyColor = C.whiteText; eyeColor = '#1a202c'; break;
+        case TILE.MONSTER_ZOMBIE: bodyColor = C.calmLite; eyeColor = C.heroDeep; break;
+        case TILE.MONSTER_GHOST: bodyColor = C.grayText; eyeColor = C.wallMid; break;
+        case TILE.MONSTER_ORC: bodyColor = C.dawn; eyeColor = '#fefcbf'; break;
+        case TILE.MONSTER_DEMON: bodyColor = C.heroDeep; eyeColor = C.goldLite; break;
+        case TILE.MONSTER_DRAGON: bodyColor = C.brandDeep; eyeColor = C.heroLite; break;
         default: bodyColor = '#999'; eyeColor = '#fff';
     }
 
@@ -871,7 +917,7 @@ function drawMonster(px, py, size, type) {
     }
 
     if (type === TILE.MONSTER_SKELETON || type === TILE.MONSTER_GHOST) {
-        ctx.fillStyle = '#2d3748';
+        ctx.fillStyle = C.wallDark;
         ctx.fillRect(cx - size*0.15, cy - size*0.05, size*0.08, size*0.12);
         ctx.fillRect(cx + size*0.07, cy - size*0.05, size*0.08, size*0.12);
     } else {
@@ -880,7 +926,7 @@ function drawMonster(px, py, size, type) {
         ctx.arc(cx - size*0.1, cy - size*0.05, size*0.06, 0, Math.PI * 2);
         ctx.arc(cx + size*0.1, cy - size*0.05, size*0.06, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = '#2d3748';
+        ctx.fillStyle = C.wallDark;
         ctx.beginPath();
         ctx.arc(cx - size*0.1, cy - size*0.05, size*0.03, 0, Math.PI * 2);
         ctx.arc(cx + size*0.1, cy - size*0.05, size*0.03, 0, Math.PI * 2);
@@ -909,7 +955,7 @@ function drawMonster(px, py, size, type) {
     }
 
     if (type === TILE.MONSTER_DRAGON) {
-        ctx.fillStyle = '#e53e3e';
+        ctx.fillStyle = C.hero;
         ctx.fillRect(cx - size*0.12, cy + size*0.12, size*0.06, size*0.04);
         ctx.fillRect(cx + size*0.06, cy + size*0.12, size*0.06, size*0.04);
     }
@@ -919,38 +965,38 @@ function drawPlayer(px, py, size) {
     const cx = px + size/2;
     const cy = py + size/2;
 
-    ctx.fillStyle = '#2d3748';
+    ctx.fillStyle = C.wallDark;
     ctx.fillRect(px, py, size, size);
 
-    ctx.fillStyle = '#ecc94b';
+    ctx.fillStyle = C.goldLite;
     ctx.beginPath();
     ctx.arc(cx, cy - size*0.15, size*0.18, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = '#f6e05e';
+    ctx.fillStyle = C.goldLite;
     ctx.beginPath();
     ctx.arc(cx, cy - size*0.18, size*0.12, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = '#2d3748';
+    ctx.fillStyle = C.wallDark;
     ctx.beginPath();
     ctx.arc(cx - size*0.06, cy - size*0.15, size*0.025, 0, Math.PI * 2);
     ctx.arc(cx + size*0.06, cy - size*0.15, size*0.025, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = '#c05621';
+    ctx.fillStyle = C.dawn;
     ctx.fillRect(cx - size*0.08, cy - size*0.05, size*0.16, size*0.03);
 
-    ctx.fillStyle = '#4299e1';
+    ctx.fillStyle = C.brand;
     ctx.fillRect(cx - size*0.12, cy, size*0.24, size*0.22);
 
-    ctx.fillStyle = '#2b6cb0';
+    ctx.fillStyle = C.brandDeep;
     ctx.fillRect(cx - size*0.12, cy + size*0.18, size*0.24, size*0.04);
 
-    ctx.fillStyle = '#63b3ed';
+    ctx.fillStyle = C.brandLite;
     ctx.fillRect(cx - size*0.08, cy + size*0.02, size*0.16, size*0.08);
 
-    ctx.fillStyle = '#e2e8f0';
+    ctx.fillStyle = C.whiteText;
     ctx.beginPath();
     ctx.moveTo(cx, cy - size*0.4);
     ctx.lineTo(cx - size*0.08, cy - size*0.25);

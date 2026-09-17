@@ -1,3 +1,25 @@
+﻿// ========== 设计令牌（暮夜灯火） ==========
+const C = {
+    bgDeep:  '#1B1947',
+    bgMid:   '#232062',
+    bgLite:  '#2A2570',
+    wall:    '#3E38A0',
+    wallLite:'#5B5BD6',
+    ball:    '#8B7CF0',
+    ballCore:'#EDECF8',
+    coin:    '#FFD76E',
+    coinLite:'#FFE89A',
+    timeAdd: '#5B5BD6',
+    slow:    '#8B7CF0',
+    ghost:   '#5FD3A8',
+    doubleScore:'#E85A8A',
+    teleport:'#FFD76E',
+    goldGlow:'#FFD76E',
+    goldLite:'#FFE89A',
+    grayLine:'#A9A5F5',
+    whiteText:'#EDECF8'
+};
+
 const CONFIG = {
 cellSize: 40,
 ballRadius: 16,
@@ -15,12 +37,12 @@ bgm: {
   volume: 0.3
 },
 itemTypes: {
-  coin: {color:"#ffdd00",score:10,name:"金币"},
-  timeAdd: {color:"#44aaff",addTime:20,name:"沙漏"},
-  slow: {color:"#bb66ff",duration:5,name:"减速磁场"},
-  ghost: {color:"#22e0cc",duration:3,name:"穿墙星"},
-  doubleScore: {color:"#ff4444",name:"双倍宝石"},
-  teleport: {color:"#ffd700",name:"传送星"}
+  coin: {color:C.coin,score:10,name:"金币"},
+  timeAdd: {color:C.timeAdd,addTime:20,name:"沙漏"},
+  slow: {color:C.slow,duration:5,name:"减速磁场"},
+  ghost: {color:C.ghost,duration:3,name:"穿墙星"},
+  doubleScore: {color:C.doubleScore,name:"双倍宝石"},
+  teleport: {color:C.teleport,name:"传送星"}
 },
 levels: [
   [
@@ -510,10 +532,10 @@ function render(){
       const px = offsetX + x*CONFIG.cellSize;
       const py = offsetY + y*CONFIG.cellSize;
       const val = maze[y][x];
-      if(val === 0) ctx.fillStyle = '#16213e';
-      else if(val ===2) ctx.fillStyle = '#0099ff';
-      else if(val ===3) ctx.fillStyle = '#00e676';
-      else ctx.fillStyle = '#0f3460';
+      if(val === 0) ctx.fillStyle = C.bgMid;
+      else if(val ===2) ctx.fillStyle = C.brand;
+      else if(val ===3) ctx.fillStyle = C.calm;
+      else ctx.fillStyle = C.bgDeep;
       ctx.fillRect(px,py,CONFIG.cellSize-2,CONFIG.cellSize-2);
     }
   }
@@ -690,12 +712,12 @@ function drawPoster(){
   const w = posterCanvas.width;
   const h = posterCanvas.height;
   const grad = posterCtx.createLinearGradient(0,0,0,h);
-  grad.addColorStop(0,"#1a1a2e");
-  grad.addColorStop(1,"#0f3460");
+  grad.addColorStop(0,C.bgDeep);
+  grad.addColorStop(1,C.bgDeep);
   posterCtx.fillStyle = grad;
   posterCtx.fillRect(0,0,w,h);
 
-  posterCtx.fillStyle = "#00d4ff";
+  posterCtx.fillStyle = C.ball;
   posterCtx.font = "bold 28px system-ui";
   posterCtx.textAlign = "center";
   posterCtx.fillText("重力迷宫小球", w/2, 80);
@@ -707,7 +729,7 @@ function drawPoster(){
     posterCtx.fillText(`关卡：第${gameState.currentLv}关`, w/2, 150);
     posterCtx.fillText(`通关用时：${usedTime}秒`, w/2, 190);
     posterCtx.fillText(`本局总分：${gameState.totalScore}`, w/2, 230);
-    posterCtx.fillStyle = "#ffdd00";
+    posterCtx.fillStyle = C.coin;
     posterCtx.font = "16px system-ui";
     posterCtx.fillText("快来挑战我的记录！", w/2, 300);
   }else{

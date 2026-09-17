@@ -1,3 +1,32 @@
+:root {
+    --ink: #2B3044;
+    --text: #4A5068;
+    --text-muted: #8A90A6;
+    --mist: #F4F5FB;
+    --paper: #FFFFFF;
+    --line: #E6E8F2;
+    --primary: #5B5BD6;
+    --primary-deep: #4640B8;
+    --primary-soft: #EEEDFC;
+    --dawn: #FF9F43;
+    --dawn-deep: #F08C1F;
+    --calm: #26A97C;
+    --berry: #E85A8A;
+    --grad-brand: linear-gradient(135deg, #5B5BD6 0%, #8B7CF0 100%);
+    --grad-hero: linear-gradient(150deg, #3E38A0 0%, #5B5BD6 48%, #8B7CF0 100%);
+    --grad-dawn: linear-gradient(135deg, #FF9F43 0%, #FFC24D 100%);
+    --grad-calm: linear-gradient(135deg, #26A97C 0%, #5FD3A8 100%);
+    --grad-sky: linear-gradient(135deg, #2E9BD6 0%, #56C4F0 100%);
+    --grad-berry: linear-gradient(135deg, #E85A8A 0%, #F783AC 100%);
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --radius-pill: 999px;
+    --shadow-card: 0 2px 6px rgba(43, 48, 68, 0.05), 0 10px 28px rgba(43, 48, 68, 0.07);
+    --shadow-card-hover: 0 6px 14px rgba(43, 48, 68, 0.07), 0 18px 44px rgba(70, 64, 184, 0.16);
+    --shadow-pop: 0 24px 64px rgba(30, 27, 75, 0.28);
+    --dur: 0.25s;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -18,7 +47,7 @@ button {
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'PingFang SC', 'HarmonyOS Sans SC', 'MiSans', 'Microsoft YaHei', 'Segoe UI', sans-serif;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -36,7 +65,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
+    background: var(--grad-hero);
     background-size: 400% 400%;
     animation: gradientShift 15s ease infinite;
     z-index: -1;
@@ -69,7 +98,7 @@ body {
     align-items: center;
     margin-bottom: 0.5rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+    border-bottom: 1px solid rgba(91, 91, 214, 0.2);
 }
 
 .header-title {
@@ -78,7 +107,7 @@ body {
 
 .header-title h1 {
     font-size: 1.5rem;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: var(--grad-brand);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -133,16 +162,16 @@ body {
 }
 
 .btn-restart {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: var(--grad-brand);
     color: white;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 15px rgba(91, 91, 214, 0.4);
     pointer-events: auto;
     z-index: 5;
 }
 
 .btn-restart:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+    box-shadow: 0 8px 25px rgba(91, 91, 214, 0.5);
 }
 
 .btn-hint {
@@ -167,16 +196,16 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: var(--grad-brand);
     color: white;
     padding: 0.8rem 2rem;
     font-size: 1rem;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 15px rgba(91, 91, 214, 0.4);
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+    box-shadow: 0 8px 25px rgba(91, 91, 214, 0.5);
 }
 
 .btn-secondary {
@@ -257,7 +286,7 @@ body {
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #667eea, #764ba2);
+    background: var(--grad-brand);
     border-radius: 0.25rem;
     transition: width 0.3s ease;
 }
@@ -265,7 +294,7 @@ body {
 .progress-text {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #667eea;
+    color: var(--primary);
     min-width: 2.5rem;
     text-align: right;
 }
@@ -303,7 +332,7 @@ body {
     width: 40px;
     height: 40px;
     border: 4px solid #f3f3f3;
-    border-top: 4px solid #667eea;
+    border-top: 4px solid var(--primary);
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin-bottom: 12px;
@@ -365,12 +394,12 @@ body {
 }
 
 .card:hover .card-back {
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 30px rgba(91, 91, 214, 0.3);
     transform: scale(1.02);
 }
 
 .card-back {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--grad-brand);
     transition: transform 0.3s ease;
 }
 
@@ -404,8 +433,8 @@ body {
 }
 
 .card.matched .card-front {
-    background: linear-gradient(135deg, #11998e, #38ef7d);
-    border-color: #11998e;
+    background: var(--grad-calm);
+    border-color: var(--calm);
 }
 
 .card.matched .card-front span {
@@ -469,16 +498,16 @@ body {
 }
 
 .difficulty-btn:hover {
-    border-color: #667eea;
-    color: #667eea;
+    border-color: var(--primary);
+    color: var(--primary);
     transform: translateY(-2px);
 }
 
 .difficulty-btn.active {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border-color: #667eea;
+    background: var(--grad-brand);
+    border-color: var(--primary);
     color: white;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 15px rgba(91, 91, 214, 0.4);
 }
 
 .diff-icon {
@@ -491,7 +520,7 @@ body {
     gap: 0.6rem;
     padding-top: 0.5rem;
     margin-top: 0.5rem;
-    border-top: 1px solid rgba(102, 126, 234, 0.1);
+    border-top: 1px solid rgba(91, 91, 214, 0.1);
     flex-wrap: wrap;
     position: relative;
     z-index: 1;
@@ -567,7 +596,7 @@ body {
     left: 0;
     right: 0;
     height: 0.5rem;
-    background: linear-gradient(90deg, #667eea, #764ba2);
+    background: var(--grad-brand);
 }
 
 @keyframes modalPop {
@@ -585,7 +614,7 @@ body {
     font-size: 2rem;
     color: #333;
     margin-bottom: 1.5rem;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: var(--grad-brand);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -620,7 +649,7 @@ body {
 }
 
 .stat-row.highlight span:last-child {
-    color: #667eea;
+    color: var(--primary);
     font-size: 1.25rem;
 }
 
@@ -733,13 +762,13 @@ body {
     top: 20%;
     left: 50%;
     transform: translateX(-50%);
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: var(--grad-brand);
     color: white;
     padding: 16px 32px;
     border-radius: 20px;
     font-size: 18px;
     font-weight: 600;
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+    box-shadow: 0 10px 30px rgba(91, 91, 214, 0.5);
     z-index: 2000;
     animation: toastFadeIn 0.3s ease, toastFadeOut 0.3s ease 1.7s forwards;
 }
