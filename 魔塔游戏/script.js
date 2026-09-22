@@ -1,47 +1,48 @@
-﻿// ========== 设计令牌（暮夜灯火） ==========
+// ========== 设计令牌（马卡龙糖果） ==========
 const C = {
-    bgDeep:   '#1B1947',
-    bgMid:    '#232062',
-    bgLite:   '#2C2A7A',
-    wallDark: '#232062',
-    wallMid:  '#3E38A0',
-    wallLine: '#6A64B0',
-    wallLite: '#4843A8',
-    floorDark:'#322D85',
-    floorLite:'#3E38A0',
-    floorBorder:'#6A64B0',
-    hero:     '#E85A8A',
-    heroLite: '#F783AC',
-    heroDeep: '#C0356A',
-    berry:    '#E85A8A',
-    berryLite:'#F783AC',
-    berryDeep:'#C0356A',
-    brand:    '#5B5BD6',
-    brandLite:'#8B7CF0',
-    brandDeep:'#4640B8',
-    calm:     '#26A97C',
-    calmLite: '#5FD3A8',
-    calmDeep: '#1E8663',
-    dawn:     '#FF9F43',
+    bgDeep:   '#F6ECFE',
+    bgMid:    '#FBEFF8',
+    bgLite:   '#EAF4FF',
+    tileBase: '#E9DFF9',
+    wallDark: '#6E55B8',
+    wallMid:  '#C0A8F2',
+    wallLine: '#A988E8',
+    wallLite: '#FDFAFF',
+    floorDark:'#E9DFF9',
+    floorLite:'#FDFAFF',
+    floorBorder:'#D9C8F7',
+    hero:     '#FF8FB3',
+    heroLite: '#FFC2D8',
+    heroDeep: '#F06292',
+    berry:    '#FF8FB3',
+    berryLite:'#FFC2D8',
+    berryDeep:'#F06292',
+    brand:    '#5BB8EE',
+    brandLite:'#A5E0FA',
+    brandDeep:'#3E95D6',
+    calm:     '#7FD9B0',
+    calmLite: '#BDEED7',
+    calmDeep: '#44B887',
+    dawn:     '#FFB061',
     gold:     '#FFD76E',
-    goldLite: '#FFE89A',
-    goldDeep: '#C8952D',
-    redKey:   '#C0356A',
-    redKeyLite:'#F783AC',
-    blueKey:  '#4640B8',
-    blueKeyLite:'#8B7CF0',
-    yellowKey:'#C8952D',
-    yellowKeyLite:'#FFE89A',
-    doorRed:  '#C0356A',
-    doorYellow:'#C8952D',
-    doorBlue: '#4640B8',
-    potFill:  '#E85A8A',
+    goldLite: '#FFEBA2',
+    goldDeep: '#E8B53D',
+    redKey:   '#F06292',
+    redKeyLite:'#FFC2D8',
+    blueKey:  '#3E95D6',
+    blueKeyLite:'#A5E0FA',
+    yellowKey:'#E8B53D',
+    yellowKeyLite:'#FFEBA2',
+    doorRed:  '#F06292',
+    doorYellow:'#E8B53D',
+    doorBlue: '#3E95D6',
+    potFill:  '#FF8FB3',
     sword:    '#FFD76E',
-    shield:   '#8B7CF0',
-    whiteText:'#EDECF8',
-    grayText: '#A9A5F5',
-    darkText: '#3E38A0',
-    darkFill: '#232062'
+    shield:   '#5BB8EE',
+    whiteText:'#FFFDF8',
+    grayText: '#8E74D6',
+    darkText: '#6E55B8',
+    darkFill: '#A9782B'
 };
 
 const TILE = {
@@ -741,7 +742,7 @@ function drawKey(px, py, size, type) {
     else if (type === TILE.YELLOW_KEY) { color = C.goldDeep; lightColor = C.goldLite; }
     else { color = C.brandDeep; lightColor = C.brandLite; }
 
-    ctx.fillStyle = C.wallDark;
+    ctx.fillStyle = C.tileBase;
     ctx.fillRect(px, py, size, size);
 
     ctx.fillStyle = color;
@@ -764,7 +765,7 @@ function drawPotion(px, py, size, type) {
     const cx = px + size/2;
     const cy = py + size/2;
 
-    ctx.fillStyle = C.wallDark;
+    ctx.fillStyle = C.tileBase;
     ctx.fillRect(px, py, size, size);
 
     if (type === TILE.BIG_POTION) {
@@ -796,7 +797,7 @@ function drawSword(px, py, size) {
     const cx = px + size/2;
     const cy = py + size/2;
 
-    ctx.fillStyle = C.wallDark;
+    ctx.fillStyle = C.tileBase;
     ctx.fillRect(px, py, size, size);
 
     ctx.save();
@@ -819,7 +820,7 @@ function drawShield(px, py, size) {
     const cx = px + size/2;
     const cy = py + size/2;
 
-    ctx.fillStyle = C.wallDark;
+    ctx.fillStyle = C.tileBase;
     ctx.fillRect(px, py, size, size);
 
     ctx.fillStyle = C.brand;
@@ -855,7 +856,7 @@ function drawGold(px, py, size) {
     const cx = px + size/2;
     const cy = py + size/2;
 
-    ctx.fillStyle = C.wallDark;
+    ctx.fillStyle = C.tileBase;
     ctx.fillRect(px, py, size, size);
 
     ctx.fillStyle = C.goldDeep;
@@ -880,7 +881,7 @@ function drawMonster(px, py, size, type) {
     const cx = px + size/2;
     const cy = py + size/2;
 
-    ctx.fillStyle = C.wallDark;
+    ctx.fillStyle = C.tileBase;
     ctx.fillRect(px, py, size, size);
 
     let bodyColor, eyeColor;
@@ -965,7 +966,7 @@ function drawPlayer(px, py, size) {
     const cx = px + size/2;
     const cy = py + size/2;
 
-    ctx.fillStyle = C.wallDark;
+    ctx.fillStyle = C.tileBase;
     ctx.fillRect(px, py, size, size);
 
     ctx.fillStyle = C.goldLite;

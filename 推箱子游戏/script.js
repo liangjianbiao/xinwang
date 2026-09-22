@@ -380,7 +380,7 @@ function drawBoard() {
     canvas.width = width;
     canvas.height = height;
     
-    ctx.fillStyle = '#F5F5F5';
+    ctx.fillStyle = '#F7F1FE';
     ctx.fillRect(0, 0, width, height);
     
     for (let y = 0; y < level.height; y++) {
@@ -392,41 +392,41 @@ function drawBoard() {
             switch(cell) {
                 case '#':
                     const gradient = ctx.createLinearGradient(px, py, px + cellSize, py + cellSize);
-                    gradient.addColorStop(0, '#8B8B8B');
-                    gradient.addColorStop(0.5, '#6B6B6B');
-                    gradient.addColorStop(1, '#4B4B4B');
+                    gradient.addColorStop(0, '#C0A8F2');
+                    gradient.addColorStop(0.5, '#A98CE8');
+                    gradient.addColorStop(1, '#8B6FD8');
                     ctx.fillStyle = gradient;
                     ctx.fillRect(px, py, cellSize, cellSize);
                     
-                    ctx.fillStyle = '#A0A0A0';
+                    ctx.fillStyle = '#D9CCF7';
                     ctx.fillRect(px + 2, py + 2, cellSize - 4, 4);
                     ctx.fillRect(px + 2, py + 2, 4, cellSize - 4);
                     
-                    ctx.fillStyle = '#3B3B3B';
+                    ctx.fillStyle = '#7A5FC8';
                     ctx.fillRect(px + cellSize - 6, py + 6, 4, cellSize - 8);
                     ctx.fillRect(px + 6, py + cellSize - 6, cellSize - 12, 4);
                     
-                    ctx.fillStyle = '#5B5B5B';
+                    ctx.fillStyle = '#B79EF0';
                     ctx.fillRect(px + 4, py + 4, cellSize - 8, cellSize - 8);
                     break;
                 case '+':
-                    ctx.fillStyle = '#FFE4E1';
+                    ctx.fillStyle = '#FFE9F3';
                     ctx.fillRect(px, py, cellSize, cellSize);
                     
                     if (!(x === playerPos.x && y === playerPos.y)) {
-                        ctx.fillStyle = '#FF69B4';
+                        ctx.fillStyle = '#FF8FB3';
                         ctx.beginPath();
                         ctx.arc(px + cellSize/2, py + cellSize/2, cellSize/3, 0, Math.PI * 2);
                         ctx.fill();
                         
-                        ctx.fillStyle = '#FFB6C1';
+                        ctx.fillStyle = '#FFD0E1';
                         ctx.beginPath();
                         ctx.arc(px + cellSize/2, py + cellSize/2, cellSize/5, 0, Math.PI * 2);
                         ctx.fill();
                         
-                        ctx.shadowColor = '#FF69B4';
+                        ctx.shadowColor = '#FF8FB3';
                         ctx.shadowBlur = 8;
-                        ctx.fillStyle = '#FF1493';
+                        ctx.fillStyle = '#F06292';
                         ctx.font = 'bold 16px Arial';
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'middle';
@@ -435,53 +435,53 @@ function drawBoard() {
                     }
                     break;
                 case '$':
-                    ctx.fillStyle = '#F5F5F5';
+                    ctx.fillStyle = '#F7F1FE';
                     ctx.fillRect(px, py, cellSize, cellSize);
                     
                     const boxGradient = ctx.createLinearGradient(px, py, px + cellSize, py + cellSize);
-                    boxGradient.addColorStop(0, '#CD853F');
-                    boxGradient.addColorStop(0.5, '#8B4513');
-                    boxGradient.addColorStop(1, '#654321');
+                    boxGradient.addColorStop(0, '#FFC987');
+                    boxGradient.addColorStop(0.5, '#FFB061');
+                    boxGradient.addColorStop(1, '#FF9540');
                     ctx.fillStyle = boxGradient;
                     ctx.fillRect(px + 4, py + 4, cellSize - 8, cellSize - 8);
                     
-                    ctx.fillStyle = '#A0522D';
+                    ctx.fillStyle = '#FFA45C';
                     ctx.fillRect(px + 6, py + 6, cellSize - 12, 6);
                     
-                    ctx.fillStyle = '#DEB887';
+                    ctx.fillStyle = '#FFD9A8';
                     ctx.fillRect(px + 8, py + 10, cellSize - 16, 4);
                     break;
                 case '*':
-                    ctx.fillStyle = '#FFFACD';
+                    ctx.fillStyle = '#FFF7D6';
                     ctx.fillRect(px, py, cellSize, cellSize);
                     
-                    ctx.fillStyle = '#FFD700';
+                    ctx.fillStyle = '#FFE066';
                     ctx.beginPath();
                     ctx.arc(px + cellSize/2, py + cellSize/2, cellSize/3, 0, Math.PI * 2);
                     ctx.fill();
                     
-                    ctx.shadowColor = '#FFD700';
+                    ctx.shadowColor = '#FFD76E';
                     ctx.shadowBlur = 10;
                     const doneBoxGradient = ctx.createLinearGradient(px, py, px + cellSize, py + cellSize);
-                    doneBoxGradient.addColorStop(0, '#FFD700');
-                    doneBoxGradient.addColorStop(0.5, '#FFA500');
-                    doneBoxGradient.addColorStop(1, '#FF8C00');
+                    doneBoxGradient.addColorStop(0, '#FFE066');
+                    doneBoxGradient.addColorStop(0.5, '#FFC24D');
+                    doneBoxGradient.addColorStop(1, '#FFA726');
                     ctx.fillStyle = doneBoxGradient;
                     ctx.fillRect(px + 4, py + 4, cellSize - 8, cellSize - 8);
                     ctx.shadowBlur = 0;
                     
-                    ctx.fillStyle = '#FFD700';
+                    ctx.fillStyle = '#FFFFFF';
                     ctx.font = 'bold 14px Arial';
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
                     ctx.fillText('✓', px + cellSize/2, py + cellSize/2);
                     break;
                 default:
-                    ctx.fillStyle = '#F5F5F5';
+                    ctx.fillStyle = '#F7F1FE';
                     ctx.fillRect(px, py, cellSize, cellSize);
             }
             
-            ctx.strokeStyle = '#E0E0E0';
+            ctx.strokeStyle = '#E4D5FA';
             ctx.lineWidth = 1;
             ctx.strokeRect(px, py, cellSize, cellSize);
         }
@@ -498,7 +498,7 @@ function drawBoard() {
             cellSize
         );
     } else {
-        ctx.fillStyle = '#4169E1';
+        ctx.fillStyle = '#5BB8EE';
         ctx.beginPath();
         ctx.arc(px, py, cellSize/2, 0, Math.PI * 2);
         ctx.fill();

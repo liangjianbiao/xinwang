@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <defs>
+    <linearGradient id="bg6" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFF6E0"/>
+      <stop offset="55%" stop-color="#FFE9F3"/>
+      <stop offset="100%" stop-color="#E3F4FF"/>
+    </linearGradient>
+    <linearGradient id="cardA" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FF9DC2"/>
+      <stop offset="100%" stop-color="#F24E8E"/>
+    </linearGradient>
+    <linearGradient id="cardB" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8ED6FF"/>
+      <stop offset="100%" stop-color="#2E9BE8"/>
+    </linearGradient>
+    <linearGradient id="back" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#B78CF7"/>
+      <stop offset="100%" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <filter id="sh6" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#5a3a8a" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <rect width="400" height="300" rx="18" fill="url(#bg6)"/>
+  <circle cx="340" cy="64" r="6" fill="#FFD93D" opacity="0.7"/>
+  <!-- 背面卡片 -->
+  <g filter="url(#sh6)">
+    <rect x="70" y="96" width="76" height="100" rx="14" fill="url(#back)" stroke="#fff" stroke-width="4" transform="rotate(-12 108 146)"/>
+    <circle cx="108" cy="146" r="18" fill="none" stroke="#fff" stroke-width="3" opacity="0.7" transform="rotate(-12 108 146)"/>
+    <path d="M108 134 l4 8 9 1 -6.5 6 2 9 -8.5-4.5 -8.5 4.5 2-9 -6.5-6 9-1z" fill="#fff" opacity="0.9" transform="rotate(-12 108 146)"/>
+  </g>
+  <!-- 翻开卡片A（笑脸） -->
+  <g filter="url(#sh6)" transform="translate(162,78)">
+    <rect width="80" height="112" rx="14" fill="url(#cardA)" stroke="#fff" stroke-width="4"/>
+    <circle cx="40" cy="56" r="24" fill="#fff" opacity="0.95"/>
+    <circle cx="32" cy="52" r="3.6" fill="#5a2340"/><circle cx="48" cy="52" r="3.6" fill="#5a2340"/>
+    <path d="M31 62 Q40 70 49 62" fill="none" stroke="#5a2340" stroke-width="2.8" stroke-linecap="round"/>
+    <circle cx="24" cy="60" r="4" fill="#FFD0E0"/>
+  </g>
+  <!-- 翻开卡片B（笑脸） -->
+  <g filter="url(#sh6)" transform="translate(256,98) rotate(8)">
+    <rect width="80" height="112" rx="14" fill="url(#cardB)" stroke="#fff" stroke-width="4"/>
+    <circle cx="40" cy="56" r="24" fill="#fff" opacity="0.95"/>
+    <circle cx="32" cy="52" r="3.6" fill="#123a5a"/><circle cx="48" cy="52" r="3.6" fill="#123a5a"/>
+    <path d="M31 62 Q40 70 49 62" fill="none" stroke="#123a5a" stroke-width="2.8" stroke-linecap="round"/>
+    <circle cx="56" cy="60" r="4" fill="#CFE9FF"/>
+  </g>
+</svg>

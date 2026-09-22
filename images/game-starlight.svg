@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <defs>
+    <linearGradient id="night" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3A3E7A"/>
+      <stop offset="100%" stop-color="#7E6FB0"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5DA9E9"/>
+      <stop offset="100%" stop-color="#2E6FB8"/>
+    </linearGradient>
+    <linearGradient id="island" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFE2A8"/>
+      <stop offset="100%" stop-color="#E8B563"/>
+    </linearGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="400" height="300" rx="18" fill="url(#night)"/>
+  <!-- 星星 -->
+  <g fill="#FFE27A" filter="url(#glow)">
+    <path d="M70 60 l4 9 10 1 -7.5 7 2 10 -8.5-5 -8.5 5 2-10 -7.5-7 10-1z"/>
+    <path d="M320 48 l3 7 8 1 -6 5.5 1.5 8 -6.5-4 -6.5 4 1.5-8 -6-5.5 8-1z" opacity="0.9"/>
+  </g>
+  <circle cx="120" cy="110" r="2.5" fill="#fff" opacity="0.8"/>
+  <circle cx="270" cy="120" r="2" fill="#fff" opacity="0.7"/>
+  <circle cx="180" cy="70" r="2.5" fill="#fff" opacity="0.6"/>
+  <!-- 月亮 -->
+  <path d="M300 110 a34 34 0 1 0 -8 -64 a27 27 0 1 1 8 64z" fill="#FFF3C4" filter="url(#glow)"/>
+  <!-- 海面 -->
+  <path d="M0 196 Q100 180 200 196 T400 196 V300 H0 Z" fill="url(#sea)"/>
+  <path d="M0 210 q40 -8 80 0 t80 0 t80 0 t80 0 t80 0" fill="none" stroke="#BFE4FF" stroke-width="3" opacity="0.5"/>
+  <!-- 小岛 -->
+  <ellipse cx="200" cy="206" rx="92" ry="20" fill="url(#island)"/>
+  <!-- 星星树/灯塔 -->
+  <g filter="url(#glow)">
+    <path d="M200 120 l13 28 31 4 -22 21 6 30 -28-16 -28 16 6-30 -22-21 31-4z" fill="#FFD93D"/>
+    <rect x="196" y="150" width="8" height="56" rx="3" fill="#8B5A2B"/>
+  </g>
+  <!-- 水面星光倒影 -->
+  <g stroke="#FFE27A" stroke-width="3" stroke-linecap="round" opacity="0.65">
+    <line x1="190" y1="232" x2="210" y2="232"/>
+    <line x1="184" y1="244" x2="216" y2="244" opacity="0.4"/>
+    <line x1="178" y1="256" x2="222" y2="256" opacity="0.25"/>
+  </g>
+</svg>

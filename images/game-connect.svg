@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFF6E0"/>
+      <stop offset="55%" stop-color="#FFE9F3"/>
+      <stop offset="100%" stop-color="#E3F4FF"/>
+    </linearGradient>
+    <radialGradient id="dotPink" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#FF9DC2"/>
+      <stop offset="100%" stop-color="#F24E8E"/>
+    </radialGradient>
+    <radialGradient id="dotYellow" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#FFE27A"/>
+      <stop offset="100%" stop-color="#F5B700"/>
+    </radialGradient>
+    <radialGradient id="dotBlue" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#8ED6FF"/>
+      <stop offset="100%" stop-color="#2E9BE8"/>
+    </radialGradient>
+    <radialGradient id="dotGreen" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#9BEBC0"/>
+      <stop offset="100%" stop-color="#2FB876"/>
+    </radialGradient>
+    <radialGradient id="dotPurple" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#C9A8FF"/>
+      <stop offset="100%" stop-color="#8B5CF6"/>
+    </radialGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#7a5c8a" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <rect width="400" height="300" rx="18" fill="url(#bg)"/>
+
+  <!-- 装饰星星 -->
+  <g fill="#FFD93D" opacity="0.8">
+    <path d="M48 52 l4 9 10 1 -7.5 7 2 10 -8.5-5 -8.5 5 2-10 -7.5-7 10-1z"/>
+    <path d="M352 64 l3 7 8 1 -6 5.5 1.5 8 -6.5-4 -6.5 4 1.5-8 -6-5.5 8-1z" opacity="0.7"/>
+  </g>
+  <circle cx="330" cy="232" r="6" fill="#8ED6FF" opacity="0.6"/>
+  <circle cx="56" cy="226" r="5" fill="#9BEBC0" opacity="0.7"/>
+  <circle cx="372" cy="150" r="4" fill="#FF9DC2" opacity="0.6"/>
+
+  <!-- 连线 -->
+  <polyline points="70,210 130,96 200,176 272,78 330,172"
+            fill="none" stroke="#FF9F43" stroke-width="6"
+            stroke-linecap="round" stroke-linejoin="round"
+            stroke-dasharray="2 14" opacity="0.75"/>
+
+  <!-- 彩色圆点（带可爱表情） -->
+  <g filter="url(#soft)">
+    <!-- 1 粉红 -->
+    <g transform="translate(70,210)">
+      <circle r="30" fill="url(#dotPink)"/>
+      <circle r="30" fill="none" stroke="#fff" stroke-width="3" opacity="0.6"/>
+      <circle cx="-9" cy="-5" r="3.4" fill="#5a2340"/>
+      <circle cx="9" cy="-5" r="3.4" fill="#5a2340"/>
+      <path d="M-7 6 Q0 12 7 6" fill="none" stroke="#5a2340" stroke-width="2.6" stroke-linecap="round"/>
+      <circle cx="-15" cy="4" r="4" fill="#fff" opacity="0.35"/>
+    </g>
+    <!-- 2 黄色 -->
+    <g transform="translate(130,96)">
+      <circle r="30" fill="url(#dotYellow)"/>
+      <circle r="30" fill="none" stroke="#fff" stroke-width="3" opacity="0.6"/>
+      <circle cx="-9" cy="-5" r="3.4" fill="#6b4e00"/>
+      <circle cx="9" cy="-5" r="3.4" fill="#6b4e00"/>
+      <path d="M-7 5 Q0 11 7 5" fill="none" stroke="#6b4e00" stroke-width="2.6" stroke-linecap="round"/>
+      <circle cx="-15" cy="4" r="4" fill="#fff" opacity="0.45"/>
+    </g>
+    <!-- 3 蓝色 -->
+    <g transform="translate(200,176)">
+      <circle r="30" fill="url(#dotBlue)"/>
+      <circle r="30" fill="none" stroke="#fff" stroke-width="3" opacity="0.6"/>
+      <circle cx="-9" cy="-5" r="3.4" fill="#123a5a"/>
+      <circle cx="9" cy="-5" r="3.4" fill="#123a5a"/>
+      <path d="M-7 6 Q0 12 7 6" fill="none" stroke="#123a5a" stroke-width="2.6" stroke-linecap="round"/>
+      <circle cx="-15" cy="4" r="4" fill="#fff" opacity="0.4"/>
+    </g>
+    <!-- 4 紫色 -->
+    <g transform="translate(272,78)">
+      <circle r="30" fill="url(#dotPurple)"/>
+      <circle r="30" fill="none" stroke="#fff" stroke-width="3" opacity="0.6"/>
+      <circle cx="-9" cy="-5" r="3.4" fill="#3a1f66"/>
+      <circle cx="9" cy="-5" r="3.4" fill="#3a1f66"/>
+      <path d="M-7 5 Q0 11 7 5" fill="none" stroke="#3a1f66" stroke-width="2.6" stroke-linecap="round"/>
+      <circle cx="-15" cy="4" r="4" fill="#fff" opacity="0.35"/>
+    </g>
+    <!-- 5 绿色 -->
+    <g transform="translate(330,172)">
+      <circle r="30" fill="url(#dotGreen)"/>
+      <circle r="30" fill="none" stroke="#fff" stroke-width="3" opacity="0.6"/>
+      <circle cx="-9" cy="-5" r="3.4" fill="#13402a"/>
+      <circle cx="9" cy="-5" r="3.4" fill="#13402a"/>
+      <path d="M-7 6 Q0 12 7 6" fill="none" stroke="#13402a" stroke-width="2.6" stroke-linecap="round"/>
+      <circle cx="-15" cy="4" r="4" fill="#fff" opacity="0.4"/>
+    </g>
+  </g>
+
+  <!-- 序号小徽章 -->
+  <g font-family="'Microsoft YaHei', sans-serif" font-weight="bold" font-size="15" fill="#fff" text-anchor="middle">
+    <text x="70" y="215" opacity="0">1</text>
+  </g>
+</svg>

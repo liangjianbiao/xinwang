@@ -1,23 +1,25 @@
-﻿// ========== 设计令牌（暮夜灯火） ==========
+// ========== 设计令牌（马卡龙糖果） ==========
 const C = {
-    bgDeep:  '#1B1947',
-    bgMid:   '#232062',
-    bgLite:  '#2A2570',
-    wall:    '#3E38A0',
-    wallLite:'#5B5BD6',
-    ball:    '#8B7CF0',
-    ballCore:'#EDECF8',
-    coin:    '#FFD76E',
-    coinLite:'#FFE89A',
-    timeAdd: '#5B5BD6',
-    slow:    '#8B7CF0',
-    ghost:   '#5FD3A8',
-    doubleScore:'#E85A8A',
-    teleport:'#FFD76E',
+    bgDeep:  '#A98CE8',
+    bgMid:   '#F7F1FE',
+    bgLite:  '#E4D5FA',
+    wall:    '#A98CE8',
+    wallLite:'#C9BBF5',
+    brand:   '#5BB8EE',
+    calm:    '#7FD9B0',
+    ball:    '#FF5A7A',
+    ballCore:'#FFFDF8',
+    coin:    '#FFC24D',
+    coinLite:'#FFE9A2',
+    timeAdd: '#4FC3F7',
+    slow:    '#B39DDB',
+    ghost:   '#66CF9E',
+    doubleScore:'#FF6B9D',
+    teleport:'#FF9F43',
     goldGlow:'#FFD76E',
-    goldLite:'#FFE89A',
-    grayLine:'#A9A5F5',
-    whiteText:'#EDECF8'
+    goldLite:'#FFE9A2',
+    grayLine:'#9C88D4',
+    whiteText:'#FFFDF8'
 };
 
 const CONFIG = {
@@ -554,12 +556,12 @@ function render(){
   })
   ctx.beginPath();
   ctx.arc(offsetX + gameState.ballX, offsetY + gameState.ballY, CONFIG.ballRadius,0,Math.PI*2);
-  ctx.fillStyle = 'rgba(255, 212, 0, 0.75)';
+  ctx.fillStyle = 'rgba(255, 90, 122, 0.95)';
   ctx.fill();
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.95)';
   ctx.lineWidth=2;
   ctx.stroke();
-  
+
   const gradient = ctx.createRadialGradient(
     offsetX + gameState.ballX - CONFIG.ballRadius * 0.3,
     offsetY + gameState.ballY - CONFIG.ballRadius * 0.3,
@@ -568,9 +570,9 @@ function render(){
     offsetY + gameState.ballY,
     CONFIG.ballRadius
   );
-  gradient.addColorStop(0, 'rgba(255, 255, 255, 0.6)');
-  gradient.addColorStop(0.5, 'rgba(255, 255, 200, 0.2)');
-  gradient.addColorStop(1, 'rgba(255, 212, 0, 0)');
+  gradient.addColorStop(0, 'rgba(255, 255, 255, 0.85)');
+  gradient.addColorStop(0.5, 'rgba(255, 200, 220, 0.35)');
+  gradient.addColorStop(1, 'rgba(255, 90, 122, 0)');
   ctx.fillStyle = gradient;
   ctx.fill();
 }
@@ -712,8 +714,8 @@ function drawPoster(){
   const w = posterCanvas.width;
   const h = posterCanvas.height;
   const grad = posterCtx.createLinearGradient(0,0,0,h);
-  grad.addColorStop(0,C.bgDeep);
-  grad.addColorStop(1,C.bgDeep);
+  grad.addColorStop(0,'#FFE9F3');
+  grad.addColorStop(1,'#E9F5FF');
   posterCtx.fillStyle = grad;
   posterCtx.fillRect(0,0,w,h);
 
@@ -724,22 +726,22 @@ function drawPoster(){
 
   if(shareIsScoreMode){
     const usedTime = CONFIG.maxTime[gameState.currentLv-1] - gameState.timeLeft;
-    posterCtx.fillStyle = "#fff";
+    posterCtx.fillStyle = "#5B4A7A";
     posterCtx.font = "20px system-ui";
     posterCtx.fillText(`关卡：第${gameState.currentLv}关`, w/2, 150);
     posterCtx.fillText(`通关用时：${usedTime}秒`, w/2, 190);
     posterCtx.fillText(`本局总分：${gameState.totalScore}`, w/2, 230);
-    posterCtx.fillStyle = C.coin;
-    posterCtx.font = "16px system-ui";
+    posterCtx.fillStyle = "#E85A8A";
+    posterCtx.font = "bold 16px system-ui";
     posterCtx.fillText("快来挑战我的记录！", w/2, 300);
   }else{
-    posterCtx.fillStyle = "#eee";
+    posterCtx.fillStyle = "#7A6890";
     posterCtx.font = "18px system-ui";
     posterCtx.fillText("倾斜手机控制小球闯关", w/2, 150);
     posterCtx.fillText("超多道具、多难度关卡", w/2, 190);
     posterCtx.fillText("和好友比拼最快通关记录", w/2, 230);
   }
-  posterCtx.fillStyle = "#aaa";
+  posterCtx.fillStyle = "#B09CC4";
   posterCtx.font = "14px system-ui";
   posterCtx.fillText(GAME_URL, w/2, h-80);
 }

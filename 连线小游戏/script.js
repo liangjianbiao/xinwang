@@ -309,48 +309,57 @@ function drawBoard() {
     const level = levels[currentLevel];
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    ctx.fillStyle = '#FFF8F0';
+    ctx.fillStyle = '#F7F1FE';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
+
     for (let row = 0; row < level.gridSize.rows; row++) {
         for (let col = 0; col < level.gridSize.cols; col++) {
             const x = padding + col * cellSize;
             const y = padding + row * cellSize;
-            
-            ctx.strokeStyle = '#FFE4E4';
+
+            ctx.strokeStyle = '#E4D5FA';
             ctx.lineWidth = 1;
             ctx.strokeRect(x, y, cellSize, cellSize);
         }
     }
-    
+
+    ctx.shadowColor = 'rgba(150, 180, 230, 0.35)';
+    ctx.shadowBlur = 6;
+    ctx.shadowOffsetY = 2;
     level.obstacles.forEach(obs => {
         const x = padding + obs.col * cellSize + 5;
         const y = padding + obs.row * cellSize + 5;
-        ctx.fillStyle = '#D4A574';
+        ctx.fillStyle = '#D6ECFC';
         ctx.beginPath();
         ctx.arc(x + cellSize / 2, y + cellSize / 2, cellSize / 2 - 10, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = '#8B6914';
+        ctx.fillStyle = '#7A6890';
         ctx.font = '20px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('☁️', x + cellSize / 2, y + cellSize / 2);
     });
-    
+    ctx.shadowColor = 'transparent';
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetY = 0;
+
+    ctx.shadowColor = 'rgba(180, 140, 220, 0.35)';
+    ctx.shadowBlur = 8;
+    ctx.shadowOffsetY = 3;
     level.dots.forEach((dot, index) => {
         const x = padding + dot.col * cellSize + cellSize / 2;
         const y = padding + dot.row * cellSize + cellSize / 2;
         const radius = 12;
-        
+
         const isSelected = selectedDots.includes(index);
         const isCurrentTarget = selectedDots.length === index;
-        
+
         if (isSelected) {
-            ctx.fillStyle = '#FF6B6B';
+            ctx.fillStyle = '#FF6B9D';
         } else if (isCurrentTarget) {
-            ctx.fillStyle = '#FFD43B';
+            ctx.fillStyle = '#FFB061';
         } else {
-            ctx.fillStyle = '#D4A574';
+            ctx.fillStyle = '#B9A3E3';
         }
         
         ctx.beginPath();
@@ -363,7 +372,10 @@ function drawBoard() {
         ctx.textBaseline = 'middle';
         ctx.fillText(index + 1, x, y);
     });
-    
+    ctx.shadowColor = 'transparent';
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetY = 0;
+
     const startX = padding + level.start.col * cellSize + cellSize / 2;
     const startY = padding + level.start.row * cellSize + cellSize / 2;
     ctx.font = '28px Arial';
@@ -380,11 +392,14 @@ function drawBoard() {
 function drawLines() {
     if (selectedDots.length < 2) return;
     
-    ctx.strokeStyle = '#FF6B6B';
+    ctx.strokeStyle = '#FF6B9D';
     ctx.lineWidth = 4;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    
+    ctx.shadowColor = 'rgba(255, 107, 157, 0.45)';
+    ctx.shadowBlur = 6;
+    ctx.shadowOffsetY = 2;
+
     ctx.beginPath();
     selectedDots.forEach((dotIndex, index) => {
         const dot = levels[currentLevel].dots[dotIndex];
@@ -398,6 +413,9 @@ function drawLines() {
         }
     });
     ctx.stroke();
+    ctx.shadowColor = 'transparent';
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetY = 0;
 }
 
 function handleCanvasClick(e) {
@@ -461,7 +479,7 @@ function showHint() {
         const x = padding + hintDot.col * cellSize + cellSize / 2;
         const y = padding + hintDot.row * cellSize + cellSize / 2;
         
-        ctx.fillStyle = 'rgba(255, 212, 59, 0.3)';
+        ctx.fillStyle = 'rgba(255, 194, 77, 0.35)';
         ctx.beginPath();
         ctx.arc(x, y, 30, 0, Math.PI * 2);
         ctx.fill();

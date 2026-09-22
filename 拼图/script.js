@@ -540,9 +540,9 @@ function drawPuzzle() {
             const pieceIndex = puzzlePieces[index];
             
             if (pieceIndex === PIECES - 1) {
-                ctx.fillStyle = '#f5f5f5';
+                ctx.fillStyle = '#F1E9FD';
                 ctx.fillRect(x * PIECES_SIZE, y * PIECES_SIZE, PIECES_SIZE, PIECES_SIZE);
-                ctx.strokeStyle = '#ddd';
+                ctx.strokeStyle = '#D9C8F7';
                 ctx.lineWidth = 1;
                 ctx.setLineDash([4, 4]);
                 ctx.strokeRect(x * PIECES_SIZE + 2, y * PIECES_SIZE + 2, PIECES_SIZE - 4, PIECES_SIZE - 4);
@@ -557,27 +557,27 @@ function drawPuzzle() {
                     x * PIECES_SIZE, y * PIECES_SIZE, PIECES_SIZE, PIECES_SIZE
                 );
                 
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+                ctx.fillStyle = 'rgba(91, 74, 122, 0.75)';
                 ctx.font = 'bold 14px Arial';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillText(pieceIndex + 1, x * PIECES_SIZE + PIECES_SIZE/2, y * PIECES_SIZE + PIECES_SIZE - 10);
             }
             
-            ctx.strokeStyle = '#ddd';
+            ctx.strokeStyle = '#EBDCF7';
             ctx.lineWidth = 1;
             ctx.strokeRect(x * PIECES_SIZE, y * PIECES_SIZE, PIECES_SIZE, PIECES_SIZE);
             
             if (index === selectedPiece) {
-                ctx.fillStyle = 'rgba(102, 126, 234, 0.4)';
+                ctx.fillStyle = 'rgba(255, 107, 157, 0.35)';
                 ctx.fillRect(x * PIECES_SIZE, y * PIECES_SIZE, PIECES_SIZE, PIECES_SIZE);
-                ctx.strokeStyle = '#667eea';
+                ctx.strokeStyle = '#FF6B9D';
                 ctx.lineWidth = 3;
                 ctx.strokeRect(x * PIECES_SIZE + 2, y * PIECES_SIZE + 2, PIECES_SIZE - 4, PIECES_SIZE - 4);
             }
             
             if (pieceIndex === index && pieceIndex !== PIECES - 1) {
-                ctx.strokeStyle = '#4CAF50';
+                ctx.strokeStyle = '#66CF9E';
                 ctx.lineWidth = 2;
                 ctx.strokeRect(x * PIECES_SIZE + 1, y * PIECES_SIZE + 1, PIECES_SIZE - 2, PIECES_SIZE - 2);
             }

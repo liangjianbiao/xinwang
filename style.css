@@ -1664,6 +1664,97 @@ footer {
     box-shadow: none;
 }
 
+/* === 连线小游戏 儿童化样式 === */
+.game-card-kids {
+    border: 3px solid transparent;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #fff9e6 0%, #ffe9f3 50%, #e9f5ff 100%);
+    box-shadow: 0 4px 20px rgba(255, 159, 67, 0.15), 0 2px 8px rgba(232, 90, 138, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.game-card-kids::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FFD93D 0%, #FF6B9D 100%);
+    opacity: 0.15;
+}
+
+.game-card-kids::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: -20px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4FC3F7 0%, #66BB6A 100%);
+    opacity: 0.15;
+}
+
+.game-card-kids:hover {
+    border-color: rgba(255, 107, 157, 0.4);
+    box-shadow: 0 10px 36px rgba(255, 159, 67, 0.28), 0 4px 16px rgba(232, 90, 138, 0.2);
+    transform: translateY(-8px) rotate(-1deg);
+}
+
+.game-img-wrap {
+    width: 100%;
+    height: 160px;
+    border-radius: 18px;
+    overflow: hidden;
+    margin: 0 auto 16px;
+    background: linear-gradient(135deg, #fff3e0 0%, #fce4ec 100%);
+    box-shadow: inset 0 2px 8px rgba(255, 182, 193, 0.25);
+}
+
+.game-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.game-card-kids:hover .game-img {
+    transform: scale(1.08);
+}
+
+.game-card-kids .game-info h3 {
+    font-size: 1.4rem;
+    color: #E85A8A;
+}
+
+.game-card-kids .game-info p {
+    color: #8E6C88;
+}
+
+.game-card-kids .game-stats {
+    color: #B58BC1;
+}
+
+.play-btn-kids {
+    background: linear-gradient(135deg, #FF6B9D 0%, #FFC24D 50%, #4FC3F7 100%);
+    border-radius: 20px;
+    font-size: 1.05rem;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 16px rgba(255, 107, 157, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.play-btn-kids:hover:not(.disabled) {
+    background: linear-gradient(135deg, #FF4F87 0%, #FFB52D 50%, #38B0E8 100%);
+    box-shadow: 0 8px 24px rgba(255, 107, 157, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.play-btn-kids:active:not(.disabled) {
+    box-shadow: 0 2px 8px rgba(255, 107, 157, 0.3), inset 0 2px 6px rgba(200, 50, 100, 0.2);
+}
+
 /* 游戏统计 */
 .games-stats {
     padding: 50px 20px;
