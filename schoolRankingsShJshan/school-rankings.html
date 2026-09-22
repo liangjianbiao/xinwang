@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>北京市各区学校排名统计</title>
+    <title>全国名校展示 - 知名大学/高中/初中官网导航</title>
     <link rel="stylesheet" href="../style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -30,7 +30,7 @@
                 <li><a href="../test.html"><i class="fas fa-flask"></i> 心理测试</a></li>
                 <li><a href="../music.html"><i class="fas fa-music"></i> 音乐殿堂</a></li>
                 <li><a href="../games.html"><i class="fas fa-gamepad"></i> 小游戏</a></li>
-                <li><a href="school-rankings.html" class="active"><i class="fas fa-school"></i> 学校排名</a></li>
+                <li><a href="school-rankings.html" class="active"><i class="fas fa-school"></i> 名校展示</a></li>
             </ul>
             <div class="hamburger">
                 <span></span>
@@ -42,8 +42,8 @@
 
     <div class="container"> 
         <header>
-            <h1>🏫 北京市各区学校排名统计</h1>
-            <p class="subtitle">2025-2026学年各区学校信息汇总</p>
+            <h1>🎓 全国名校展示</h1>
+            <p class="subtitle">知名大学 · 知名高中 · 知名初中 ｜ 一键直达学校官网</p>
         </header>
 
         <div class="area-tabs" id="area-tabs"></div>
@@ -52,28 +52,48 @@
 
         <div class="statistics">
             <div class="stat-card">
-                <h3>学校总数</h3>
+                <h3>名校总数</h3>
                 <p class="stat-number" id="total-schools">0</p>
             </div>
             <div class="stat-card">
-                <h3>中学数量</h3>
+                <h3>知名大学</h3>
+                <p class="stat-number" id="total-university">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>知名高中</h3>
+                <p class="stat-number" id="total-high">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>知名初中</h3>
                 <p class="stat-number" id="total-middle">0</p>
-            </div>
-            <div class="stat-card">
-                <h3>小学数量</h3>
-                <p class="stat-number" id="total-primary">0</p>
-            </div>
-            <div class="stat-card">
-                <h3>覆盖区域</h3>
-                <p class="stat-number" id="total-districts">0</p>
             </div>
         </div>
 
         <footer>
-            <p>数据来源：北京市教育委员会 | 更新时间：2026年</p>
+            <p>学校信息与官网链接整理自公开资料，如有变动请以学校官网为准 ｜ 更新时间：2026年9月</p>
         </footer>
     </div>
 
+    <button class="back-to-top" id="backToTop" title="返回顶部" aria-label="返回顶部">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <script src="script.js"></script>
+    <script>
+        // 返回顶部
+        (function() {
+            var btn = document.getElementById('backToTop');
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    btn.classList.add('show');
+                } else {
+                    btn.classList.remove('show');
+                }
+            }, { passive: true });
+            btn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        })();
+    </script>
 </body>
 </html>
