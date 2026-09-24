@@ -149,11 +149,25 @@ body {
 
 .level-info-panel {
     width: 200px;
+    max-height: 640px;
+    overflow-y: auto;
     background: rgba(255, 255, 255, 0.92);
     border: 2px solid var(--line);
     border-radius: var(--radius-lg);
     padding: 20px;
     box-shadow: var(--shadow-card);
+}
+
+/* 提示面板滚动条（马卡龙配色） */
+.level-info-panel::-webkit-scrollbar {
+    width: 6px;
+}
+.level-info-panel::-webkit-scrollbar-thumb {
+    background: #E0D0F8;
+    border-radius: 999px;
+}
+.level-info-panel::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 .hints-title {

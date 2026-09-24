@@ -65,7 +65,7 @@
                 <span class="game-title">🧩 拼图小游戏</span>
             </div>
             <div class="header-center">
-                <span class="level-info">第 <span id="current-level">1</span> / <span id="total-levels">3</span> 关</span>
+                <span class="level-info">第 <span id="current-level">1</span> / <span id="total-levels">10</span> 关</span>
             </div>
             <div class="header-right">
                 <label for="file-upload-game" class="btn btn-outline upload-btn">上传图片</label>
@@ -83,12 +83,6 @@
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" id="progress"></div>
-                    </div>
-                </div>
-                <div class="preview-board">
-                    <h3>原图预览</h3>
-                    <div class="preview-container">
-                        <img id="preview-image" alt="原图预览">
                     </div>
                 </div>
             </div>
@@ -114,6 +108,7 @@
 
         <div class="game-controls">
             <div class="action-btns">
+                <button id="btn-preview" class="btn btn-secondary">🖼️ 查看原图</button>
                 <button id="btn-shuffle" class="btn btn-outline">打乱</button>
                 <button id="btn-hint" class="btn btn-primary">提示</button>
                 <button id="btn-solve" class="btn btn-secondary">自动完成</button>
@@ -132,8 +127,35 @@
                 <button id="btn-next" class="btn btn-primary">下一关 →</button>
             </div>
         </div>
+
+        <div class="preview-overlay" id="preview-overlay">
+            <div class="preview-modal">
+                <button class="preview-close" id="preview-close" title="关闭" aria-label="关闭">✕</button>
+                <h3>🖼️ 原图预览</h3>
+                <div class="preview-img-wrap">
+                    <img id="preview-image" alt="原图预览">
+                </div>
+                <p class="preview-tip">点击空白处或按 Esc 关闭</p>
+            </div>
+        </div>
     </div>
 
+    <button class="back-to-top" id="backToTop" title="返回顶部" aria-label="返回顶部">↑</button>
+    <script>
+        (function() {
+            var btn = document.getElementById('backToTop');
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    btn.classList.add('show');
+                } else {
+                    btn.classList.remove('show');
+                }
+            }, { passive: true });
+            btn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        })();
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

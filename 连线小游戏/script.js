@@ -209,7 +209,7 @@ const levels = [
         directions: ['↓', '→', '↓', '↓', '←', '↓', '→', '→', '↓', '↓']
     },
     {
-        name: "最终决战",
+        name: "激战石矶",
         gridSize: { rows: 7, cols: 7 },
         start: { row: 6, col: 2 },
         end: { row: 1, col: 5 },
@@ -237,6 +237,115 @@ const levels = [
         directions: ['→', '↑', '→', '↑', '←', '↑', '→', '→', '↑', '↑']
     }
 ];
+
+/* =========================================================
+ * 第 11-30 关：种子程序化生成
+ * 用固定种子 + 带回溯的 DFS 生成自避路径，保证：
+ *   1) 每次进入同一关布局完全一致（可复现）
+ *   2) dots 相邻必为上下左右一步，路径不重复经过格子
+ *   3) 云朵障碍只落在路径之外的格子
+ * 难度三维递增：网格 7×7 → 8×8、步数 10 → 22、云朵 5 → 12
+ * ========================================================= */
+const extraNames = [
+    "翠屏山行宫", "乾元金光洞", "骷髅白骨洞", "东海之滨", "水晶宫阙",
+    "汜水关隘", "界牌雄关", "穿云险关", "临潼关道", "潼关古道",
+    "青龙关前", "佳梦迷关", "诛仙阵门", "万仙大阵", "南天门阙",
+    "瑶池仙境", "凌霄宝殿", "九龙神火罩", "混元金斗阵", "封神大典"
+];
+
+// 每项：[行数, 列数, 路径步数, 云朵数]
+const extraSpecs = [
+    [7, 7, 10, 5], [7, 7, 11, 6], [7, 7, 12, 6], [7, 7, 12, 7], [7, 7, 13, 7],
+    [7, 8, 13, 7], [7, 8, 14, 8], [8, 8, 14, 8], [8, 8, 15, 8], [8, 8, 15, 9],
+    [8, 8, 16, 9], [8, 8, 16, 10], [8, 8, 17, 10], [8, 8, 18, 10], [8, 8, 18, 11],
+    [8, 8, 19, 11], [8, 8, 20, 11], [8, 8, 20, 12], [8, 8, 21, 12], [8, 8, 22, 12]
+];
+
+function mulberry32(seed) {
+    return function () {
+        let t = seed += 0x6D2B79F5;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+}
+
+function shuffleArr(arr, rand) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(rand() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+// 随机起点 + 带回溯 DFS，生成恰好 stepCount 步的自避路径；失败换起点重试
+function genPath(rows, cols, stepCount, rand) {
+    for (let attempt = 0; attempt < 80; attempt++) {
+        const sr = Math.floor(rand() * rows);
+        const sc = Math.floor(rand() * cols);
+        const used = new Set([sr + ',' + sc]);
+        const path = [{ row: sr, col: sc }];
+
+        (function dfs(r, c) {
+            if (path.length === stepCount + 1) return true;
+            const dirs = shuffleArr([[0, 1], [0, -1], [1, 0], [-1, 0]], rand);
+            for (const [dr, dc] of dirs) {
+                const nr = r + dr, nc = c + dc;
+                if (nr < 0 || nr >= rows || nc < 0 || nc >= cols) continue;
+                const key = nr + ',' + nc;
+                if (used.has(key)) continue;
+                used.add(key);
+                path.push({ row: nr, col: nc });
+                if (dfs(nr, nc)) return true;
+                used.delete(key);
+                path.pop();
+            }
+            return false;
+        })(sr, sc);
+
+        if (path.length === stepCount + 1) return path;
+    }
+    return null;
+}
+
+function buildExtraLevel(index) {
+    const [rows, cols, steps, obstacleCount] = extraSpecs[index];
+    const rand = mulberry32(20260924 + index * 7919);
+    const path = genPath(rows, cols, steps, rand);
+
+    // 云朵只放在路径之外的格子上
+    const used = new Set(path.map(p => p.row + ',' + p.col));
+    const free = [];
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            if (!used.has(r + ',' + c)) free.push({ row: r, col: c });
+        }
+    }
+    shuffleArr(free, rand);
+    const obstacles = free.slice(0, obstacleCount);
+
+    const arrowOf = (a, b) => {
+        if (b.row < a.row) return '↑';
+        if (b.row > a.row) return '↓';
+        return b.col > a.col ? '→' : '←';
+    };
+    const directions = [];
+    for (let i = 1; i < path.length; i++) directions.push(arrowOf(path[i - 1], path[i]));
+
+    return {
+        name: extraNames[index],
+        gridSize: { rows, cols },
+        start: path[0],
+        end: path[path.length - 1],
+        dots: path,
+        obstacles,
+        directions
+    };
+}
+
+for (let i = 0; i < extraSpecs.length; i++) {
+    levels.push(buildExtraLevel(i));
+}
 
 let currentLevel = 0;
 let selectedDots = [];
@@ -299,6 +408,8 @@ function updateHintsGrid() {
 
 function resizeCanvas() {
     const level = levels[currentLevel];
+    // 网格越大单元格越小，棋盘逻辑宽度保持 ~440px
+    cellSize = Math.floor((440 - padding * 2) / Math.max(level.gridSize.rows, level.gridSize.cols));
     const width = level.gridSize.cols * cellSize + padding * 2;
     const height = level.gridSize.rows * cellSize + padding * 2;
     canvas.width = width;
@@ -327,17 +438,16 @@ function drawBoard() {
     ctx.shadowBlur = 6;
     ctx.shadowOffsetY = 2;
     level.obstacles.forEach(obs => {
-        const x = padding + obs.col * cellSize + 5;
-        const y = padding + obs.row * cellSize + 5;
+        const cx = padding + (obs.col + 0.5) * cellSize;
+        const cy = padding + (obs.row + 0.5) * cellSize;
         ctx.fillStyle = '#D6ECFC';
         ctx.beginPath();
-        ctx.arc(x + cellSize / 2, y + cellSize / 2, cellSize / 2 - 10, 0, Math.PI * 2);
+        ctx.arc(cx, cy, cellSize * 0.32, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = '#7A6890';
-        ctx.font = '20px Arial';
+        ctx.font = Math.floor(cellSize * 0.5) + 'px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('☁️', x + cellSize / 2, y + cellSize / 2);
+        ctx.fillText('☁️', cx, cy);
     });
     ctx.shadowColor = 'transparent';
     ctx.shadowBlur = 0;
@@ -349,7 +459,7 @@ function drawBoard() {
     level.dots.forEach((dot, index) => {
         const x = padding + dot.col * cellSize + cellSize / 2;
         const y = padding + dot.row * cellSize + cellSize / 2;
-        const radius = 12;
+        const radius = cellSize * 0.23;
 
         const isSelected = selectedDots.includes(index);
         const isCurrentTarget = selectedDots.length === index;
@@ -367,7 +477,7 @@ function drawBoard() {
         ctx.fill();
         
         ctx.fillStyle = 'white';
-        ctx.font = 'bold 12px Arial';
+        ctx.font = 'bold ' + Math.floor(cellSize * 0.33) + 'px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(index + 1, x, y);
@@ -378,13 +488,14 @@ function drawBoard() {
 
     const startX = padding + level.start.col * cellSize + cellSize / 2;
     const startY = padding + level.start.row * cellSize + cellSize / 2;
-    ctx.font = '28px Arial';
-    ctx.fillText('🧒', startX - 10, startY + 8);
-    
+    ctx.font = Math.floor(cellSize * 0.55) + 'px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('🧒', startX - cellSize * 0.17, startY + cellSize * 0.12);
+
     const endX = padding + level.end.col * cellSize + cellSize / 2;
     const endY = padding + level.end.row * cellSize + cellSize / 2;
-    ctx.font = '28px Arial';
-    ctx.fillText('🔪', endX - 10, endY + 8);
+    ctx.fillText('🔪', endX - cellSize * 0.17, endY + cellSize * 0.12);
     
     drawLines();
 }
@@ -393,7 +504,7 @@ function drawLines() {
     if (selectedDots.length < 2) return;
     
     ctx.strokeStyle = '#FF6B9D';
-    ctx.lineWidth = 4;
+    ctx.lineWidth = Math.max(3, cellSize * 0.08);
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     ctx.shadowColor = 'rgba(255, 107, 157, 0.45)';
@@ -444,7 +555,7 @@ function handleCanvasClick(e) {
 }
 
 function findClickedDot(x, y, level) {
-    const clickRadius = 30;
+    const clickRadius = cellSize * 0.5;
     for (let i = 0; i < level.dots.length; i++) {
         const dot = level.dots[i];
         const dotX = padding + dot.col * cellSize + cellSize / 2;
@@ -481,7 +592,7 @@ function showHint() {
         
         ctx.fillStyle = 'rgba(255, 194, 77, 0.35)';
         ctx.beginPath();
-        ctx.arc(x, y, 30, 0, Math.PI * 2);
+        ctx.arc(x, y, cellSize * 0.5, 0, Math.PI * 2);
         ctx.fill();
         
         setTimeout(() => {

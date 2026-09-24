@@ -1,15 +1,21 @@
-const GRID_SIZE = 4;
-const PIECES = GRID_SIZE * GRID_SIZE;
-const PIECES_SIZE = 70;
-
+/* ===== 关卡配置：随关卡递增切割数（3×3 → 7×7），图片循环使用 ===== */
+const BOARD_TARGET = 360; // 棋盘逻辑边长（px），网格越大每块越小
 const defaultImages = [
     'image.png',
     'image1.png',
     'image3.png'
 ];
+// 每档网格停留 2 关：3×3、4×4、5×5、6×6、7×7，共 10 关，难度逐级递增
+const levelGrids = [3, 3, 4, 4, 5, 5, 6, 6, 7, 7];
+const levels = levelGrids.map((g, i) => ({
+    image: defaultImages[i % defaultImages.length],
+    grid: g
+}));
 
-let images = [...defaultImages];
 let currentLevel = 0;
+let gridSize = levels[0].grid;
+let pieces = gridSize * gridSize;
+let pieceSize = Math.floor(BOARD_TARGET / gridSize);
 let puzzlePieces = [];
 let selectedPiece = null;
 let steps = 0; 
@@ -46,15 +52,15 @@ function initGame() {
     canvas = document.getElementById('puzzle-canvas');
     ctx = canvas.getContext('2d');
     previewImage = document.getElementById('preview-image');
-    
-    canvas.width = GRID_SIZE * PIECES_SIZE;
-    canvas.height = GRID_SIZE * PIECES_SIZE;
-    
+
     setupEventListeners();
     loadLevel(currentLevel);
 }
 
+let listenersBound = false;
 function setupEventListeners() {
+    if (listenersBound) return;
+    listenersBound = true;
     canvas.addEventListener('click', handleCanvasClick);
     canvas.addEventListener('mousedown', handleMouseDown);
     canvas.addEventListener('mousemove', handleMouseMove);
@@ -72,20 +78,38 @@ function setupEventListeners() {
     document.getElementById('btn-next').addEventListener('click', nextLevel);
     document.getElementById('btn-back').addEventListener('click', goHome);
     document.getElementById('file-upload-game').addEventListener('change', handleGameFileUpload);
-    
+
+    // 原图预览弹窗
+    document.getElementById('btn-preview').addEventListener('click', openPreview);
+    document.getElementById('preview-close').addEventListener('click', closePreview);
+    document.getElementById('preview-overlay').addEventListener('click', function(e) {
+        if (e.target === this) closePreview();
+    });
+
     document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closePreview();
+    });
+}
+
+function openPreview() {
+    document.getElementById('preview-overlay').classList.add('show');
+}
+
+function closePreview() {
+    document.getElementById('preview-overlay').classList.remove('show');
 }
 
 function renderLevelGrid() {
     const levelGrid = document.getElementById('level-grid');
     levelGrid.innerHTML = '';
     
-    images.forEach((imageUrl, index) => {
+    levels.forEach((level, index) => {
         const levelItem = document.createElement('div');
         levelItem.className = 'level-item';
         levelItem.dataset.level = index;
-        
-        if (index >= defaultImages.length) {
+
+        if (level.custom) {
             levelItem.classList.add('custom-level');
         }
         
@@ -125,21 +149,28 @@ function renderLevelGrid() {
         levelGrid.appendChild(levelItem);
         
         setTimeout(() => {
-            img.src = imageUrl;
+            img.src = level.image;
         }, index * 100);
     });
     
-    if (images.length > 0) {
+    if (levels.length > 0) {
         document.querySelector('.level-item').classList.add('selected');
     }
+}
+
+// 星级阈值随拼块总数缩放：3 星 ≤ 0.7N 步，2 星 ≤ 1.3N 步，否则 1 星
+function starCountFor(score, levelIndex) {
+    const grid = (levels[levelIndex] && levels[levelIndex].grid) || 4;
+    const n = grid * grid;
+    if (score <= Math.round(n * 0.7)) return 3;
+    if (score <= Math.round(n * 1.3)) return 2;
+    return 1;
 }
 
 function getStarsForLevel(level) {
     const score = bestScores[level];
     if (!score) return '';
-    if (score <= 15) return '⭐⭐⭐';
-    if (score <= 30) return '⭐⭐';
-    return '⭐';
+    return '⭐'.repeat(starCountFor(score, level));
 }
 
 function updateHomeStats() {
@@ -150,9 +181,7 @@ function updateHomeStats() {
     Object.keys(bestScores).forEach(level => {
         completedLevels++;
         const score = bestScores[level];
-        if (score <= 15) totalStars += 3;
-        else if (score <= 30) totalStars += 2;
-        else totalStars += 1;
+        totalStars += starCountFor(score, level);
         
         if (bestStep === null || score < bestStep) {
             bestStep = score;
@@ -193,17 +222,23 @@ function handleHomeFileUpload(e) {
     const reader = new FileReader();
     reader.onload = function(event) {
         const imageDataUrl = event.target.result;
-        customImages.push(imageDataUrl);
-        images.push(imageDataUrl);
-        
-        currentLevel = images.length - 1;
+        addCustomLevel(imageDataUrl);
+
+        currentLevel = levels.length - 1;
         renderLevelGrid();
-        
+
         document.getElementById('file-upload').value = '';
-        
+
         alert('图片上传成功！请点击开始游戏。');
     };
     reader.readAsDataURL(file);
+}
+
+// 自定义图片按高难度追加：前 3 张 6×6，之后 7×7
+function addCustomLevel(imageDataUrl) {
+    customImages.push(imageDataUrl);
+    const grid = Math.min(7, 6 + Math.floor((customImages.length - 1) / 3));
+    levels.push({ image: imageDataUrl, grid: grid, custom: true });
 }
 
 function handleGameFileUpload(e) {
@@ -213,14 +248,13 @@ function handleGameFileUpload(e) {
     const reader = new FileReader();
     reader.onload = function(event) {
         const imageDataUrl = event.target.result;
-        customImages.push(imageDataUrl);
-        images.push(imageDataUrl);
-        
-        currentLevel = images.length - 1;
+        addCustomLevel(imageDataUrl);
+
+        currentLevel = levels.length - 1;
         loadLevel(currentLevel);
-        
+
         document.getElementById('file-upload-game').value = '';
-        
+
         alert('图片上传成功！开始新的拼图关卡。');
     };
     reader.readAsDataURL(file);
@@ -231,12 +265,12 @@ function handleMouseDown(e) {
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
     
-    const x = Math.floor((e.clientX - rect.left) * scaleX / PIECES_SIZE);
-    const y = Math.floor((e.clientY - rect.top) * scaleY / PIECES_SIZE);
+    const x = Math.floor((e.clientX - rect.left) * scaleX / pieceSize);
+    const y = Math.floor((e.clientY - rect.top) * scaleY / pieceSize);
     
-    const index = y * GRID_SIZE + x;
+    const index = y * gridSize + x;
     
-    if (index >= 0 && index < PIECES) {
+    if (index >= 0 && index < pieces) {
         isDragging = true;
         dragStartIndex = index;
         selectedPiece = index;
@@ -251,12 +285,12 @@ function handleMouseMove(e) {
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
     
-    const x = Math.floor((e.clientX - rect.left) * scaleX / PIECES_SIZE);
-    const y = Math.floor((e.clientY - rect.top) * scaleY / PIECES_SIZE);
+    const x = Math.floor((e.clientX - rect.left) * scaleX / pieceSize);
+    const y = Math.floor((e.clientY - rect.top) * scaleY / pieceSize);
     
-    const index = y * GRID_SIZE + x;
+    const index = y * gridSize + x;
     
-    if (index >= 0 && index < PIECES && index !== dragStartIndex) {
+    if (index >= 0 && index < pieces && index !== dragStartIndex) {
         selectedPiece = index;
         drawPuzzle();
     }
@@ -269,12 +303,12 @@ function handleMouseUp(e) {
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
     
-    const x = Math.floor((e.clientX - rect.left) * scaleX / PIECES_SIZE);
-    const y = Math.floor((e.clientY - rect.top) * scaleY / PIECES_SIZE);
+    const x = Math.floor((e.clientX - rect.left) * scaleX / pieceSize);
+    const y = Math.floor((e.clientY - rect.top) * scaleY / pieceSize);
     
-    const index = y * GRID_SIZE + x;
+    const index = y * gridSize + x;
     
-    if (index >= 0 && index < PIECES && index !== dragStartIndex) {
+    if (index >= 0 && index < pieces && index !== dragStartIndex) {
         swapPieces(dragStartIndex, index);
         steps++;
         updateUI();
@@ -292,12 +326,12 @@ function handleTouchStart(e) {
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
     
-    const x = Math.floor((touch.clientX - rect.left) * scaleX / PIECES_SIZE);
-    const y = Math.floor((touch.clientY - rect.top) * scaleY / PIECES_SIZE);
+    const x = Math.floor((touch.clientX - rect.left) * scaleX / pieceSize);
+    const y = Math.floor((touch.clientY - rect.top) * scaleY / pieceSize);
     
-    const index = y * GRID_SIZE + x;
+    const index = y * gridSize + x;
     
-    if (index >= 0 && index < PIECES) {
+    if (index >= 0 && index < pieces) {
         isDragging = true;
         dragStartIndex = index;
         selectedPiece = index;
@@ -315,12 +349,12 @@ function handleTouchMove(e) {
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
     
-    const x = Math.floor((touch.clientX - rect.left) * scaleX / PIECES_SIZE);
-    const y = Math.floor((touch.clientY - rect.top) * scaleY / PIECES_SIZE);
+    const x = Math.floor((touch.clientX - rect.left) * scaleX / pieceSize);
+    const y = Math.floor((touch.clientY - rect.top) * scaleY / pieceSize);
     
-    const index = y * GRID_SIZE + x;
+    const index = y * gridSize + x;
     
-    if (index >= 0 && index < PIECES && index !== dragStartIndex) {
+    if (index >= 0 && index < pieces && index !== dragStartIndex) {
         selectedPiece = index;
         drawPuzzle();
     }
@@ -349,12 +383,12 @@ function handleTouchEnd(e) {
         return;
     }
     
-    const x = Math.floor((touchX - rect.left) * scaleX / PIECES_SIZE);
-    const y = Math.floor((touchY - rect.top) * scaleY / PIECES_SIZE);
+    const x = Math.floor((touchX - rect.left) * scaleX / pieceSize);
+    const y = Math.floor((touchY - rect.top) * scaleY / pieceSize);
     
-    const index = y * GRID_SIZE + x;
+    const index = y * gridSize + x;
     
-    if (index >= 0 && index < PIECES && index !== dragStartIndex) {
+    if (index >= 0 && index < pieces && index !== dragStartIndex) {
         swapPieces(dragStartIndex, index);
         steps++;
         updateUI();
@@ -368,24 +402,24 @@ function handleTouchEnd(e) {
 }
 
 function handleKeyDown(e) {
-    if (!selectedPiece || selectedPiece < 0 || selectedPiece >= PIECES) return;
+    if (!selectedPiece || selectedPiece < 0 || selectedPiece >= pieces) return;
     
-    const selectedX = selectedPiece % GRID_SIZE;
-    const selectedY = Math.floor(selectedPiece / GRID_SIZE);
+    const selectedX = selectedPiece % gridSize;
+    const selectedY = Math.floor(selectedPiece / gridSize);
     let targetIndex = -1;
     
     switch(e.key) {
         case 'ArrowUp':
-            if (selectedY > 0) targetIndex = (selectedY - 1) * GRID_SIZE + selectedX;
+            if (selectedY > 0) targetIndex = (selectedY - 1) * gridSize + selectedX;
             break;
         case 'ArrowDown':
-            if (selectedY < GRID_SIZE - 1) targetIndex = (selectedY + 1) * GRID_SIZE + selectedX;
+            if (selectedY < gridSize - 1) targetIndex = (selectedY + 1) * gridSize + selectedX;
             break;
         case 'ArrowLeft':
-            if (selectedX > 0) targetIndex = selectedY * GRID_SIZE + (selectedX - 1);
+            if (selectedX > 0) targetIndex = selectedY * gridSize + (selectedX - 1);
             break;
         case 'ArrowRight':
-            if (selectedX < GRID_SIZE - 1) targetIndex = selectedY * GRID_SIZE + (selectedX + 1);
+            if (selectedX < gridSize - 1) targetIndex = selectedY * gridSize + (selectedX + 1);
             break;
         case 'Enter':
         case ' ':
@@ -395,7 +429,7 @@ function handleKeyDown(e) {
             return;
     }
     
-    if (targetIndex >= 0 && targetIndex < PIECES) {
+    if (targetIndex >= 0 && targetIndex < pieces) {
         swapPieces(selectedPiece, targetIndex);
         selectedPiece = targetIndex;
         steps++;
@@ -407,8 +441,16 @@ function handleKeyDown(e) {
 
 function loadLevel(levelIndex) {
     currentLevel = levelIndex;
-    const imageUrl = images[currentLevel];
-    
+    const level = levels[currentLevel];
+    const imageUrl = level.image;
+
+    // 按关卡设置网格与棋盘（关卡越靠后，切块越多）
+    gridSize = level.grid;
+    pieces = gridSize * gridSize;
+    pieceSize = Math.floor(BOARD_TARGET / gridSize);
+    canvas.width = gridSize * pieceSize;
+    canvas.height = gridSize * pieceSize;
+
     currentImage = new Image();
     currentImage.onload = function() {
         previewImage.src = imageUrl;
@@ -426,7 +468,7 @@ function loadLevel(levelIndex) {
 
 function initializePuzzle() {
     puzzlePieces = [];
-    for (let i = 0; i < PIECES; i++) {
+    for (let i = 0; i < pieces; i++) {
         puzzlePieces.push(i);
     }
     
@@ -435,6 +477,7 @@ function initializePuzzle() {
     startTimer();
 }
 
+// 任意交换玩法：Fisher–Yates 打乱，保证非完成态且错位拼块 ≥ 60%
 function shufflePuzzlePieces() {
     let attempts = 0;
     do {
@@ -443,26 +486,15 @@ function shufflePuzzlePieces() {
             [puzzlePieces[i], puzzlePieces[j]] = [puzzlePieces[j], puzzlePieces[i]];
         }
         attempts++;
-    } while (!isSolvable() && attempts < 100);
+    } while (misplacedCount() < Math.ceil(pieces * 0.6) && attempts < 100);
 }
 
-function isSolvable() {
-    let inversions = 0;
-    for (let i = 0; i < PIECES - 1; i++) {
-        for (let j = i + 1; j < PIECES; j++) {
-            if (puzzlePieces[i] > puzzlePieces[j]) {
-                inversions++;
-            }
-        }
+function misplacedCount() {
+    let count = 0;
+    for (let i = 0; i < pieces; i++) {
+        if (puzzlePieces[i] !== i) count++;
     }
-    
-    if (GRID_SIZE % 2 === 1) {
-        return inversions % 2 === 0;
-    } else {
-        const emptyRow = Math.floor(puzzlePieces.indexOf(PIECES - 1) / GRID_SIZE);
-        const emptyRowFromBottom = GRID_SIZE - emptyRow;
-        return (inversions + emptyRowFromBottom) % 2 === 1;
-    }
+    return count;
 }
 
 function shufflePuzzle() {
@@ -481,12 +513,12 @@ function handleCanvasClick(e) {
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
     
-    const x = Math.floor((e.clientX - rect.left) * scaleX / PIECES_SIZE);
-    const y = Math.floor((e.clientY - rect.top) * scaleY / PIECES_SIZE);
+    const x = Math.floor((e.clientX - rect.left) * scaleX / pieceSize);
+    const y = Math.floor((e.clientY - rect.top) * scaleY / pieceSize);
     
-    const index = y * GRID_SIZE + x;
+    const index = y * gridSize + x;
     
-    if (index < 0 || index >= PIECES) return;
+    if (index < 0 || index >= pieces) return;
     
     if (selectedPiece === null) {
         selectedPiece = index;
@@ -517,7 +549,7 @@ function checkCompletion() {
 }
 
 function isPuzzleComplete() {
-    for (let i = 0; i < PIECES - 1; i++) {
+    for (let i = 0; i < pieces; i++) {
         if (puzzlePieces[i] !== i) {
             return false;
         }
@@ -532,54 +564,46 @@ function drawPuzzle() {
     const offsetX = (currentImage.width - imageSize) / 2;
     const offsetY = (currentImage.height - imageSize) / 2;
     
-    const pieceSrcSize = imageSize / GRID_SIZE;
+    const pieceSrcSize = imageSize / gridSize;
+    const numFont = Math.max(10, Math.round(pieceSize * 0.22));
     
-    for (let y = 0; y < GRID_SIZE; y++) {
-        for (let x = 0; x < GRID_SIZE; x++) {
-            const index = y * GRID_SIZE + x;
+    for (let y = 0; y < gridSize; y++) {
+        for (let x = 0; x < gridSize; x++) {
+            const index = y * gridSize + x;
             const pieceIndex = puzzlePieces[index];
             
-            if (pieceIndex === PIECES - 1) {
-                ctx.fillStyle = '#F1E9FD';
-                ctx.fillRect(x * PIECES_SIZE, y * PIECES_SIZE, PIECES_SIZE, PIECES_SIZE);
-                ctx.strokeStyle = '#D9C8F7';
-                ctx.lineWidth = 1;
-                ctx.setLineDash([4, 4]);
-                ctx.strokeRect(x * PIECES_SIZE + 2, y * PIECES_SIZE + 2, PIECES_SIZE - 4, PIECES_SIZE - 4);
-                ctx.setLineDash([]);
-            } else {
-                const originalX = offsetX + (pieceIndex % GRID_SIZE) * pieceSrcSize;
-                const originalY = offsetY + Math.floor(pieceIndex / GRID_SIZE) * pieceSrcSize;
-                
-                ctx.drawImage(
-                    currentImage,
-                    originalX, originalY, pieceSrcSize, pieceSrcSize,
-                    x * PIECES_SIZE, y * PIECES_SIZE, PIECES_SIZE, PIECES_SIZE
-                );
-                
-                ctx.fillStyle = 'rgba(91, 74, 122, 0.75)';
-                ctx.font = 'bold 14px Arial';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(pieceIndex + 1, x * PIECES_SIZE + PIECES_SIZE/2, y * PIECES_SIZE + PIECES_SIZE - 10);
-            }
+            const originalX = offsetX + (pieceIndex % gridSize) * pieceSrcSize;
+            const originalY = offsetY + Math.floor(pieceIndex / gridSize) * pieceSrcSize;
+
+            ctx.drawImage(
+                currentImage,
+                originalX, originalY, pieceSrcSize, pieceSrcSize,
+                x * pieceSize, y * pieceSize, pieceSize, pieceSize
+            );
+
+            // 序号（字号随拼块大小缩放）
+            ctx.fillStyle = 'rgba(91, 74, 122, 0.75)';
+            ctx.font = 'bold ' + numFont + 'px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(pieceIndex + 1, x * pieceSize + pieceSize / 2, y * pieceSize + pieceSize * 0.86);
             
             ctx.strokeStyle = '#EBDCF7';
             ctx.lineWidth = 1;
-            ctx.strokeRect(x * PIECES_SIZE, y * PIECES_SIZE, PIECES_SIZE, PIECES_SIZE);
+            ctx.strokeRect(x * pieceSize, y * pieceSize, pieceSize, pieceSize);
             
             if (index === selectedPiece) {
                 ctx.fillStyle = 'rgba(255, 107, 157, 0.35)';
-                ctx.fillRect(x * PIECES_SIZE, y * PIECES_SIZE, PIECES_SIZE, PIECES_SIZE);
+                ctx.fillRect(x * pieceSize, y * pieceSize, pieceSize, pieceSize);
                 ctx.strokeStyle = '#FF6B9D';
                 ctx.lineWidth = 3;
-                ctx.strokeRect(x * PIECES_SIZE + 2, y * PIECES_SIZE + 2, PIECES_SIZE - 4, PIECES_SIZE - 4);
+                ctx.strokeRect(x * pieceSize + 2, y * pieceSize + 2, pieceSize - 4, pieceSize - 4);
             }
             
-            if (pieceIndex === index && pieceIndex !== PIECES - 1) {
+            if (pieceIndex === index) {
                 ctx.strokeStyle = '#66CF9E';
                 ctx.lineWidth = 2;
-                ctx.strokeRect(x * PIECES_SIZE + 1, y * PIECES_SIZE + 1, PIECES_SIZE - 2, PIECES_SIZE - 2);
+                ctx.strokeRect(x * pieceSize + 1, y * pieceSize + 1, pieceSize - 2, pieceSize - 2);
             }
         }
     }
@@ -590,20 +614,20 @@ function drawPuzzle() {
 
 function calculateProgress() {
     let correct = 0;
-    for (let i = 0; i < PIECES; i++) {
+    for (let i = 0; i < pieces; i++) {
         if (puzzlePieces[i] === i) correct++;
     }
-    return Math.round((correct / PIECES) * 100);
+    return Math.round((correct / pieces) * 100);
 }
 
 function showHint() {
-    for (let i = 0; i < PIECES; i++) {
+    for (let i = 0; i < pieces; i++) {
         if (puzzlePieces[i] !== i) {
             const correctIndex = puzzlePieces[i];
-            const currentX = i % GRID_SIZE;
-            const currentY = Math.floor(i / GRID_SIZE);
-            const correctX = correctIndex % GRID_SIZE;
-            const correctY = Math.floor(correctIndex / GRID_SIZE);
+            const currentX = i % gridSize;
+            const currentY = Math.floor(i / gridSize);
+            const correctX = correctIndex % gridSize;
+            const correctY = Math.floor(correctIndex / gridSize);
             
             alert(`提示：将位置 (${currentX + 1}, ${currentY + 1}) 的拼图块移动到 (${correctX + 1}, ${correctY + 1})`);
             return;
@@ -614,7 +638,7 @@ function showHint() {
 
 function solvePuzzle() {
     puzzlePieces = [];
-    for (let i = 0; i < PIECES; i++) {
+    for (let i = 0; i < pieces; i++) {
         puzzlePieces.push(i);
     }
     selectedPiece = null;
@@ -652,7 +676,7 @@ function getElapsedTime() {
 
 function updateUI() {
     document.getElementById('current-level').textContent = currentLevel + 1;
-    document.getElementById('total-levels').textContent = images.length;
+    document.getElementById('total-levels').textContent = levels.length;
     document.getElementById('steps').textContent = steps;
     document.getElementById('best').textContent = bestScores[currentLevel] ? `${bestScores[currentLevel]}步` : '--';
 }
@@ -673,14 +697,14 @@ function loadBestScores() {
 
 function showWinMessage() {
     const elapsed = getElapsedTime();
-    const stars = steps <= 15 ? '⭐⭐⭐' : steps <= 30 ? '⭐⭐' : '⭐';
+    const stars = '⭐'.repeat(starCountFor(steps, currentLevel));
     document.getElementById('message-icon').textContent = '🎉';
     document.getElementById('message-title').textContent = '恭喜完成！';
     document.getElementById('message-text').textContent = `太棒了！用了 ${steps} 步，用时 ${formatTime(elapsed)}！`;
     document.getElementById('message-stars').textContent = stars;
     document.getElementById('message-overlay').classList.add('show');
     
-    if (currentLevel >= images.length - 1) {
+    if (currentLevel >= levels.length - 1) {
         document.getElementById('btn-next').textContent = '返回首页';
         document.getElementById('btn-next').onclick = goHome;
     } else {
@@ -700,7 +724,7 @@ function hideMessage() {
 }
 
 function nextLevel() {
-    if (currentLevel < images.length - 1) {
+    if (currentLevel < levels.length - 1) {
         currentLevel++;
         loadLevel(currentLevel);
         hideMessage();

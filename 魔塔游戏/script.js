@@ -87,7 +87,7 @@ const floors = [
             [1,0,0,0,0,20,0,0,0,20,0,0,0,0,0,1],
             [1,0,17,0,0,0,0,0,0,0,0,0,17,0,0,1],
             [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,0,20,0,5,0,0,0,0,0,0,0,0,20,0,1],
+            [1,0,20,0,6,0,0,0,0,0,0,0,0,20,0,1],
             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
         ],
         spawn: { x: 1, y: 1 },
@@ -129,7 +129,7 @@ const floors = [
             [1,0,22,0,0,6,0,0,0,22,0,0,0,0,0,1],
             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
         ],
-        spawn: { x: 5, y: 10 },
+        spawn: { x: 4, y: 10 },
         stairsDown: { x: 5, y: 10 },
         stairsUp: { x: 7, y: 3 }
     },
@@ -149,7 +149,7 @@ const floors = [
             [1,0,24,0,0,6,0,0,0,24,0,0,0,0,0,1],
             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
         ],
-        spawn: { x: 5, y: 10 },
+        spawn: { x: 4, y: 10 },
         stairsDown: { x: 5, y: 10 },
         stairsUp: { x: 7, y: 3 }
     },
@@ -318,10 +318,8 @@ function loadFloor(floorIdx) {
     const floor = floors[floorIdx];
     gameMap = floor.map.map(row => [...row]);
 
-    if (floorIdx > 0) {
-        player.x = floor.spawn.x;
-        player.y = floor.spawn.y;
-    }
+    player.x = floor.spawn.x;
+    player.y = floor.spawn.y;
 
     updateFloorButtons();
     showInfo(`你来到了 ${floor.name}`);
@@ -357,6 +355,17 @@ function useStairs(dir) {
     if (player.x === pos.x && player.y === pos.y) {
         const nextFloor = dir === 'up' ? player.floor - 1 : player.floor + 1;
         loadFloor(nextFloor);
+
+        // 玩家出现在新楼层的对面楼梯口
+        const newFloor = floors[nextFloor];
+        if (dir === 'up' && newFloor.stairsDown) {
+            player.x = newFloor.stairsDown.x;
+            player.y = newFloor.stairsDown.y;
+        } else if (dir === 'down' && newFloor.stairsUp) {
+            player.x = newFloor.stairsUp.x;
+            player.y = newFloor.stairsUp.y;
+        }
+
         draw();
     } else {
         showInfo('需要走到楼梯口才能上下楼');

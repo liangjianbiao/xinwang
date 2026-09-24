@@ -1567,19 +1567,21 @@ footer {
     border-color: var(--primary);
 }
 
-/* 小游戏页面 —— 晨曦琥珀语义 */
+/* 小游戏页面 —— 马卡龙卡通风格 */
 .games-header {
-    background: var(--grad-dawn);
+    background: linear-gradient(135deg, #FF8FB3 0%, #C39BF3 55%, #7CC8F5 100%);
+    box-shadow: 0 8px 28px rgba(150, 110, 200, 0.2);
 }
 
 .games-categories {
     padding: 30px 20px;
-    background: var(--paper);
+    background: linear-gradient(180deg, #FFF6E0 0%, #FFE9F3 100%);
 }
 
 .games-list {
     padding: 50px 20px;
-    background: var(--mist);
+    background: linear-gradient(135deg, #FFF6E0 0%, #FFE9F3 50%, #E9F5FF 100%);
+    background-attachment: fixed;
 }
 
 .games-grid {
@@ -1664,65 +1666,86 @@ footer {
     box-shadow: none;
 }
 
-/* === 连线小游戏 儿童化样式 === */
+/* === 游戏卡片 马卡龙卡通风格 === */
 .game-card-kids {
-    border: 3px solid transparent;
-    border-radius: 24px;
-    background: linear-gradient(135deg, #fff9e6 0%, #ffe9f3 50%, #e9f5ff 100%);
-    box-shadow: 0 4px 20px rgba(255, 159, 67, 0.15), 0 2px 8px rgba(232, 90, 138, 0.1);
+    border: 3px solid rgba(255, 200, 224, 0.65);
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 6px 18px rgba(214, 150, 190, 0.14), 0 16px 40px rgba(180, 140, 220, 0.16);
     position: relative;
     overflow: hidden;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease, border-color 0.3s ease;
 }
 
+/* 内部白边效果（用伪元素+box-shadow实现） */
+.game-card-kids {
+    outline: 2px solid rgba(255, 255, 255, 0.9);
+    outline-offset: -7px;
+}
+
+/* 右上彩色装饰圆点 */
 .game-card-kids::before {
     content: '';
     position: absolute;
-    top: -30px;
-    right: -30px;
-    width: 90px;
-    height: 90px;
+    top: -36px;
+    right: -36px;
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
     background: linear-gradient(135deg, #FFD93D 0%, #FF6B9D 100%);
-    opacity: 0.15;
+    opacity: 0.18;
+    z-index: 0;
 }
 
+/* 左下彩色装饰圆点 */
 .game-card-kids::after {
     content: '';
     position: absolute;
-    bottom: -20px;
-    left: -20px;
-    width: 70px;
-    height: 70px;
+    bottom: -26px;
+    left: -26px;
+    width: 88px;
+    height: 88px;
     border-radius: 50%;
     background: linear-gradient(135deg, #4FC3F7 0%, #66BB6A 100%);
-    opacity: 0.15;
+    opacity: 0.18;
+    z-index: 0;
+}
+
+/* 让内容层在装饰圆点之上 */
+.game-card-kids > * {
+    position: relative;
+    z-index: 1;
 }
 
 .game-card-kids:hover {
-    border-color: rgba(255, 107, 157, 0.4);
-    box-shadow: 0 10px 36px rgba(255, 159, 67, 0.28), 0 4px 16px rgba(232, 90, 138, 0.2);
-    transform: translateY(-8px) rotate(-1deg);
+    border-color: rgba(255, 107, 157, 0.55);
+    box-shadow: 0 14px 36px rgba(214, 150, 190, 0.22), 0 30px 60px rgba(180, 140, 220, 0.24);
+    transform: translateY(-8px) rotate(-0.6deg);
 }
 
 .game-img-wrap {
     width: 100%;
-    height: 160px;
-    border-radius: 18px;
+    aspect-ratio: 4 / 3;
+    border-radius: 20px;
     overflow: hidden;
     margin: 0 auto 16px;
-    background: linear-gradient(135deg, #fff3e0 0%, #fce4ec 100%);
-    box-shadow: inset 0 2px 8px rgba(255, 182, 193, 0.25);
+    background: linear-gradient(135deg, #FFF6E0 0%, #FFE9F3 55%, #E3F4FF 100%);
+    border: 3px solid #FFFFFF;
+    outline: 3px solid rgba(228, 213, 250, 0.85);
+    box-shadow: 0 10px 28px rgba(150, 110, 200, 0.18);
+    position: relative;
 }
 
 .game-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: block;
 }
 
 .game-card-kids:hover .game-img {
-    transform: scale(1.08);
+    transform: scale(1.1) rotate(-1deg);
 }
 
 .game-card-kids .game-info h3 {
@@ -1731,68 +1754,84 @@ footer {
 }
 
 .game-card-kids .game-info p {
-    color: #8E6C88;
+    color: #7A6890;
 }
 
 .game-card-kids .game-stats {
-    color: #B58BC1;
+    color: #B09CC4;
 }
 
+/* 彩虹立体按钮 —— 与游戏内部统一规格 */
 .play-btn-kids {
     background: linear-gradient(135deg, #FF6B9D 0%, #FFC24D 50%, #4FC3F7 100%);
+    border: 3px solid #FFFFFF;
     border-radius: 20px;
     font-size: 1.05rem;
     letter-spacing: 1px;
-    box-shadow: 0 4px 16px rgba(255, 107, 157, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    font-weight: 800;
+    text-shadow: 0 1px 3px rgba(180, 90, 130, 0.4);
+    box-shadow: 0 5px 0 rgba(201, 128, 168, 0.45), 0 10px 20px rgba(232, 90, 138, 0.28);
+    transition: all 0.2s ease;
 }
 
 .play-btn-kids:hover:not(.disabled) {
+    transform: translateY(-2px);
     background: linear-gradient(135deg, #FF4F87 0%, #FFB52D 50%, #38B0E8 100%);
-    box-shadow: 0 8px 24px rgba(255, 107, 157, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    box-shadow: 0 7px 0 rgba(201, 128, 168, 0.45), 0 14px 26px rgba(232, 90, 138, 0.35);
 }
 
 .play-btn-kids:active:not(.disabled) {
-    box-shadow: 0 2px 8px rgba(255, 107, 157, 0.3), inset 0 2px 6px rgba(200, 50, 100, 0.2);
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 rgba(201, 128, 168, 0.45), 0 4px 10px rgba(232, 90, 138, 0.3);
 }
 
 /* 游戏统计 */
 .games-stats {
     padding: 50px 20px;
-    background: var(--paper);
+    background: linear-gradient(180deg, #E9F5FF 0%, #FFFFFF 100%);
 }
 
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 30px;
+    gap: 24px;
 }
 
 .stat-item {
     display: flex;
     align-items: center;
     gap: 20px;
-    background: var(--mist);
-    padding: 25px;
-    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid #F6E4F4;
+    padding: 22px;
+    border-radius: 20px;
+    box-shadow: 0 4px 14px rgba(214, 150, 190, 0.12), 0 10px 26px rgba(180, 140, 220, 0.12);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(214, 150, 190, 0.18), 0 18px 38px rgba(180, 140, 220, 0.18);
 }
 
 .stat-icon {
-    width: 60px;
-    height: 60px;
+    width: 56px;
+    height: 56px;
     border-radius: 18px;
-    background: var(--grad-dawn);
+    background: linear-gradient(135deg, #FF8FB3 0%, #C39BF3 55%, #7CC8F5 100%);
+    border: 3px solid #FFFFFF;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: white;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), inset 0 -2px 6px rgba(150, 75, 0, 0.20), 0 6px 14px rgba(240, 140, 31, 0.35);
+    box-shadow: 0 4px 12px rgba(150, 110, 200, 0.3);
 }
 
 .stat-number {
-    font-size: 2rem;
+    font-size: 1.9rem;
     font-weight: 800;
-    color: var(--ink);
+    color: var(--berry);
 }
 
 .stat-label {
