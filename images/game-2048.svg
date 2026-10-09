@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" width="200" height="160">
+  <!-- 背景 -->
+  <rect width="200" height="160" rx="16" fill="#FFF6E0"/>
+  <rect width="200" height="160" rx="16" fill="url(#bg)"/>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFF6E0"/>
+      <stop offset="0.5" stop-color="#FFE9F3"/>
+      <stop offset="1" stop-color="#E9F5FF"/>
+    </linearGradient>
+    <linearGradient id="j2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFC1E3"/><stop offset="1" stop-color="#FF9EC7"/>
+    </linearGradient>
+    <linearGradient id="j4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFD9A8"/><stop offset="1" stop-color="#FFC078"/>
+    </linearGradient>
+    <linearGradient id="j8" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFB76D"/><stop offset="1" stop-color="#FF9A3D"/>
+    </linearGradient>
+    <linearGradient id="j16" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFE066"/><stop offset="1" stop-color="#FFC93D"/>
+    </linearGradient>
+    <linearGradient id="j32" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7EE8C0"/><stop offset="1" stop-color="#5DD4A0"/>
+    </linearGradient>
+    <linearGradient id="j64" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6DD0F5"/><stop offset="1" stop-color="#45B8E8"/>
+    </linearGradient>
+    <linearGradient id="j128" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#B8A0F5"/><stop offset="1" stop-color="#9878E0"/>
+    </linearGradient>
+    <linearGradient id="j256" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FF8FC8"/><stop offset="1" stop-color="#E85A9C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 4×4 果冻网格 -->
+  <!-- Row 1 -->
+  <rect x="20" y="15" width="35" height="30" rx="8" fill="url(#j2)"/>
+  <rect x="60" y="15" width="35" height="30" rx="8" fill="url(#j4)"/>
+  <rect x="100" y="15" width="35" height="30" rx="8" fill="url(#j8)"/>
+  <rect x="140" y="15" width="35" height="30" rx="8" fill="url(#j16)"/>
+  <!-- Row 2 -->
+  <rect x="20" y="50" width="35" height="30" rx="8" fill="url(#j16)"/>
+  <rect x="60" y="50" width="35" height="30" rx="8" fill="url(#j8)"/>
+  <rect x="100" y="50" width="35" height="30" rx="8" fill="url(#j32)"/>
+  <rect x="140" y="50" width="35" height="30" rx="8" fill="url(#j64)"/>
+  <!-- Row 3 -->
+  <rect x="20" y="85" width="35" height="30" rx="8" fill="url(#j64)"/>
+  <rect x="60" y="85" width="35" height="30" rx="8" fill="url(#j32)"/>
+  <rect x="100" y="85" width="35" height="30" rx="8" fill="url(#j128)"/>
+  <rect x="140" y="85" width="35" height="30" rx="8" fill="url(#j256)"/>
+  <!-- Row 4 (大数字 2048) -->
+  <rect x="20" y="120" width="155" height="32" rx="8" fill="url(#j256)"/>
+  <text x="97" y="142" font-family="Arial" font-size="16" font-weight="bold" fill="#fff" text-anchor="middle">2048</text>
+
+  <!-- 高光 -->
+  <rect x="25" y="18" width="25" height="8" rx="4" fill="rgba(255,255,255,0.4)"/>
+  <rect x="65" y="18" width="25" height="8" rx="4" fill="rgba(255,255,255,0.4)"/>
+  <rect x="105" y="18" width="25" height="8" rx="4" fill="rgba(255,255,255,0.4)"/>
+  <rect x="145" y="18" width="25" height="8" rx="4" fill="rgba(255,255,255,0.4)"/>
+
+  <!-- 装饰圆点 -->
+  <circle cx="15" cy="8" r="6" fill="rgba(255,107,157,0.2)"/>
+  <circle cx="185" cy="152" r="6" fill="rgba(79,195,247,0.2)"/>
+</svg>

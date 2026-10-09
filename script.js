@@ -1387,7 +1387,8 @@ function openGame(gameName) {
         '星屿微光': 'https://www.kanjl.com',
         '动感小球游戏': '动感小球游戏/maze-ball.html',
         '记忆翻牌游戏': '记忆翻牌游戏/memory-cards.html',
-        '魔塔游戏': '魔塔游戏/magic-tower.html'
+        '魔塔游戏': '魔塔游戏/magic-tower.html',
+        '2048游戏': '2048游戏/2048.html'
     };
     
     if (gamePaths[gameName]) {
