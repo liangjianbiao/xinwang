@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>2048 果冻消消乐 - 心灵驿站</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部栏 -->
+    <header class="top-bar">
+        <a href="../games.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <h1 class="game-title">🍮 2048 果冻消消乐</h1>
+        <button id="sound-btn" class="sound-btn" title="音效开关">
+            <span id="sound-icon">🔊</span>
+        </button>
+    </header>
+
+    <!-- 分数栏 -->
+    <div class="score-bar">
+        <div class="score-pill">
+            <span class="score-label">分数</span>
+            <span id="score" class="score-value">0</span>
+        </div>
+        <div class="score-pill best">
+            <span class="score-label">最佳</span>
+            <span id="best" class="score-value">0</span>
+        </div>
+        <div class="score-pill steps">
+            <span class="score-label">步数</span>
+            <span id="steps" class="score-value">0</span>
+        </div>
+    </div>
+
+    <!-- 游戏区域 -->
+    <div class="game-area">
+        <div class="board-wrap">
+            <div id="board" class="board"></div>
+            <!-- 游戏结束遮罩 -->
+            <div id="overlay" class="overlay">
+                <div class="overlay-card">
+                    <h2 id="overlay-title">🎉 太棒了！</h2>
+                    <p id="overlay-msg">你得到了 <span id="overlay-score">0</span> 分</p>
+                    <div class="overlay-stars" id="overlay-stars"></div>
+                    <button id="overlay-btn" class="btn-primary">再来一局</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 操作按钮 -->
+    <div class="controls">
+        <button id="btn-new" class="btn-primary">
+            <i class="fas fa-redo"></i> 新游戏
+        </button>
+        <button id="btn-undo" class="btn-secondary">
+            <i class="fas fa-undo"></i> 撤销
+        </button>
+        <button id="btn-hint" class="btn-secondary">
+            <i class="fas fa-lightbulb"></i> 提示
+        </button>
+    </div>
+
+    <!-- 操作说明 -->
+    <div class="how-to-play">
+        <h3>🎮 玩法</h3>
+        <p>📱 滑动方向或按 <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> 移动果冻</p>
+        <p>🧩 相同数字的果冻碰撞会合并成更大的数字</p>
+        <p>🏆 目标：合成 <span class="target-2048">2048</span> 果冻！</p>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="back-to-top" title="返回顶部">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>
