@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全国名校展示 - 知名大学/高中/初中官网导航</title>
+    <link rel="stylesheet" href="../style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e4b1cad1dc884ec2ee26027d50258d86";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-heart"></i>
+                <span>心灵驿站</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html"><i class="fas fa-home"></i> 首页</a></li>
+                <li><a href="../test.html"><i class="fas fa-flask"></i> 心理测试</a></li>
+                <li><a href="../music.html"><i class="fas fa-music"></i> 音乐殿堂</a></li>
+                <li><a href="../games.html"><i class="fas fa-gamepad"></i> 小游戏</a></li>
+                <li><a href="school-rankings.html" class="active"><i class="fas fa-school"></i> 名校展示</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container"> 
+        <header>
+            <h1>🎓 全国名校展示</h1>
+            <p class="subtitle">知名大学 · 知名高中 · 知名初中 ｜ 一键直达学校官网</p>
+        </header>
+
+        <div class="area-tabs" id="area-tabs"></div>
+
+        <div class="content-area" id="content-area"></div>
+
+        <div class="statistics">
+            <div class="stat-card">
+                <h3>名校总数</h3>
+                <p class="stat-number" id="total-schools">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>知名大学</h3>
+                <p class="stat-number" id="total-university">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>知名高中</h3>
+                <p class="stat-number" id="total-high">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>知名初中</h3>
+                <p class="stat-number" id="total-middle">0</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>学校信息与官网链接整理自公开资料，如有变动请以学校官网为准 ｜ 更新时间：2026年9月</p>
+        </footer>
+    </div>
+
+    <button class="back-to-top" id="backToTop" title="返回顶部" aria-label="返回顶部">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+    <script>
+        // 返回顶部
+        (function() {
+            var btn = document.getElementById('backToTop');
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    btn.classList.add('show');
+                } else {
+                    btn.classList.remove('show');
+                }
+            }, { passive: true });
+            btn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        })();
+    </script>
+</body>
+</html>
