@@ -1,0 +1,7 @@
+# 音乐资源（体积过大不入库）
+音乐/
+*.mp3
+*.wav
+*.flac
+*.ogg
+*.baiduyun.uploading.cfg

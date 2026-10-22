@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>箭头排队游戏 - 拼图闯关</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e4b1cad1dc884ec2ee26027d50258d86";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+</head>
+<body class="arrow-body">
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-heart"></i>
+                <span>心灵驿站</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html"><i class="fas fa-home"></i> 首页</a></li>
+                <li><a href="../games.html"><i class="fas fa-gamepad"></i> 小游戏</a></li>
+                <li><a href="../schoolRankingsShJshan/school-rankings.html"><i class="fas fa-school"></i> 名校展示</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="game-wrapper">
+        <header class="arrow-header">
+            <div class="hud hud-level">
+                <span class="hud-label">关卡</span>
+                <span class="hud-value" id="hudLevel">1</span>
+            </div>
+            <div class="hud hud-time">
+                <span class="hud-label"><i class="fas fa-clock"></i></span>
+                <span class="hud-value" id="hudTime">60</span>
+            </div>
+            <div class="hud hud-moves">
+                <span class="hud-label">步数</span>
+                <span class="hud-value" id="hudMoves">0</span>
+            </div>
+            <div class="hud hud-todo">
+                <span class="hud-label">完成</span>
+                <span class="hud-value" id="hudTodo">0 / 0</span>
+            </div>
+        </header>
+
+        <section class="target-preview">
+            <div class="preview-title">🎯 目标图案</div>
+            <canvas id="targetCanvas" width="180" height="180"></canvas>
+        </section>
+
+        <section class="board-wrap">
+            <canvas id="boardCanvas"></canvas>
+            <div class="board-hint" id="boardHint">拖动箭头沿其方向滑动 · 让箭头排队到目标格</div>
+        </section>
+
+        <section class="controls">
+            <button id="btnReset" class="ctrl-btn">
+                <i class="fas fa-undo"></i> 重置
+            </button>
+            <button id="btnHint" class="ctrl-btn">
+                <i class="fas fa-lightbulb"></i> 提示
+            </button>
+            <button id="btnNext" class="ctrl-btn ctrl-next">
+                <i class="fas fa-step-forward"></i> 下一关
+            </button>
+        </section>
+    </main>
+
+    <div class="modal hidden" id="modalLevel">
+        <div class="modal-card">
+            <div class="modal-emoji" id="levelEmoji">💖</div>
+            <h2 id="levelTitle">第 1 关</h2>
+            <p id="levelDesc">把所有箭头挪到目标格，拼出一颗爱心！</p>
+            <div class="modal-info">
+                <span>⏱ 限时 <b id="levelTime">60</b> 秒</span>
+                <span>🎨 <b id="levelColors">3</b> 色</span>
+                <span>🔢 <b id="levelCount">8</b> 支</span>
+            </div>
+            <button class="modal-start" id="btnStartLevel">开始挑战 🚀</button>
+        </div>
+    </div>
+
+    <div class="modal hidden" id="modalWin">
+        <div class="modal-card">
+            <div class="modal-emoji">🏆</div>
+            <h2>完美过关！</h2>
+            <p id="winStats">用时 32 秒 · 15 步</p>
+            <button class="modal-start" id="btnNextLevel">下一关 →</button>
+        </div>
+    </div>
+
+    <div class="modal hidden" id="modalLose">
+        <div class="modal-card">
+            <div class="modal-emoji">⏰</div>
+            <h2>时间到啦！</h2>
+            <p>再试一次吧，你可以的！</p>
+            <button class="modal-start" id="btnRetryLevel">重新挑战 💪</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

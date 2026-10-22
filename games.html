@@ -205,6 +205,36 @@
                     </button>
                 </div>
 
+                <!-- 箭头排队游戏 -->
+                <div class="game-card game-card-kids" data-category="logic" onclick="openGame('箭头排队游戏')">
+                    <div class="game-img-wrap">
+                        <div class="game-img game-img-arrow">
+                            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="arrowGrad" x1="0" x2="1" y1="0" y2="1">
+                                        <stop offset="0%" stop-color="#ff6b9d"/>
+                                        <stop offset="100%" stop-color="#a855f7"/>
+                                    </linearGradient>
+                                </defs>
+                                <circle cx="40" cy="40" r="36" fill="#fff0f5" stroke="#ffb3c6" stroke-width="2"/>
+                                <path d="M20 32 L50 32 L50 22 L62 40 L50 58 L50 48 L20 48 Z"
+                                      fill="url(#arrowGrad)" stroke="#d84a7a" stroke-width="1.5" stroke-linejoin="miter"/>
+                                <circle cx="40" cy="40" r="4" fill="#fff" opacity="0.8"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="game-info">
+                        <h3>➡️ 箭头排队</h3>
+                        <p>拖动箭头排成目标图案，限时挑战！</p>
+                        <div class="game-stats">
+                            <span><i class="fas fa-play"></i> 已玩 310 次</span>
+                        </div>
+                    </div>
+                    <button class="play-btn play-btn-kids">
+                        <i class="fas fa-play"></i> 开始游戏
+                    </button>
+                </div>
+
                 <!-- 2048游戏 -->
                 <div class="game-card game-card-kids" data-category="puzzle" onclick="openGame('2048游戏')">
                     <div class="game-img-wrap">
@@ -232,7 +262,7 @@
                 <div class="stat-item">
                     <div class="stat-icon"><i class="fas fa-gamepad"></i></div>
                     <div class="stat-info">
-                        <p class="stat-number">9</p>
+                        <p class="stat-number">10</p>
                         <p class="stat-label">游戏数量</p>
                     </div>
                 </div>

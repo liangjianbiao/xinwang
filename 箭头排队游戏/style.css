@@ -1,0 +1,154 @@
+/* ===== 箭头排队游戏 - 卡通风格样式 ===== */
+
+.arrow-body {
+    background: linear-gradient(160deg, #ffe6f0 0%, #fff7e6 50%, #e6f7ff 100%);
+    min-height: 100vh;
+    margin-top: 70px;
+    font-family: 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei', sans-serif;
+}
+
+.game-wrapper {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.arrow-header {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 12px;
+    box-shadow: 0 4px 16px rgba(255, 150, 180, 0.18);
+}
+
+.hud {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 8px 4px;
+    border-radius: 12px;
+    transition: transform 0.2s;
+}
+
+.hud-level { background: linear-gradient(135deg, #ffd6e7, #ffe6f0); }
+.hud-time  { background: linear-gradient(135deg, #ffe8b8, #fff3d6); }
+.hud-moves { background: linear-gradient(135deg, #d6f5e6, #e6fbf0); }
+.hud-todo  { background: linear-gradient(135deg, #d6e7ff, #e6f0ff); }
+
+.hud-label { font-size: 12px; color: #8a6b7a; }
+.hud-value { font-size: 20px; font-weight: 800; color: #5b3a4a; }
+
+.hud-time.warning .hud-value { color: #ff6b6b; animation: pulse 0.6s infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
+
+.target-preview {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 14px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(150, 180, 255, 0.18);
+}
+
+.preview-title { font-size: 14px; font-weight: 700; color: #667; margin-bottom: 8px; }
+
+#targetCanvas {
+    width: 180px;
+    height: 180px;
+    background: #f5f6ff;
+    border-radius: 12px;
+    border: 2px dashed #b8b8e0;
+}
+
+.board-wrap {
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 14px;
+    box-shadow: 0 8px 28px rgba(140, 120, 200, 0.22);
+    position: relative;
+    touch-action: none;
+}
+
+#boardCanvas {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 16px;
+    background: #faf7ff;
+    cursor: grab;
+}
+#boardCanvas:active { cursor: grabbing; }
+
+.board-hint { text-align: center; font-size: 12px; color: #9988aa; margin-top: 10px; }
+
+.controls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+
+.ctrl-btn {
+    border: none;
+    padding: 14px 0;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.ctrl-btn:active { transform: translateY(2px); box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+#btnReset { background: linear-gradient(135deg, #ff9a9e, #ffc1c4); }
+#btnHint  { background: linear-gradient(135deg, #fad0c4, #ffecd2); color: #7a5a3a; }
+.ctrl-next { background: linear-gradient(135deg, #a1c4fd, #c2e9fb); color: #3a5a7a; }
+
+.modal {
+    position: fixed; inset: 0;
+    background: rgba(50, 30, 80, 0.55);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 999; animation: fadeIn 0.3s;
+}
+.modal.hidden { display: none; }
+
+.modal-card {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 32px 28px;
+    text-align: center;
+    max-width: 340px; width: 90%;
+    box-shadow: 0 20px 60px rgba(100, 60, 180, 0.3);
+    animation: popIn 0.4s cubic-bezier(.17,.67,.32,1.2);
+}
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes popIn { from{opacity:0; transform:scale(0.7)} to{opacity:1; transform:scale(1)} }
+
+.modal-emoji { font-size: 64px; margin-bottom: 8px; }
+.modal-card h2 { font-size: 22px; color: #4a3060; margin-bottom: 6px; }
+.modal-card p { color: #7a6a8a; margin-bottom: 18px; line-height: 1.6; }
+.modal-info { display: flex; justify-content: center; gap: 16px; margin-bottom: 22px; font-size: 13px; color: #7a6a8a; }
+.modal-info b { color: #ff6f91; }
+
+.modal-start {
+    background: linear-gradient(135deg, #ff6f91, #ff9671);
+    color: #fff; border: none;
+    padding: 14px 36px; border-radius: 999px;
+    font-size: 16px; font-weight: 800; cursor: pointer;
+    box-shadow: 0 6px 20px rgba(255, 111, 145, 0.4);
+    transition: transform 0.15s;
+}
+.modal-start:active { transform: scale(0.95); }
+
+@media (max-width: 480px) {
+    .arrow-body { margin-top: 60px; }
+    .game-wrapper { padding: 12px; gap: 12px; }
+    .arrow-header { grid-template-columns: repeat(2, 1fr); }
+    .hud-value { font-size: 18px; }
+    .modal-card { padding: 26px 20px; }
+}
