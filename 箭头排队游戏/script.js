@@ -421,14 +421,14 @@
         ctx.lineCap = 'round';
         ctx.stroke();
 
+        ctx.restore();
+
         if (onTarget) {
-            ctx.restore();
             ctx.save();
             ctx.translate(cx, cy - size * 0.7);
             ctx.font = (size * 0.35) + 'px sans-serif';
             ctx.textAlign = 'center';
             ctx.fillText('✨', 0, 0);
-        } else {
             ctx.restore();
         }
     }
