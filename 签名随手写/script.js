@@ -170,11 +170,10 @@
             const canvas = card.querySelector('canvas');
             const draw = () => drawSignature(canvas, name, style.font, currentColor);
 
-            // 字体已就绪？直接画；否则等加载完成
-            if (document.fonts && document.fonts.ready && document.fonts.status !== 'loading') {
-                draw();
-            } else if (document.fonts) {
-                document.fonts.load(style.font).then(draw).catch(draw);
+            // 中文字体按 unicode-range 拆成多个子集，必须传入实际文本
+            // 浏览器才会下载覆盖这些汉字的子集；只传字体名只会加载拉丁样本子集
+            if (document.fonts && document.fonts.load) {
+                document.fonts.load(`78px ${style.font}`, name).then(draw).catch(draw);
             } else {
                 draw();
             }
