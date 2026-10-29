@@ -269,7 +269,6 @@
         manualCanvas.addEventListener('touchstart', e => {
             e.preventDefault();
             const t = e.touches[0];
-            manualCanvas.setPointerCapture?.(t.identifier);
             onDrawStart({ clientX: t.clientX, clientY: t.clientY });
         }, { passive: false });
         manualCanvas.addEventListener('touchmove', e => {
