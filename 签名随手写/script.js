@@ -49,7 +49,17 @@
                 document.querySelectorAll('.sign-tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.sign-panel').forEach(p => p.classList.remove('active'));
                 tab.classList.add('active');
-                document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+                const panel = document.getElementById('panel-' + tab.dataset.tab);
+                panel.classList.add('active');
+                // 手写面板刚显示时重新适配 canvas 尺寸
+                if (tab.dataset.tab === 'manual') {
+                    // 等一帧让 DOM 布局完成
+                    requestAnimationFrame(() => {
+                        fitCanvasDPR();
+                        // 初始化后确保 history 里只有一张空白快照
+                        if (historyStack.length === 0) pushHistory();
+                    });
+                }
             });
         });
     }
@@ -142,6 +152,7 @@
 
         grid.innerHTML = '';
 
+        // 先渲染卡片骨架（显示"加载中..."），再等字体加载完画到 canvas
         styles.forEach(style => {
             const card = document.createElement('div');
             card.className = 'art-card';
@@ -157,7 +168,16 @@
             grid.appendChild(card);
 
             const canvas = card.querySelector('canvas');
-            drawSignature(canvas, name, style.font, currentColor);
+            const draw = () => drawSignature(canvas, name, style.font, currentColor);
+
+            // 字体已就绪？直接画；否则等加载完成
+            if (document.fonts && document.fonts.ready && document.fonts.status !== 'loading') {
+                draw();
+            } else if (document.fonts) {
+                document.fonts.load(style.font).then(draw).catch(draw);
+            } else {
+                draw();
+            }
 
             card.querySelector('.art-download').addEventListener('click', () => {
                 downloadCanvas(canvas, `签名_${name}_${style.name}.png`);
@@ -281,6 +301,10 @@
         const cssW = Math.min(wrap.clientWidth, 700);
         if (cssW < 20) return; // 布局未就绪时跳过
         const cssH = Math.round(cssW * 0.5);
+        // 只有尺寸真的变了才重置，避免每次切 tab 都丢历史
+        const needResize =
+            manualCanvas.width !== cssW * dpr ||
+            manualCanvas.height !== cssH * dpr;
         manualCanvas.style.width = cssW + 'px';
         manualCanvas.style.height = cssH + 'px';
         manualCanvas.width = cssW * dpr;
@@ -288,6 +312,13 @@
         manualCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
         manualCtx.fillStyle = '#ffffff';
         manualCtx.fillRect(0, 0, cssW, cssH);
+        if (needResize) {
+            // 尺寸变了 → 旧快照尺寸不兼容，重置历史
+            historyStack = [];
+            redoStack = [];
+            pushHistory();
+            document.getElementById('canvasPlaceholder').classList.remove('hidden');
+        }
     }
 
     function getCanvasPoint(e) {
