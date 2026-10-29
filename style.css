@@ -1744,6 +1744,12 @@ footer {
     display: block;
 }
 
+.game-img svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
 .game-card-kids:hover .game-img {
     transform: scale(1.1) rotate(-1deg);
 }

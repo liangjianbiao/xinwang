@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>签名随手写 - 艺术签名 & 手写签名</title>
+    <link rel="stylesheet" href="../style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- 艺术签名字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Long+Cang&family=Liu+Jian+Shuang+Cao&family=Liu+Jian+Mao+Cao&family=Ma+Shan+Zheng&family=ZCOOL+KuaiLe&family=Zhi+Mang+Xing&family=Liu+Jian+Xiang+Cao&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e4b1cad1dc884ec2ee26027d50258d86";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-heart"></i>
+                <span>心灵驿站</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html"><i class="fas fa-home"></i> 首页</a></li>
+                <li><a href="../test.html"><i class="fas fa-flask"></i> 心理测试</a></li>
+                <li><a href="../music.html"><i class="fas fa-music"></i> 音乐殿堂</a></li>
+                <li><a href="../games.html" class="active"><i class="fas fa-gamepad"></i> 小游戏</a></li>
+                <li><a href="../schoolRankingsShJshan/school-rankings.html"><i class="fas fa-school"></i> 名校展示</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="sign-container">
+        <header class="sign-header">
+            <h1>✍️ 签名随手写</h1>
+            <p>一键生成艺术签名 · 自由手写个性签名</p>
+        </header>
+
+        <!-- Tab 切换 -->
+        <div class="sign-tabs">
+            <button class="sign-tab active" data-tab="art"><i class="fas fa-magic"></i> 艺术签名</button>
+            <button class="sign-tab" data-tab="manual"><i class="fas fa-pen-fancy"></i> 手写签名</button>
+        </div>
+
+        <!-- ========== 艺术签名 ========== -->
+        <section class="sign-panel active" id="panel-art">
+            <div class="input-row">
+                <label class="input-label">
+                    <i class="fas fa-signature"></i> 请输入你的姓名
+                </label>
+                <input type="text" id="signName" class="sign-input" placeholder="比如：李晓明" maxlength="8" value="">
+                <button class="btn-generate" id="btnGenerate">
+                    <i class="fas fa-wand-magic-sparkles"></i> 生成签名
+                </button>
+            </div>
+
+            <div class="style-row">
+                <span class="style-label"><i class="fas fa-palette"></i> 签名风格：</span>
+                <div class="style-chips">
+                    <button class="style-chip active" data-style="all">全部</button>
+                    <button class="style-chip" data-style="yishu">一笔艺术签</button>
+                    <button class="style-chip" data-style="shangwu1">一笔商务签</button>
+                    <button class="style-chip" data-style="shangwu2">连笔商务签</button>
+                    <button class="style-chip" data-style="liti">毛笔隶书</button>
+                    <button class="style-chip" data-style="shaonian">少年和风</button>
+                    <button class="style-chip" data-style="yunxiao">云霄体</button>
+                </div>
+            </div>
+
+            <div class="color-row">
+                <span class="color-label"><i class="fas fa-fill-drip"></i> 签名颜色：</span>
+                <div class="color-dots" id="colorDots"></div>
+                <input type="color" id="customColor" class="color-picker" title="自定义颜色">
+            </div>
+
+            <div class="art-grid" id="artGrid">
+                <div class="art-hint">
+                    <i class="fas fa-feather-alt"></i> 在上方输入你的名字，点击「生成签名」，六种风格任你挑～
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== 手写签名 ========== -->
+        <section class="sign-panel" id="panel-manual">
+            <div class="canvas-toolbar">
+                <div class="tool-group">
+                    <span class="tool-label"><i class="fas fa-pen"></i> 笔刷</span>
+                    <div class="brush-sizes" id="brushSizes">
+                        <button class="brush-btn active" data-size="2">细</button>
+                        <button class="brush-btn" data-size="4">中</button>
+                        <button class="brush-btn" data-size="7">粗</button>
+                        <button class="brush-btn" data-size="11">特粗</button>
+                    </div>
+                </div>
+                <div class="tool-group">
+                    <span class="tool-label"><i class="fas fa-paint-brush"></i> 颜色</span>
+                    <div class="color-dots" id="manualColorDots"></div>
+                    <input type="color" id="manualCustomColor" class="color-picker" title="自定义颜色">
+                </div>
+            </div>
+
+            <div class="canvas-wrap">
+                <canvas id="manualCanvas" width="600" height="300"></canvas>
+                <div class="canvas-placeholder" id="canvasPlaceholder">
+                    <i class="fas fa-pen-fancy"></i>
+                    <span>在这里写下你的签名 ✨</span>
+                </div>
+            </div>
+
+            <div class="canvas-actions">
+                <button class="canvas-btn" id="btnUndo"><i class="fas fa-rotate-left"></i> 撤销</button>
+                <button class="canvas-btn" id="btnRedo"><i class="fas fa-rotate-right"></i> 重做</button>
+                <button class="canvas-btn danger" id="btnClear"><i class="fas fa-trash-can"></i> 清除</button>
+                <button class="canvas-btn primary" id="btnManualSave"><i class="fas fa-download"></i> 保存签名</button>
+            </div>
+        </section>
+
+        <footer class="sign-footer">
+            <p>🎨 签名生成仅供娱乐，版权归字体作者所有</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -235,6 +235,38 @@
                     </button>
                 </div>
 
+                <!-- 签名随手写 -->
+                <div class="game-card game-card-kids" data-category="relax" onclick="openGame('签名随手写')">
+                    <div class="game-img-wrap">
+                        <div class="game-img game-img-signature">
+                            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="sigGrad" x1="0" x2="1" y1="0" y2="1">
+                                        <stop offset="0%" stop-color="#ff6b9d"/>
+                                        <stop offset="100%" stop-color="#a855f7"/>
+                                    </linearGradient>
+                                </defs>
+                                <rect x="6" y="6" width="68" height="68" rx="10" fill="#fff9fc" stroke="#ffb3c6" stroke-width="2"/>
+                                <path d="M14 52 Q22 22 36 36 Q48 46 56 28 Q62 18 68 30"
+                                      fill="none" stroke="url(#sigGrad)" stroke-width="4"
+                                      stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="68" cy="30" r="3" fill="#ff6b9d"/>
+                                <path d="M22 58 L30 62 L38 56" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="game-info">
+                        <h3>✍️ 签名随手写</h3>
+                        <p>六种艺术签名风格，还能手写个性签名</p>
+                        <div class="game-stats">
+                            <span><i class="fas fa-play"></i> 已玩 188 次</span>
+                        </div>
+                    </div>
+                    <button class="play-btn play-btn-kids">
+                        <i class="fas fa-play"></i> 开始游戏
+                    </button>
+                </div>
+
                 <!-- 2048游戏 -->
                 <div class="game-card game-card-kids" data-category="puzzle" onclick="openGame('2048游戏')">
                     <div class="game-img-wrap">
@@ -262,7 +294,7 @@
                 <div class="stat-item">
                     <div class="stat-icon"><i class="fas fa-gamepad"></i></div>
                     <div class="stat-info">
-                        <p class="stat-number">10</p>
+                        <p class="stat-number">11</p>
                         <p class="stat-label">游戏数量</p>
                     </div>
                 </div>

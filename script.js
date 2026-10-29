@@ -1389,7 +1389,8 @@ function openGame(gameName) {
         '记忆翻牌游戏': '记忆翻牌游戏/memory-cards.html',
         '魔塔游戏': '魔塔游戏/magic-tower.html',
         '2048游戏': '2048游戏/2048.html',
-        '箭头排队游戏': '箭头排队游戏/arrow-puzzle.html'
+        '箭头排队游戏': '箭头排队游戏/arrow-puzzle.html',
+        '签名随手写': '签名随手写/signature.html'
     };
     
     if (gamePaths[gameName]) {

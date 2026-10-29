@@ -1,0 +1,501 @@
+/* ========== 签名随手写 卡通风格 ========== */
+
+:root {
+    --c-pink: #ff6b9d;
+    --c-pink-light: #ffd6e4;
+    --c-orange: #ff9f43;
+    --c-yellow: #ffd93d;
+    --c-blue: #4d96ff;
+    --c-purple: #a855f7;
+    --c-purple-light: #e3d0ff;
+    --c-bg-1: #fff0f6;
+    --c-bg-2: #f7f0ff;
+    --c-bg-3: #e6f0ff;
+    --c-text: #4a3a5c;
+    --c-card: #ffffff;
+    --c-border: rgba(168, 85, 247, 0.15);
+    --shadow-sm: 0 2px 8px rgba(168, 85, 247, 0.12);
+    --shadow-md: 0 6px 20px rgba(168, 85, 247, 0.18);
+    --shadow-lg: 0 12px 36px rgba(168, 85, 247, 0.25);
+}
+
+body {
+    background: linear-gradient(160deg, var(--c-bg-1), var(--c-bg-2), var(--c-bg-3));
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* 导航栏保持原样 */
+.navbar { box-shadow: var(--shadow-md); }
+
+/* ========== 容器 ========== */
+.sign-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 20px 48px;
+}
+
+.sign-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.sign-header h1 {
+    font-size: clamp(26px, 5vw, 38px);
+    color: var(--c-text);
+    margin-bottom: 6px;
+    background: linear-gradient(135deg, var(--c-pink), var(--c-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sign-header p {
+    color: #8a7a9c;
+    font-size: 15px;
+}
+
+/* ========== Tab ========== */
+.sign-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.sign-tab {
+    padding: 12px 28px;
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background: #fff;
+    color: #8a7a9c;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sign-tab:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.sign-tab.active {
+    background: linear-gradient(135deg, var(--c-pink), var(--c-purple));
+    color: #fff;
+    box-shadow: var(--shadow-md);
+}
+
+/* ========== Panel ========== */
+.sign-panel {
+    display: none;
+    background: var(--c-card);
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: var(--shadow-md);
+    animation: popIn 0.3s ease;
+}
+
+.sign-panel.active {
+    display: block;
+}
+
+@keyframes popIn {
+    from { opacity: 0; transform: translateY(8px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ========== 输入区 ========== */
+.input-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.input-label {
+    color: var(--c-text);
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sign-input {
+    flex: 1;
+    min-width: 160px;
+    padding: 12px 18px;
+    font-size: 18px;
+    border: 2px solid var(--c-border);
+    border-radius: 14px;
+    background: linear-gradient(180deg, #faf8ff, #fff);
+    color: var(--c-text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.sign-input:focus {
+    border-color: var(--c-purple);
+    box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15);
+}
+
+.btn-generate {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, var(--c-pink), var(--c-purple));
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-generate:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-generate:active {
+    transform: translateY(0);
+}
+
+/* ========== 风格选择 ========== */
+.style-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.style-label, .color-label, .tool-label {
+    font-size: 13px;
+    color: #8a7a9c;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.style-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.style-chip {
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 2px solid var(--c-border);
+    background: #fff;
+    color: #8a7a9c;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.style-chip:hover {
+    border-color: var(--c-purple);
+    color: var(--c-purple);
+}
+
+.style-chip.active {
+    background: linear-gradient(135deg, var(--c-purple-light), #fff);
+    border-color: var(--c-purple);
+    color: var(--c-purple);
+}
+
+/* ========== 颜色 ========== */
+.color-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 22px;
+}
+
+.color-dots {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.color-dot {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.color-dot:hover { transform: scale(1.15); }
+
+.color-dot.active {
+    box-shadow: 0 0 0 3px var(--c-purple), 0 2px 6px rgba(0,0,0,0.15);
+    transform: scale(1.1);
+}
+
+.color-picker {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 0;
+}
+
+/* ========== 艺术签名网格 ========== */
+.art-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.art-hint {
+    grid-column: 1 / -1;
+    padding: 40px 20px;
+    text-align: center;
+    color: #b9aec7;
+    font-size: 15px;
+    background: linear-gradient(180deg, #faf8ff, #fff);
+    border-radius: 16px;
+    border: 2px dashed var(--c-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.art-hint i {
+    font-size: 36px;
+    color: var(--c-purple-light);
+}
+
+.art-card {
+    background: linear-gradient(180deg, #fff, #fdf8ff);
+    border-radius: 18px;
+    padding: 20px;
+    border: 2px solid var(--c-border);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+}
+
+.art-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.art-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.art-style-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-purple);
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--c-purple-light);
+}
+
+.art-download {
+    padding: 4px 10px;
+    font-size: 12px;
+    color: var(--c-blue);
+    background: rgba(77, 150, 255, 0.1);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.art-download:hover {
+    background: rgba(77, 150, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.art-canvas-wrap {
+    background: repeating-linear-gradient(
+        45deg,
+        #faf8ff,
+        #faf8ff 10px,
+        #fff 10px,
+        #fff 20px
+    );
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.art-canvas-wrap canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ========== 手写签名 ========== */
+.canvas-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 16px;
+    background: linear-gradient(180deg, #faf8ff, #fff);
+    border-radius: 16px;
+    margin-bottom: 16px;
+}
+
+.tool-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.brush-sizes {
+    display: flex;
+    gap: 6px;
+}
+
+.brush-btn {
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 2px solid var(--c-border);
+    background: #fff;
+    color: #8a7a9c;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.brush-btn:hover {
+    border-color: var(--c-purple);
+}
+
+.brush-btn.active {
+    background: linear-gradient(135deg, var(--c-pink), var(--c-purple));
+    border-color: transparent;
+    color: #fff;
+}
+
+.canvas-wrap {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 2px solid var(--c-border);
+    background: #fff;
+    box-shadow: inset 0 2px 10px rgba(168, 85, 247, 0.08);
+}
+
+#manualCanvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    cursor: crosshair;
+    touch-action: none;
+}
+
+.canvas-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #d4c8e0;
+    font-size: 16px;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.canvas-placeholder.hidden {
+    opacity: 0;
+}
+
+.canvas-placeholder i {
+    font-size: 42px;
+}
+
+.canvas-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+    justify-content: center;
+}
+
+.canvas-btn {
+    padding: 10px 22px;
+    border-radius: 12px;
+    border: 2px solid var(--c-border);
+    background: #fff;
+    color: var(--c-text);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.canvas-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.canvas-btn.primary {
+    background: linear-gradient(135deg, var(--c-pink), var(--c-purple));
+    border-color: transparent;
+    color: #fff;
+}
+
+.canvas-btn.danger {
+    background: rgba(255, 107, 157, 0.1);
+    border-color: rgba(255, 107, 157, 0.3);
+    color: var(--c-pink);
+}
+
+/* ========== 页脚 ========== */
+.sign-footer {
+    text-align: center;
+    margin-top: 32px;
+    color: #b9aec7;
+    font-size: 13px;
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 600px) {
+    .sign-container { padding: 20px 14px 40px; }
+    .sign-panel { padding: 20px 16px; border-radius: 18px; }
+    .sign-tab { padding: 10px 18px; font-size: 14px; }
+    .art-grid { grid-template-columns: 1fr; }
+    .input-row { flex-direction: column; align-items: stretch; }
+    .btn-generate { justify-content: center; }
+}
