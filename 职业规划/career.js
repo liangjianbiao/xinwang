@@ -150,6 +150,70 @@
         }
     ];
 
+    /* ---------- 各方向推荐资源 ---------- */
+    const RECOMMEND = {
+        '前端开发工程师': {
+            certs: ['Web 前端开发职业技能等级证书', '软考 · 软件设计师'],
+            projects: ['从 0 到 1 做一个响应式个人作品集网站', '用 Vue / React 复刻一个常用 App 的核心页面'],
+            resources: ['MDN Web Docs', '《JavaScript 高级程序设计》', 'freeCodeCamp 前端课程']
+        },
+        '后端开发工程师': {
+            certs: ['软考 · 软件设计师', '阿里云 ACP 云计算认证'],
+            projects: ['搭建一个带登录与权限的 RESTful API 服务', '做一个短链接系统并完成压测'],
+            resources: ['《深入理解计算机系统》', 'LeetCode 算法题库', '慕课网后端实战课程']
+        },
+        '数据分析师': {
+            certs: ['CDA 数据分析师', 'Google Data Analytics 证书'],
+            projects: ['用公开数据集完成一份完整分析报告', '搭建一个自动化数据看板'],
+            resources: ['《利用 Python 进行数据分析》', 'Kaggle 入门竞赛', '《SQL 必知必会》']
+        },
+        '产品经理': {
+            certs: ['NPDP 产品经理国际资格认证', 'PMP 项目管理认证'],
+            projects: ['写一份完整 PRD 并做一次可用性测试', '主导一次小型产品迭代并复盘数据'],
+            resources: ['《人人都是产品经理》', '《启示录》', '人人都是产品经理社区']
+        },
+        'UI / UX 设计师': {
+            certs: ['Adobe 认证设计师', 'UX 设计专项课程证书'],
+            projects: ['完成一套完整的 App UI 设计规范', '改版一个真实产品的关键流程'],
+            resources: ['《写给大家看的设计书》', 'Figma 官方教程', 'Dribbble / Behance 灵感库']
+        },
+        '新媒体运营': {
+            certs: ['新媒体运营师', 'Google 数字营销证书'],
+            projects: ['从 0 运营一个垂直账号并产出 20 篇内容', '策划一次完整话题活动并复盘数据'],
+            resources: ['《运营之光》', '《爆款文案》', '新榜 / 小红书创作者学院']
+        },
+        '市场营销专员': {
+            certs: ['市场营销师', 'Google 数字营销证书'],
+            projects: ['为真实品牌做一份市场推广方案', '独立执行一次小型投放并复盘 ROI'],
+            resources: ['《定位》', '《营销管理》', '巨量引擎学习中心']
+        },
+        '人力资源专员': {
+            certs: ['企业人力资源管理师', '劳动关系协调员'],
+            projects: ['参与一次完整的校园招聘流程', '设计一套岗位面试题库'],
+            resources: ['《人力资源管理》', '三茅人力资源网', '《非暴力沟通》']
+        },
+        '教师 / 培训师': {
+            certs: ['教师资格证', '普通话水平测试证书'],
+            projects: ['独立设计并讲授一门 8 课时小课程', '录制一套知识点讲解视频'],
+            resources: ['《教育心理学》', '国家中小学智慧教育平台', '《刻意练习》']
+        },
+        '心理咨询师': {
+            certs: ['心理咨询师基础培训合格证书', '相关流派系统受训证明'],
+            projects: ['完成 50 小时以上见习或热线倾听实践', '整理一份个人成长与个案反思手册'],
+            resources: ['《心理咨询与治疗的理论及实践》', '《非暴力沟通》', '壹心理专业课程']
+        },
+        '财务 / 审计': {
+            certs: ['初级会计职称', 'CPA 注册会计师（部分科目）'],
+            projects: ['独立完成一套小企业账务处理', '做一份公司财务报表分析报告'],
+            resources: ['《会计学原理》', '《财务报表分析》', '东奥 / 中华会计网校']
+        },
+        '公务员 / 公共事业': {
+            certs: ['公务员考试（国考 / 省考）', '公共管理相关证书'],
+            projects: ['参与一次基层调研并输出调研报告', '系统训练申论与结构化面试'],
+            resources: ['《申论》真题', '《公共基础知识》', '半月谈']
+        }
+    };
+
     /* ---------- 关键词 → 技能映射 ---------- */
     const KEYWORD_SKILL_MAP = {
         programming: ['javascript', 'python', 'java', 'c++', 'go', 'sql', 'vue', 'react', '编程', '开发', '代码', '前端', '后端'],
@@ -514,24 +578,70 @@
         const career = top.career;
         const industry = input.industry || career.industry;
         const target = input.target || career.name;
+        const rec = RECOMMEND[career.name] || { certs: [], projects: [], resources: [] };
 
         return [
             {
                 title: '短期 · 打基础',
-                phase: '0-1 年',
-                text: `围绕「${target}」补齐核心技能，完成 1-2 个可展示的项目或实习，把简历从"学过"变成"做过"。`
+                phase: '0-12 个月',
+                goal: `完成从「了解」到「能上手」的转变，明确以${target}为主攻方向。`,
+                tasks: [
+                    `拆解 3 份${target}招聘 JD，整理必备技能清单，标出自己的差距项`,
+                    '主攻 2 项核心技能，完成一次系统学习并做阶段自测',
+                    rec.projects[0] ? `动手完成：${rec.projects[0]}` : '完成 1-2 个可展示的练习项目',
+                    '把经历改写成"情境 - 行动 - 结果"的简历表述'
+                ],
+                output: '一份对口简历 + 1-2 个作品'
             },
             {
                 title: '中期 · 立住脚',
                 phase: '1-3 年',
-                text: `进入${industry}相关岗位独立负责模块，形成自己的工作方法，沉淀 2-3 个能讲清楚的成果案例，争取晋升或核心项目机会。`
+                goal: `进入${industry}相关岗位，能独立承担完整模块并对结果负责。`,
+                tasks: [
+                    `在${target}岗位上独立负责至少 1 个完整项目或模块`,
+                    '每季度沉淀 1 个可复用的方法、模板或案例',
+                    rec.certs[0] ? `考取或准备：${rec.certs[0]}` : '考取 1 项与岗位直接相关的证书',
+                    '参与 2 次以上行业交流或专业社群，建立人脉'
+                ],
+                output: '2-3 个能讲清楚的成果案例'
             },
             {
                 title: '长期 · 建优势',
                 phase: '3-5 年',
-                text: `在${career.name}方向形成个人标签，向「${career.growth.replace(/^可向/, '').replace(/发展。?$/, '')}」延伸，具备带人或跨领域协作的能力。`
+                goal: `在${career.name}方向形成个人标签，具备带项目或带人的能力。`,
+                tasks: [
+                    '在细分领域持续深耕，通过分享、写作或授课输出专业内容',
+                    '承担跨团队项目或新人带教，验证自己的组织能力',
+                    '关注行业趋势，判断是走专家路线还是管理路线'
+                ],
+                output: '可对外展示的专业影响力'
             }
         ];
+    }
+
+    function buildRecommendations(input, top) {
+        const career = top.career;
+        const rec = RECOMMEND[career.name] || { certs: [], projects: [], resources: [] };
+
+        const skillTags = career.skills.map(key => {
+            const item = SKILLS.find(s => s.key === key);
+            return {
+                label: item ? item.label : key,
+                owned: input.skills.has(key)
+            };
+        });
+
+        if (input.skills.size === 0) {
+            skillTags.push({ label: '先选定 1 项核心技能', owned: false });
+        }
+
+        return {
+            skills: skillTags,
+            certs: rec.certs,
+            projects: rec.projects,
+            resources: rec.resources,
+            target: input.target || career.name
+        };
     }
 
     function buildActions(input, top) {
@@ -622,12 +732,48 @@
             </div>
         `).join('');
 
-        // 发展路线
+        // 推荐提升清单
+        const recommendations = buildRecommendations(input, topCareers[0]);
+        $('recGrid').innerHTML = `
+            <div class="rec-item">
+                <h4><span class="r-icon"><i class="fas fa-wrench"></i></span>建议补强的技能</h4>
+                <div class="rec-tags">
+                    ${recommendations.skills.map(s => `
+                        <span class="${s.owned ? '' : 'miss'}">${escapeHtml(s.label)}${s.owned ? ' ✓' : ''}</span>
+                    `).join('')}
+                </div>
+                <p class="rec-hint">✓ 为已具备，橙色为建议优先补齐</p>
+            </div>
+            <div class="rec-item">
+                <h4><span class="r-icon"><i class="fas fa-certificate"></i></span>推荐证书</h4>
+                <ul class="rec-list">
+                    ${recommendations.certs.map(c => `<li>${escapeHtml(c)}</li>`).join('')}
+                </ul>
+            </div>
+            <div class="rec-item">
+                <h4><span class="r-icon"><i class="fas fa-diagram-project"></i></span>推荐实践项目</h4>
+                <ul class="rec-list">
+                    ${recommendations.projects.map(p => `<li>${escapeHtml(p)}</li>`).join('')}
+                </ul>
+            </div>
+            <div class="rec-item">
+                <h4><span class="r-icon"><i class="fas fa-book-open"></i></span>学习资源</h4>
+                <ul class="rec-list">
+                    ${recommendations.resources.map(r => `<li>${escapeHtml(r)}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+
+        // 短中长期规划
         const timeline = buildTimeline(input, topCareers[0]);
         $('timeline').innerHTML = timeline.map(t => `
             <div class="timeline-item">
                 <h4>${escapeHtml(t.title)}<span>${escapeHtml(t.phase)}</span></h4>
-                <p>${escapeHtml(t.text)}</p>
+                <p class="t-goal">🎯 ${escapeHtml(t.goal)}</p>
+                <ul class="t-tasks">
+                    ${t.tasks.map(task => `<li>${escapeHtml(task)}</li>`).join('')}
+                </ul>
+                <span class="t-output">阶段产出：${escapeHtml(t.output)}</span>
             </div>
         `).join('');
 
@@ -637,7 +783,7 @@
             <li><i class="fas fa-circle-check"></i><span>${escapeHtml(a)}</span></li>
         `).join('');
 
-        state.lastResult = { input, ranked: topCareers, prepScore, radar, strengths, timeline, actions };
+        state.lastResult = { input, ranked: topCareers, prepScore, radar, strengths, timeline, actions, recommendations };
 
         resultSection.classList.remove('hidden');
         setTimeout(() => {
@@ -798,10 +944,22 @@
             lines.push(`   成长：${career.growth}`);
         });
         lines.push('');
-        lines.push('四、发展路线');
-        r.timeline.forEach(t => lines.push(`[${t.phase}] ${t.title}：${t.text}`));
+        lines.push('四、推荐提升清单');
+        lines.push('建议补强的技能：' + r.recommendations.skills
+            .map(s => s.label + (s.owned ? '（已具备）' : '（待补齐）')).join('、'));
+        lines.push('推荐证书：' + r.recommendations.certs.join('；'));
+        lines.push('推荐实践项目：' + r.recommendations.projects.join('；'));
+        lines.push('学习资源：' + r.recommendations.resources.join('；'));
         lines.push('');
-        lines.push('五、行动建议');
+        lines.push('五、短中长期规划');
+        r.timeline.forEach(t => {
+            lines.push(`[${t.phase}] ${t.title}`);
+            lines.push(`  目标：${t.goal}`);
+            t.tasks.forEach((task, idx) => lines.push(`  任务${idx + 1}：${task}`));
+            lines.push(`  阶段产出：${t.output}`);
+        });
+        lines.push('');
+        lines.push('六、行动建议');
         r.actions.forEach((a, idx) => lines.push(`${idx + 1}. ${a}`));
         lines.push('');
         lines.push('（本报告由心灵驿站根据你填写的信息本地生成，仅供参考）');
