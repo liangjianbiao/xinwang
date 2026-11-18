@@ -1390,7 +1390,8 @@ function openGame(gameName) {
         '魔塔游戏': '魔塔游戏/magic-tower.html',
         '2048游戏': '2048游戏/2048.html',
         '箭头排队游戏': '箭头排队游戏/arrow-puzzle.html',
-        '签名随手写': '签名随手写/signature.html'
+        '签名随手写': '签名随手写/signature.html',
+        '炮塔小人': '炮塔小人/cannon-crowd.html'
     };
     
     if (gamePaths[gameName]) {

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>炮塔小人 - 蓝红对决</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e4b1cad1dc884ec2ee26027d50258d86";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+</head>
+<body class="cannon-body">
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-heart"></i>
+                <span>心灵驿站</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html"><i class="fas fa-home"></i> 首页</a></li>
+                <li><a href="../games.html"><i class="fas fa-gamepad"></i> 小游戏</a></li>
+                <li><a href="../schoolRankingsShJshan/school-rankings.html"><i class="fas fa-school"></i> 名校展示</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="game-wrapper">
+        <header class="cannon-hud">
+            <div class="hud hud-score">
+                <span class="hud-label">分数</span>
+                <span class="hud-value" id="hudScore">0</span>
+            </div>
+            <div class="hud hud-wave">
+                <span class="hud-label">波次</span>
+                <span class="hud-value" id="hudWave">1</span>
+            </div>
+            <div class="hud hud-left">
+                <span class="hud-label">剩余红人</span>
+                <span class="hud-value" id="hudLeft">0</span>
+            </div>
+            <div class="hud hud-hearts">
+                <span class="hud-label">生命</span>
+                <span class="hud-value" id="hudHearts">❤❤❤❤❤</span>
+            </div>
+        </header>
+
+        <section class="board-wrap">
+            <canvas id="gameCanvas"></canvas>
+        </section>
+
+        <section class="controls">
+            <button id="btnRestart" class="ctrl-btn">
+                <i class="fas fa-rotate-left"></i> 重新开始
+            </button>
+            <div class="ctrl-tip"><i class="fas fa-hand-pointer"></i> 拖动炮塔左右移动，自动发射</div>
+        </section>
+    </main>
+
+    <div class="modal" id="modalStart">
+        <div class="modal-card">
+            <div class="modal-emoji">🎯</div>
+            <h2>炮塔小人</h2>
+            <p>拖动炮塔左右移动，自动发射蓝色小人。<br>蓝人和红人相遇会互相抵消，穿过 <b>×2 / ×3</b> 加倍道具可以瞬间复制队伍。</p>
+            <div class="modal-info">
+                <span>❤ 生命 <b>5</b></span>
+                <span>🧍 自动开火</span>
+                <span>🚩 红人漏过扣命</span>
+            </div>
+            <button class="modal-start" id="btnStart">开始战斗 🚀</button>
+        </div>
+    </div>
+
+    <div class="modal hidden" id="modalOver">
+        <div class="modal-card">
+            <div class="modal-emoji">💥</div>
+            <h2>防线失守</h2>
+            <p id="overStats">得分 0 · 第 1 波</p>
+            <button class="modal-start" id="btnPlayAgain">再来一局 →</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
