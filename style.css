@@ -434,6 +434,7 @@ body {
 .tree-icon { background: var(--grad-calm); }
 .game-icon { background: var(--grad-dawn); }
 .consult-icon { background: var(--grad-sky); }
+.career-icon { background: var(--grad-cyan); }
 
 .feature-card h3 {
     font-size: 1.3rem;

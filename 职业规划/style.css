@@ -1,0 +1,748 @@
+/* ============================================================
+   心灵驿站 · 职业规划页面
+   ============================================================ */
+
+.career-header {
+    padding-bottom: 70px;
+    position: relative;
+    overflow: hidden;
+}
+
+.career-header::after {
+    content: '';
+    position: absolute;
+    width: 520px;
+    height: 520px;
+    right: -160px;
+    top: -180px;
+    background: radial-gradient(circle, rgba(255, 194, 77, 0.28) 0%, rgba(255, 194, 77, 0) 68%);
+    pointer-events: none;
+}
+
+.career-main {
+    padding: 44px 0 80px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#profileCard,
+#resultSection {
+    scroll-margin-top: 90px;
+}
+
+/* ---------- 卡片 ---------- */
+.career-card {
+    background: var(--paper);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 28px;
+    margin-bottom: 24px;
+    border: 1px solid var(--line);
+}
+
+.card-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+}
+
+.card-head h2,
+.career-card h3 {
+    color: var(--ink);
+    font-size: 1.25rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.career-card h3 {
+    margin-bottom: 18px;
+    font-size: 1.12rem;
+}
+
+.career-card h3 i {
+    color: var(--primary);
+}
+
+.card-sub {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+}
+
+/* ---------- 表单 ---------- */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 20px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.field > span {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.field > span em {
+    color: var(--berry);
+    font-style: normal;
+}
+
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    background: var(--mist);
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: var(--text);
+    transition: border-color var(--dur) ease, background var(--dur) ease, box-shadow var(--dur) ease;
+}
+
+.field textarea {
+    resize: vertical;
+    min-height: 96px;
+    line-height: 1.6;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(91, 91, 214, 0.12);
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+    color: #B4B9CC;
+}
+
+.field-block {
+    margin-top: 22px;
+}
+
+.field-block > .block-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* ---------- 标签胶囊 ---------- */
+.chip-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--line);
+    background: var(--mist);
+    color: var(--text);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--dur) ease;
+    user-select: none;
+}
+
+.chip i {
+    font-size: 0.82rem;
+    opacity: 0.75;
+}
+
+.chip:hover {
+    border-color: var(--primary);
+    color: var(--primary-deep);
+    transform: translateY(-1px);
+}
+
+.chip.active {
+    background: var(--grad-brand);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 5px 14px rgba(91, 91, 214, 0.32);
+}
+
+.chip.active i {
+    opacity: 1;
+}
+
+/* 自定义技能输入 */
+.skill-add {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    max-width: 420px;
+}
+
+.skill-add input {
+    flex: 1;
+    padding: 9px 14px;
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--mist);
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: var(--text);
+}
+
+.skill-add input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: #fff;
+}
+
+.skill-add button {
+    padding: 9px 20px;
+    border: none;
+    border-radius: var(--radius-pill);
+    background: var(--grad-brand);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(91, 91, 214, 0.3);
+    transition: transform var(--dur) ease;
+}
+
+.skill-add button:hover {
+    transform: translateY(-1px);
+}
+
+/* ---------- 上传区 ---------- */
+.upload-zone {
+    margin-top: 24px;
+    border: 2px dashed #C9CFE4;
+    border-radius: 16px;
+    background: linear-gradient(160deg, #FAFBFF 0%, #F3F4FD 100%);
+    padding: 26px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--dur) ease;
+}
+
+.upload-zone:hover,
+.upload-zone.dragover {
+    border-color: var(--primary);
+    background: var(--primary-soft);
+}
+
+.upload-zone .up-icon {
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 10px;
+    border-radius: 50%;
+    background: var(--grad-brand);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 8px 20px rgba(91, 91, 214, 0.32);
+}
+
+.upload-zone p {
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+}
+
+.upload-zone small {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+}
+
+.upload-status {
+    margin-top: 10px;
+    font-size: 0.86rem;
+    min-height: 20px;
+    color: var(--calm);
+    font-weight: 600;
+}
+
+.upload-status.error {
+    color: var(--berry);
+}
+
+/* ---------- 操作按钮 ---------- */
+.form-actions {
+    display: flex;
+    gap: 14px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+}
+
+.form-actions .btn {
+    padding: 12px 32px;
+}
+
+/* ---------- 结果区 ---------- */
+.result-top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 260px;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.profile-summary {
+    background: var(--paper);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-card);
+    padding: 28px;
+}
+
+.profile-summary .hello {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 6px;
+}
+
+.profile-summary .hello span {
+    background: var(--grad-brand);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.profile-summary .sub {
+    color: var(--text-muted);
+    font-size: 0.94rem;
+    margin-bottom: 18px;
+}
+
+.summary-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.summary-tags span {
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    background: var(--primary-soft);
+    color: var(--primary-deep);
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.score-card {
+    background: var(--grad-brand);
+    color: #fff;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 16px 36px rgba(91, 91, 214, 0.34);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.score-ring {
+    width: 132px;
+    height: 132px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    background: conic-gradient(#FFC24D 0deg, #FFC24D 0deg, rgba(255, 255, 255, 0.22) 0deg);
+    transition: background 0.6s ease;
+}
+
+.score-ring .inner {
+    width: 106px;
+    height: 106px;
+    border-radius: 50%;
+    background: var(--primary-deep);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.score-ring .num {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.score-ring .unit {
+    font-size: 0.72rem;
+    opacity: 0.8;
+}
+
+.score-card > p {
+    font-size: 0.86rem;
+    opacity: 0.9;
+}
+
+.result-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 24px;
+}
+
+/* ---------- 优势列表 ---------- */
+.strength-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.strength-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: var(--mist);
+    border: 1px solid var(--line);
+}
+
+.strength-list li .s-icon {
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: var(--grad-calm);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.88rem;
+}
+
+.strength-list li strong {
+    display: block;
+    color: var(--ink);
+    font-size: 0.94rem;
+    margin-bottom: 2px;
+}
+
+.strength-list li p {
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* ---------- 雷达图 ---------- */
+.radar-wrap {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#radarCanvas {
+    width: 100%;
+    max-width: 340px;
+    height: auto;
+    display: block;
+}
+
+/* ---------- 匹配职业 ---------- */
+.match-item {
+    padding: 16px 0;
+    border-bottom: 1px dashed var(--line);
+}
+
+.match-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.match-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.match-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    color: var(--ink);
+    font-size: 0.98rem;
+}
+
+.match-title .m-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: var(--grad-brand);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.86rem;
+}
+
+.match-score {
+    font-weight: 800;
+    color: var(--primary-deep);
+    font-size: 1rem;
+}
+
+.match-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
+
+.match-bar {
+    height: 8px;
+    border-radius: var(--radius-pill);
+    background: var(--mist);
+    overflow: hidden;
+}
+
+.match-bar i {
+    display: block;
+    height: 100%;
+    border-radius: var(--radius-pill);
+    background: var(--grad-brand);
+    width: 0;
+    transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.match-meta {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.match-meta b {
+    color: var(--text);
+}
+
+/* ---------- 发展路线 ---------- */
+.timeline {
+    position: relative;
+    padding-left: 28px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: linear-gradient(180deg, #5B5BD6 0%, #8B7CF0 55%, #FFC24D 100%);
+    border-radius: 2px;
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: 22px;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -26px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid var(--primary);
+    box-shadow: 0 0 0 4px rgba(91, 91, 214, 0.12);
+}
+
+.timeline-item:last-child::before {
+    border-color: var(--dawn);
+    box-shadow: 0 0 0 4px rgba(255, 159, 67, 0.16);
+}
+
+.timeline-item h4 {
+    color: var(--ink);
+    font-size: 0.98rem;
+    margin-bottom: 4px;
+}
+
+.timeline-item h4 span {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 10px;
+    border-radius: var(--radius-pill);
+    background: var(--primary-soft);
+    color: var(--primary-deep);
+    font-size: 0.74rem;
+    font-weight: 700;
+    vertical-align: middle;
+}
+
+.timeline-item p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+}
+
+/* ---------- 行动建议 ---------- */
+.action-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+}
+
+.action-list li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 13px 16px;
+    border-radius: 14px;
+    background: var(--mist);
+    border: 1px solid var(--line);
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.action-list li i {
+    color: var(--calm);
+    margin-top: 3px;
+}
+
+@media (max-width: 900px) {
+    .result-grid,
+    .result-top {
+        grid-template-columns: 1fr;
+    }
+
+    .score-card {
+        flex-direction: row;
+        gap: 20px;
+        text-align: left;
+    }
+
+    .score-ring {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 0;
+        flex: 0 0 auto;
+    }
+
+    .score-ring .inner {
+        width: 80px;
+        height: 80px;
+    }
+
+    .score-ring .num {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .career-main {
+        padding: 28px 0 60px;
+    }
+
+    .career-card,
+    .profile-summary {
+        padding: 20px 18px;
+        border-radius: 16px;
+    }
+
+    .page-header.career-header h1 {
+        font-size: 2rem;
+    }
+
+    .form-actions .btn {
+        flex: 1;
+        text-align: center;
+    }
+}
+
+/* ---------- 打印 ---------- */
+@media print {
+    .navbar,
+    .footer,
+    footer,
+    #profileCard,
+    .form-actions,
+    .upload-zone {
+        display: none !important;
+    }
+
+    body {
+        background: #fff;
+    }
+
+    .page-header,
+    .career-header {
+        background: none !important;
+        color: var(--ink);
+        padding: 0 0 20px;
+        margin: 0;
+    }
+
+    .page-header p {
+        color: var(--text-muted);
+    }
+
+    .career-main {
+        padding: 0;
+    }
+
+    .career-card,
+    .profile-summary,
+    .score-card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        break-inside: avoid;
+    }
+
+    .score-card {
+        color: var(--ink);
+        background: #f5f5fa !important;
+    }
+
+    .score-ring .inner {
+        background: #fff;
+        color: var(--ink);
+    }
+}

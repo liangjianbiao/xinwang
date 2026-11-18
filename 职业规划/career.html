@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>职业规划 - 心灵驿站</title>
+    <link rel="stylesheet" href="../style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?e4b1cad1dc884ec2ee26027d50258d86";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-heart"></i>
+                <span>心灵驿站</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html"><i class="fas fa-home"></i> 首页</a></li>
+                <li><a href="../test.html"><i class="fas fa-flask"></i> 心理测试</a></li>
+                <li><a href="career.html" class="active"><i class="fas fa-briefcase"></i> 职业规划</a></li>
+                <li><a href="../games.html"><i class="fas fa-gamepad"></i> 小游戏</a></li>
+                <li><a href="../schoolRankingsShJshan/school-rankings.html"><i class="fas fa-school"></i> 名校展示</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面标题 -->
+    <section class="page-header career-header">
+        <h1>🚀 职业规划</h1>
+        <p>上传你的职业信息，生成专属发展路线图</p>
+    </section>
+
+    <main class="career-main">
+        <div class="container">
+            <!-- 信息填写 -->
+            <section class="career-card" id="profileCard">
+                <div class="card-head">
+                    <h2><i class="fas fa-id-card"></i> 个人信息</h2>
+                    <span class="card-sub">填写越完整，规划越精准（仅本地分析，不会上传）</span>
+                </div>
+
+                <form id="careerForm">
+                    <div class="form-grid">
+                        <label class="field">
+                            <span>姓名 <em>*</em></span>
+                            <input type="text" id="fName" maxlength="20" placeholder="请输入姓名" required>
+                        </label>
+                        <label class="field">
+                            <span>年龄阶段</span>
+                            <select id="fAge">
+                                <option value="18岁以下">18岁以下</option>
+                                <option value="18-22岁" selected>18-22岁</option>
+                                <option value="23-26岁">23-26岁</option>
+                                <option value="27-30岁">27-30岁</option>
+                                <option value="31-35岁">31-35岁</option>
+                                <option value="35岁以上">35岁以上</option>
+                            </select>
+                        </label>
+                        <label class="field">
+                            <span>最高学历</span>
+                            <select id="fEdu">
+                                <option value="高中及以下">高中及以下</option>
+                                <option value="大专">大专</option>
+                                <option value="本科" selected>本科</option>
+                                <option value="硕士">硕士</option>
+                                <option value="博士">博士</option>
+                            </select>
+                        </label>
+                        <label class="field">
+                            <span>专业 / 方向</span>
+                            <input type="text" id="fMajor" maxlength="30" placeholder="如：计算机科学与技术">
+                        </label>
+                        <label class="field">
+                            <span>当前状态</span>
+                            <select id="fStage">
+                                <option value="在校学生" selected>在校学生</option>
+                                <option value="应届求职">应届求职</option>
+                                <option value="0-1年工作经验">0-1年工作经验</option>
+                                <option value="1-3年工作经验">1-3年工作经验</option>
+                                <option value="3-5年工作经验">3-5年工作经验</option>
+                                <option value="5年以上工作经验">5年以上工作经验</option>
+                            </select>
+                        </label>
+                        <label class="field">
+                            <span>目标行业</span>
+                            <input type="text" id="fIndustry" maxlength="30" placeholder="如：互联网、教育、医疗">
+                        </label>
+                        <label class="field">
+                            <span>期望岗位</span>
+                            <input type="text" id="fTarget" maxlength="30" placeholder="如：前端开发工程师">
+                        </label>
+                        <label class="field">
+                            <span>期望薪资（可选）</span>
+                            <select id="fSalary">
+                                <option value="">暂未确定</option>
+                                <option value="6-10K">6-10K</option>
+                                <option value="10-15K">10-15K</option>
+                                <option value="15-25K">15-25K</option>
+                                <option value="25K以上">25K以上</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="field-block">
+                        <span class="block-title">感兴趣的方向（可多选）</span>
+                        <div class="chip-group" id="interestGroup"></div>
+                    </div>
+
+                    <div class="field-block">
+                        <span class="block-title">已具备的技能（可多选）</span>
+                        <div class="chip-group" id="skillGroup"></div>
+                        <div class="skill-add">
+                            <input type="text" id="customSkill" maxlength="14" placeholder="添加自定义技能，如 Python">
+                            <button type="button" id="btnAddSkill">添加</button>
+                        </div>
+                    </div>
+
+                    <div class="field-block">
+                        <span class="block-title">性格特点（可多选）</span>
+                        <div class="chip-group" id="traitGroup"></div>
+                    </div>
+
+                    <div class="upload-zone" id="uploadZone">
+                        <div class="up-icon"><i class="fas fa-cloud-arrow-up"></i></div>
+                        <p>点击或拖拽上传简历</p>
+                        <small>支持 .txt / .md / .pdf / .docx，也可以直接在下方粘贴文字</small>
+                        <input type="file" id="resumeFile" accept=".txt,.md,.json,.pdf,.docx" hidden>
+                    </div>
+                    <div class="upload-status" id="uploadStatus"></div>
+
+                    <div class="field-block">
+                        <span class="block-title">简历内容 / 补充说明</span>
+                        <label class="field">
+                            <textarea id="resumeText" rows="5" placeholder="可以粘贴简历全文、项目经历、实习经历，或任何想补充的信息（会从文字中识别技能关键词）"></textarea>
+                        </label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-wand-magic-sparkles"></i> 生成职业规划
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="btnReset">清空重填</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- 结果展示 -->
+            <section id="resultSection" class="hidden">
+                <div class="result-top">
+                    <div class="profile-summary">
+                        <div class="hello">你好，<span id="rName">同学</span></div>
+                        <p class="sub" id="rSubtitle"></p>
+                        <div class="summary-tags" id="rTags"></div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-ring" id="scoreRing">
+                            <div class="inner">
+                                <span class="num" id="scoreNum">0</span>
+                                <span class="unit">职业准备度</span>
+                            </div>
+                        </div>
+                        <p id="scoreTip">资料越完整，得分越准确</p>
+                    </div>
+                </div>
+
+                <div class="result-grid">
+                    <div class="career-card">
+                        <h3><i class="fas fa-star"></i> 你的职业优势</h3>
+                        <ul class="strength-list" id="strengthList"></ul>
+                    </div>
+                    <div class="career-card">
+                        <h3><i class="fas fa-chart-pie"></i> 能力画像</h3>
+                        <div class="radar-wrap">
+                            <canvas id="radarCanvas" width="340" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="career-card">
+                    <h3><i class="fas fa-bullseye"></i> 推荐职业方向</h3>
+                    <div id="careerMatches"></div>
+                </div>
+
+                <div class="career-card">
+                    <h3><i class="fas fa-route"></i> 发展路线</h3>
+                    <div class="timeline" id="timeline"></div>
+                </div>
+
+                <div class="career-card">
+                    <h3><i class="fas fa-list-check"></i> 行动建议</h3>
+                    <ul class="action-list" id="actionList"></ul>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-primary" id="btnExport">
+                        <i class="fas fa-download"></i> 导出报告
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="btnPrint">
+                        <i class="fas fa-print"></i> 打印 / 存为 PDF
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="btnAgain">重新填写</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>心灵驿站</h3>
+                    <p>陪伴你探索内心世界的温暖港湾</p>
+                </div>
+                <div class="footer-section">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="../index.html">首页</a></li>
+                        <li><a href="../test.html">心理测试</a></li>
+                        <li><a href="career.html">职业规划</a></li>
+                        <li><a href="../games.html">小游戏</a></li>
+                        <li><a href="../schoolRankingsShJshan/school-rankings.html">名校展示</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>关注我们</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-weixin"></i></a>
+                        <a href="#"><i class="fab fa-weibo"></i></a>
+                        <a href="#"><i class="fab fa-qq"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 心灵驿站. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <script src="career.js"></script>
+</body>
+</html>
