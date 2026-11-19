@@ -4,8 +4,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const navMenu = document.querySelector('.nav-menu');
 
     if (hamburger) {
-        hamburger.addEventListener('click', function() {
+        hamburger.addEventListener('click', function(e) {
+            e.stopPropagation();
             navMenu.classList.toggle('active');
+            hamburger.classList.toggle('open');
+        });
+
+        // 点击菜单项或页面空白处时收起移动端菜单
+        navMenu.addEventListener('click', function(e) {
+            if (e.target.closest('a')) {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('open');
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('open');
+            }
         });
     }
 
