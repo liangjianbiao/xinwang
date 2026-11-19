@@ -105,7 +105,7 @@
     });
 
     /* ---------- 游戏数据 ---------- */
-    function spawnBlue(x, y, vx) {
+    function spawnBlue(x, y, vx, usedGates) {
         if (game.blues.length >= 240) return;
         game.blues.push({
             x,
@@ -115,7 +115,8 @@
             phase: Math.random() * Math.PI * 2,
             wob: 0,
             drawX: x,
-            gateDone: false
+            // 已领取过的加倍门，避免复制出的小人立刻重复触发同一道门
+            usedGates: usedGates ? new Set(usedGates) : new Set()
         });
     }
 
@@ -135,11 +136,17 @@
         });
     }
 
+    let gateSeq = 0;
+
     function spawnGate() {
+        const mult = Math.random() < 0.3 ? 3 : 2;
         game.gates.push({
+            id: ++gateSeq,
             x: rand(70, W - 70),
             y: 138,
-            mult: Math.random() < 0.3 ? 3 : 2,
+            mult,
+            // 每道门能生效的次数有限，用完即消失
+            uses: mult === 3 ? 5 : 8,
             life: 8
         });
     }
@@ -295,19 +302,22 @@
             const gt = game.gates[i];
             gt.y += 14 * dt;
             gt.life -= dt;
-            if (gt.life <= 0 || gt.y > GY - 60) {
+            if (gt.life <= 0 || gt.y > GY - 60 || gt.uses <= 0) {
                 game.gates.splice(i, 1);
                 continue;
             }
             for (let k = game.blues.length - 1; k >= 0; k--) {
+                if (gt.uses <= 0) break;
                 const b = game.blues[k];
-                if (b.gateDone) continue;
+                if (b.usedGates.has(gt.id)) continue;
                 const dx = b.drawX - gt.x;
                 const dy = b.y - gt.y;
                 if (dx * dx + dy * dy < 34 * 34) {
-                    b.gateDone = true;
+                    b.usedGates.add(gt.id);
+                    gt.uses--;
+                    const inherit = new Set(b.usedGates);
                     for (let n = 1; n < gt.mult; n++) {
-                        spawnBlue(gt.x + rand(-18, 18), gt.y + rand(-6, 6), rand(-70, 70));
+                        spawnBlue(gt.x + rand(-18, 18), gt.y + rand(-6, 6), rand(-70, 70), inherit);
                     }
                     burst(gt.x, gt.y, 8, '#ffd93d');
                     floatText(gt.x, gt.y - 14, '×' + gt.mult, '#e0a000');
